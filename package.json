@@ -1,0 +1,25 @@
+{
+  "name": "janly.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/run.js",
+    "test": "mocha",
+    "lint": "eslint src",
+    "cover": "istanbul cover _mocha",
+    "pretest": "npm run --silent lint"
+  },
+  "author": "Jan Heuermann",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongoose": "^4.3.7",
+    "morgan": "^1.6.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "codeclimate-test-reporter": "^0.3.0",
+    "eslint": "^1.10.3",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.1"
+  }
+}
