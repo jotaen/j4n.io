@@ -4,7 +4,7 @@ let express  = require("express");
 let app      = express();
 let router   = express.Router();
 let logging  = require("morgan");
-let redirect = require("../src/redirect")
+let redirect = require("../src/redirect");
 
 //
 //  Middlewares
