@@ -1,35 +1,38 @@
 "use strict";
 
-let express  = require("express");
-let app      = express();
-let router   = express.Router();
-let logging  = require("morgan");
-let redirect = require("../src/redirect");
+let express   = require("express");
+let app       = express();
+let logging   = require("morgan");
 
 //
 //  Middlewares
 //
-router.use(logging("dev"));
+app.use(logging("dev"));
 
 //
 //  API Routes
 //
-router.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/", (req, res) => {
+  res.sendStatus(403);
 });
 
-router.get("*", (req, res) => {
+app.get("*", (req, res) => {
   let path = req.params[0].substr(1);
-  let url = redirect(path);
-  if (url) {
-    res.send("Redirect...");
+  if (path === "asdf") {
+    res.sendStatus(301);
   } else {
-    res.send("Not Found!");
+    res.sendStatus(500);
   }
+});
+
+app.post("/", (req, res) => {
+  console.log(req.query.id);
+  res.sendStatus(200);
 });
 
 //
 //  Launch App
 //
-app.use("/", router);
-app.listen(3001);
+app.listen(3001, () => {
+  console.log("Server launched…");
+});
