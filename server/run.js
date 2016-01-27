@@ -1,8 +1,11 @@
 "use strict";
 
-let express   = require("express");
-let app       = express();
-let logging   = require("morgan");
+const express   = require("express");
+const app       = express();
+const logging   = require("morgan");
+const Datastore = require("nedb");
+
+const db = new Datastore();
 
 //
 //  Middlewares
@@ -17,17 +20,30 @@ app.get("/", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  let path = req.params[0].substr(1);
-  if (path === "asdf") {
-    res.sendStatus(301);
-  } else {
-    res.sendStatus(500);
-  }
+  const path = req.params[0].substr(1);
+  db.findOne({id: path}, (_, doc) => {
+    if (doc && doc.id===path) {
+      res.send(doc.url);
+      // res.redirect(doc.url)
+    } else {
+      res.sendStatus(404);
+    }
+  });
 });
 
-app.post("/", (req, res) => {
-  console.log(req.query.id);
-  res.sendStatus(200);
+app.put("*", (req, res) => {
+  const url = req.query.url;
+  const path = req.params[0].substr(1);
+  db.insert({
+    id: path,
+    url: url
+  }, (_, docs) => {
+    if (docs) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 });
 
 //
