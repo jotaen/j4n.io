@@ -18,7 +18,7 @@ module.exports = mongoose.model("Shortlink", new Schema({
   url: {
     type: String,
     validate: {
-      validator: function(v) {
+      validator: function(v){
         return (valid_uri(v) !== undefined);
       },
       message: "{VALUE} is not a valid URI"
@@ -40,5 +40,5 @@ module.exports = mongoose.model("Shortlink", new Schema({
     type: Number,
     default: 301
   }
-  
+
 }));
