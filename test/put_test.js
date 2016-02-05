@@ -1,6 +1,8 @@
+"use strict";
+
 const request = require("supertest");
 const express = require("express");
-const router  = require("../src/http_router")
+const router  = require("../src/http_router");
 const server  = express();
 
 router(server);

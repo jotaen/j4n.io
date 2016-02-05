@@ -2,7 +2,7 @@
   "name": "janly.js",
   "scripts": {
     "start": "node serve.js --port 3001 --verbose",
-    "lint": "./node_modules/.bin/eslint src",
+    "lint": "./node_modules/.bin/eslint src test",
     "test": "./node_modules/.bin/mocha"
   },
   "author": "Jan Heuermann",
