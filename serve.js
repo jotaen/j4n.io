@@ -1,8 +1,10 @@
 "use strict";
 
+/*eslint no-console: 0*/
+
 const logging = require("morgan");
 const express = require("express");
-const router  = require("./src/http_router")
+const router  = require("./src/http_router");
 const server  = express();
 
 const port = ((args) => {

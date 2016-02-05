@@ -2,7 +2,9 @@
   "name": "janly.js",
   "scripts": {
     "start": "node serve.js --port 3000 --verbose",
-    "lint": "./node_modules/.bin/eslint src test",
+    "lint": "./node_modules/.bin/eslint src test serve.js",
+    "pretest": "npm run --silent lint",
+    "cover": "istanbul cover _mocha",
     "test": "./node_modules/.bin/mocha"
   },
   "author": "Jan Heuermann",
@@ -14,8 +16,9 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "^0.3.0",
+    "codeclimate-test-reporter": "^0.3.1",
     "eslint": "^1.10.3",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "supertest": "^1.1.0"
   }
