@@ -10,7 +10,8 @@
   "dependencies": {
     "express": "^4.13.4",
     "mongoose": "^4.4.2",
-    "morgan": "^1.6.1"
+    "morgan": "^1.6.1",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.0",
