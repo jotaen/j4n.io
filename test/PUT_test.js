@@ -7,9 +7,9 @@ const server  = express();
 
 router(server);
 
-describe("PUT", function() {
+describe("PUT", () => {
 
-  it("save new shortlink", function (done) {
+  it("save new shortlink", (done) => {
     request(server)
       .put("/foo")
       .query({"url": "http://example.org/foo"})

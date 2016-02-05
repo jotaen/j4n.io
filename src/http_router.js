@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function(server) {
+module.exports = (server) => {
 
   server.get("/", (req, res) => {
     res.redirect(301, "http://jotaen.net");

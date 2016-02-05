@@ -5,7 +5,7 @@ const express = require("express");
 const router  = require("./src/http_router")
 const server  = express();
 
-const port = (function(args) {
+const port = ((args) => {
   const i = args.indexOf("--port");
   if (i >= 0) {
     if (args[i+1]) {
@@ -13,15 +13,15 @@ const port = (function(args) {
     }
   }
   return 3000;
-}(process.argv));
+})(process.argv);
 
-const verbose = (function(args) {
+const verbose = ((args) => {
   const i = args.indexOf("--verbose");
   if (i >= 0) {
     return true;
   }
   return false;
-}(process.argv));
+})(process.argv);
 
 if (verbose) {
   console.log("Verbose mode: active");

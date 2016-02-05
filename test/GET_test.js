@@ -7,16 +7,16 @@ const server  = express();
 
 router(server);
 
-describe("GET", function() {
+describe("GET", () => {
 
-  it("should redirect to default website on baseroute", function (done) {
+  it("should redirect to default website on baseroute", (done) => {
     request(server)
       .get("/")
       .expect("Location", "http://jotaen.net")
       .expect(301, done);
   });
 
-  it("should return 404 if shortlink token unknown", function(done) {
+  it("should return 404 if shortlink token unknown", (done) => {
     request(server)
       .get("/void")
       .expect(404, done);

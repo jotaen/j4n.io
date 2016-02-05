@@ -2,9 +2,8 @@
 
 const Shortlink = require("../src/shortlink");
 
-describe("shortlink schema", function() {
-
-  it("should validate against correct data", function(done) {
+describe("shortlink schema", () => {
+  it("should validate against correct data", (done) => {
     let link = new Shortlink({
       path: "foo",
       url: "http://example.org",
@@ -13,12 +12,12 @@ describe("shortlink schema", function() {
       redirect_code: 301
     });
 
-    link.validate(function(err) {
+    link.validate((err) => {
       if (!err) done();
     });
   });
 
-  it("should add creation date automatically", function(done) {
+  it("should add creation date automatically", (done) => {
     let link = new Shortlink({
       path: "foo",
       url: "http://example.org"
@@ -31,7 +30,7 @@ describe("shortlink schema", function() {
     done();
   });
 
-  it("should add update date automatically", function(done) {
+  it("should add update date automatically", (done) => {
     let link = new Shortlink({
       path: "foo",
       url: "http://example.org"
@@ -44,44 +43,44 @@ describe("shortlink schema", function() {
     done();
   });
 
-  it("should fail if url is not set", function(done) {
+  it("should fail if url is not set", (done) => {
     let link = new Shortlink({
       path: "foo"
     });
 
-    link.validate(function(err) {
+    link.validate((err) => {
       if (err) done();
     });
   });
 
-  it("should fail if url is not valid", function(done) {
+  it("should fail if url is not valid", (done) => {
     let link = new Shortlink({
       path: "foo",
       url: "void"
     });
 
-    link.validate(function(err) {
+    link.validate((err) => {
       if (err) done();
     });
   });
 
-  it("should fail if path is not set", function(done) {
+  it("should fail if path is not set", (done) => {
     let link = new Shortlink({
       url: "http://example.org"
     });
 
-    link.validate(function(err) {
+    link.validate((err) => {
       if (err) done();
     });
   });
 
-  it("should fail if path is empty", function(done) {
+  it("should fail if path is empty", (done) => {
     let link = new Shortlink({
       path: "",
       url: "http://example.org"
     });
 
-    link.validate(function(err) {
+    link.validate((err) => {
       if (err) done();
     });
   });
