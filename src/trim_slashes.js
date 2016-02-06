@@ -1,6 +1,6 @@
 "use strict";
 
-exports.trim_slashes = (string) => {
+module.exports = (string) => {
   if (string.substr(0,1)==="/") {
     string = string.substr(1);
   }

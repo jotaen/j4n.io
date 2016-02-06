@@ -1,7 +1,7 @@
 "use strict";
 
 const Shortlink = require("./shortlink");
-const trim_slashes = require("./string_utility").trim_slashes;
+const trim_slashes = require("./trim_slashes");
 
 module.exports = (server) => {
 
