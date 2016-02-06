@@ -62,7 +62,7 @@ describe("POST", () => {
   it("[CONDITION] The new shortlink should be accessible now", (done) => {
     request(server)
       .get(route)
-      .expect(200)
+      .expect(301)
       .end(done);
   });
 
@@ -78,7 +78,7 @@ describe("POST", () => {
   it("[CONDITION] The shortlink data should be updated", (done) => {
     request(server)
       .get(route)
-      .expect(200)
+      .expect(301)
       .end(done);
   });
 

@@ -44,7 +44,7 @@ describe("PUT", () => {
   it("[CONDITION] The shortlink should be available now", (done) => {
     request(server)
       .get(route)
-      .expect(200)
+      .expect(301)
       .end(done);
   });
 

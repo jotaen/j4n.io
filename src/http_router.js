@@ -8,7 +8,7 @@ module.exports = (server) => {
 
   server.get("/", (req, res) => {
     Shortlink.find({}).then((shortlinks) => {
-      res.send(shortlinks);
+      res.status(200).send(shortlinks);
     });
   });
 
@@ -17,7 +17,10 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.send(shortlink);
+        res
+        .status(shortlink.status_code)
+        .header("Location", shortlink.url)
+        .send(shortlink);
       } else {
         res.status(404).send({});
       }

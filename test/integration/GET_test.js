@@ -8,6 +8,7 @@ describe("GET", () => {
 
   const token = "get";
   const route = "/" + token;
+  let route_2 = ""; // will be set later in the test
 
   it("should return 404 if a shortlink was not found", (done) => {
     request(server)
@@ -22,7 +23,20 @@ describe("GET", () => {
       .post("/")
       .query({"url": "http://foo.bar"})
       .expect(201)
+      .expect((res) => {
+        route_2 = "/" + res.body.path;
+      })
       .end(done);
+  });
+
+  it("should send correct headers, if called separately", (done) => {
+    request(server)
+      .get(route_2)
+      .expect(301)
+      .expect("Content-Type", /json/)
+      .end((err, res) => {
+        validate(res.body).then(done);
+      });
   });
 
   it("should list all shortlinks on baseroute", (done) => {
