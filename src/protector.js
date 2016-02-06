@@ -1,41 +1,24 @@
 "use strict";
 
-const auth = require("basic-auth");
-
-const match = (credentials, secret) => {
-  if (! credentials) {
-    return false;
-  }
-  if (credentials.name !== secret.name) {
-    return false;
-  }
-  if (credentials.pass !== secret.password) {
-    return false;
-  }
-  return true;
-};
-
-module.exports = (name, password) => {
-
-  const secret = {
-    name: name,
-    password: password
-  };
+module.exports = (authorized) => {
 
   return (req, res, next) => {
-    if (req.method === "GET") {
-      next();
+
+    if (req.method != "GET" && ! authorized(req)) {
+      res.status(401).send({});
       return;
     }
 
-    const credentials = auth(req);
+    next();
 
-    if (match(credentials, secret)) {
-      next();
-      return;
+    if (req.method === "GET" && ! authorized(req)) {
+      if (res.statusCode === 200) {
+        res.status(301).header("Location", "http://example.org");
+      } else {
+        res.status(404).send({});
+      }
     }
 
-    res.status(401).send({});
   };
 
 };
