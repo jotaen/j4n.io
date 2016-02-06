@@ -9,35 +9,35 @@ describe("string_utility", () => {
     const input  = "foo";
     const expect = "foo";
     const result = trim_slashes(input);
-    assert.equal(result, expect);
+    assert.strictEqual(result, expect);
   });
 
   it("should trim the leading slash", () => {
     const input  = "/foo";
     const expect = "foo";
     const result = trim_slashes(input);
-    assert.equal(result, expect);
+    assert.strictEqual(result, expect);
   });
 
   it("should trim the trailing slash", () => {
     const input  = "foo/";
     const expect = "foo";
     const result = trim_slashes(input);
-    assert.equal(result, expect);
+    assert.strictEqual(result, expect);
   });
 
   it("should trim all trailing slashes", () => {
     const input  = "foo////";
     const expect = "foo";
     const result = trim_slashes(input);
-    assert.equal(result, expect);
+    assert.strictEqual(result, expect);
   });
 
   it("should leave inner slashes untouched", () => {
     const input  = "foo/baz///bar";
     const expect = "foo/baz///bar";
     const result = trim_slashes(input);
-    assert.equal(result, expect);
+    assert.strictEqual(result, expect);
   });
 
 });
