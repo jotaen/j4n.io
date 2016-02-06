@@ -17,7 +17,7 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.send(shortlink.url);
+        res.send(shortlink);
       } else {
         res.sendStatus(404);
       }
@@ -53,7 +53,7 @@ module.exports = (server) => {
 
     shortlink.save()
     .then((shortlink) => {
-      res.status(200).send(shortlink);
+      res.send(shortlink);
     });
   });
 
@@ -64,7 +64,7 @@ module.exports = (server) => {
       url: req.query.url
     }).then((shortlink) => {
       if (shortlink) {
-        res.sendStatus(200);
+        res.send(shortlink);
       } else {
         res.sendStatus(404);
       }
@@ -76,7 +76,7 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.sendStatus(200);
+        res.send(shortlink);
       } else {
         res.sendStatus(404);
       }

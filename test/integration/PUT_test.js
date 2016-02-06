@@ -1,8 +1,8 @@
 "use strict";
 
-const request   = require("supertest");
-const server    = require("./_server");
-const Shortlink = require("../../src/shortlink");
+const request  = require("supertest");
+const server   = require("./_server");
+const validate = require("./_validate");
 
 describe("PUT", () => {
 
@@ -11,24 +11,23 @@ describe("PUT", () => {
   const url   = "http://example.org/put";
   const url_2 = "http://another.url/with?some=parameter&and=a#hastag";
 
-  it("should save a new shortlink and return full dataset", (done) => {
+  it("should save a new shortlink", (done) => {
     request(server)
       .put(route)
       .query({"url": url})
       .expect(200)
       .end((err, res) => {
-        const schema = new Shortlink(res.body);
-        schema.validate((validation_error) => {
-          if (!validation_error) done();
-        });
+        validate(res).then(done);
       });
   });
 
-  it("the resource should be available afterwards", (done) => {
+  it("[CONDITION] The shortlink should be available now", (done) => {
     request(server)
       .get(route)
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
   it("should refuse to overwrite this existing resource", (done) => {

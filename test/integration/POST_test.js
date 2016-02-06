@@ -2,6 +2,7 @@
 
 const request = require("supertest");
 const server  = require("./_server");
+const validate = require("./_validate");
 
 describe("POST", () => {
 
@@ -29,7 +30,9 @@ describe("POST", () => {
         route = "/" + token;
         first_id = res.body._id;
       })
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
   it("should not create the same token each time", (done) => {
@@ -44,26 +47,32 @@ describe("POST", () => {
       });
   });
 
-  it("GET should be able to access the new resource", (done) => {
+  it("[CONDITION] The new shortlink should be accessible now", (done) => {
     request(server)
       .get(route)
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
-  it("should do overwrite instead", (done) => {
+  it("should be able to update an existing shortlink", (done) => {
     request(server)
       .post(route)
       .query({"url": url_2})
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
-  it("GET should redirect to the new location", (done) => {
+  it("[CONDITION] The shortlink data should be updated", (done) => {
     request(server)
       .get(route)
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
 });

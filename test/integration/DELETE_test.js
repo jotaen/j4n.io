@@ -2,6 +2,7 @@
 
 const request = require("supertest");
 const server  = require("./_server");
+const validate = require("./_validate");
 
 describe("DELETE", () => {
 
@@ -9,7 +10,7 @@ describe("DELETE", () => {
   const route = "/" + token;
   const url   = "http://example.org/delete";
 
-  it("should exist a shortlink for this test", (done) => {
+  it("[CONDITION] There should exist a shortlink for this test", (done) => {
     request(server)
       .put(route)
       .query({"url": url})
@@ -21,10 +22,12 @@ describe("DELETE", () => {
     request(server)
       .delete(route)
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        validate(res).then(done);
+      });
   });
 
-  it("the resource must be removed now", (done) => {
+  it("[CONDITION] The shortlink must be removed now", (done) => {
     request(server)
       .get(route)
       .expect(404)
