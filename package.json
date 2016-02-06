@@ -1,12 +1,14 @@
 {
-  "name": "janly.js",
+  "name": "shortly",
+  "description": "RESTful shortlink service",
   "scripts": {
     "start": "node serve.js --port 3000 --verbose",
     "lint": "./node_modules/.bin/eslint src test serve.js",
     "pretest": "npm run --silent lint",
     "cover": "istanbul cover _mocha",
-    "test": "./node_modules/.bin/mocha",
-    "localtest": "./node_modules/.bin/mocha && pkill -f mockgoose"
+    "test": "./node_modules/.bin/mocha --recursive",
+    "unit-tests": "./node_modules/.bin/mocha test/unit",
+    "integration-tests": "./node_modules/.bin/mocha test/integration && pkill -f mockgoose"
   },
   "author": "Jan Heuermann",
   "license": "Apache-2.0",

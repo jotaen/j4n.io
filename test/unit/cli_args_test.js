@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("assert");
-const args = require("../src/cli_args");
+const args = require("../../src/cli_args");
 
 describe("cli_args", () => {
 

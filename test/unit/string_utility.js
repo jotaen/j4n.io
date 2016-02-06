@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("assert");
-const str = require("../src/string_utility");
+const str = require("../../src/string_utility");
 
 describe("string_utility", () => {
 

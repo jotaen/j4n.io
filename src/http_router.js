@@ -10,9 +10,8 @@ module.exports = (server) => {
   });
 
   server.get("/:token", (req, res) => {
-    const path = trim_slashes(req.params.token);
     Shortlink.findOne({
-      path: path
+      path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
         res.redirect(301, shortlink.url);
@@ -28,14 +27,43 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     });
 
-    shortlink
-      .save()
-      .then(() => {
+    shortlink.save()
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      if (error.code===11000) {
+        res.status(405).header("Allow", "GET, POST, DELETE").send();
+      } else {
+        res.sendStatus(500);
+      }
+    });
+  });
+
+  server.post("/:token", (req, res) => {
+    Shortlink.findOneAndUpdate({
+      path: trim_slashes(req.params.token)
+    }, {
+      url: req.query.url
+    }).then((shortlink) => {
+      if (shortlink) {
         res.sendStatus(200);
-      })
-      .catch((error) => {
-        res.status(500).send(error);
-      });
+      } else {
+        res.sendStatus(404);
+      }
+    });
+  });
+
+  server.delete("/:token", (req, res) => {
+    Shortlink.findOneAndRemove({
+      path: trim_slashes(req.params.token)
+    }).then((shortlink) => {
+      if (shortlink) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    });
   });
 
 };
