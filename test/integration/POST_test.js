@@ -17,6 +17,7 @@ describe("POST", () => {
       .post("/some_specific_resource")
       .query({"url": url})
       .expect(404)
+      .expect("Content-Type", /json/)
       .end(done);
   });
 
@@ -24,7 +25,8 @@ describe("POST", () => {
     request(server)
       .post("/")
       .query({"url": url})
-      .expect(200)
+      .expect(201)
+      .expect("Content-Type", /json/)
       .expect((res) => {
         token = res.body.path;
         route = "/" + token;
@@ -39,7 +41,8 @@ describe("POST", () => {
     request(server)
       .post("/")
       .query({"url": url})
-      .expect(200)
+      .expect(201)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         if (res.body._id != first_id) {
           done();
@@ -51,6 +54,7 @@ describe("POST", () => {
     request(server)
       .get(route)
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });
@@ -61,6 +65,7 @@ describe("POST", () => {
       .post(route)
       .query({"url": url_2})
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });
@@ -70,6 +75,7 @@ describe("POST", () => {
     request(server)
       .get(route)
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });

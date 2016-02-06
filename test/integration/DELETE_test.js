@@ -14,7 +14,8 @@ describe("DELETE", () => {
     request(server)
       .put(route)
       .query({"url": url})
-      .expect(200)
+      .expect(201)
+      .expect("Content-Type", /json/)
       .end(done);
   });
 
@@ -22,6 +23,7 @@ describe("DELETE", () => {
     request(server)
       .delete(route)
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });
@@ -31,6 +33,7 @@ describe("DELETE", () => {
     request(server)
       .get(route)
       .expect(404)
+      .expect("Content-Type", /json/)
       .end(done);
   });
 
@@ -38,6 +41,7 @@ describe("DELETE", () => {
     request(server)
       .delete(route)
       .expect(404)
+      .expect("Content-Type", /json/)
       .end(done);
   });
 

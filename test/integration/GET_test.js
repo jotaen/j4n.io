@@ -12,6 +12,7 @@ describe("GET", () => {
     request(server)
       .get("/")
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         if (res.body instanceof Array) {
           done();
@@ -23,6 +24,7 @@ describe("GET", () => {
     request(server)
       .get(route)
       .expect(404)
+      .expect("Content-Type", /json/)
       .end(done);
   });
 

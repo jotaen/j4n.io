@@ -15,7 +15,8 @@ describe("PUT", () => {
     request(server)
       .put(route)
       .query({"url": url})
-      .expect(200)
+      .expect(201)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });
@@ -25,6 +26,7 @@ describe("PUT", () => {
     request(server)
       .get(route)
       .expect(200)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
         validate(res).then(done);
       });
@@ -34,8 +36,9 @@ describe("PUT", () => {
     request(server)
       .put(route)
       .query({"url": url_2})
-      .expect("Allow", "GET, POST, DELETE")
       .expect(405)
+      .expect("Allow", "GET, POST, DELETE")
+      .expect("Content-Type", /json/)
       .end(done);
   });
 

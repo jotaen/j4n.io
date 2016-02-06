@@ -19,7 +19,7 @@ module.exports = (server) => {
       if (shortlink) {
         res.send(shortlink);
       } else {
-        res.sendStatus(404);
+        res.status(404).send({});
       }
     });
   });
@@ -32,13 +32,13 @@ module.exports = (server) => {
 
     shortlink.save()
     .then(() => {
-      res.status(200).send(shortlink);
+      res.status(201).send(shortlink);
     })
     .catch((error) => {
       if (error.code===11000) {
-        res.status(405).header("Allow", "GET, POST, DELETE").send();
+        res.status(405).header("Allow", "GET, POST, DELETE").send({});
       } else {
-        res.sendStatus(500);
+        res.status(500).send({});
       }
     });
   });
@@ -53,7 +53,7 @@ module.exports = (server) => {
 
     shortlink.save()
     .then((shortlink) => {
-      res.send(shortlink);
+      res.status(201).send(shortlink);
     });
   });
 
@@ -66,7 +66,7 @@ module.exports = (server) => {
       if (shortlink) {
         res.send(shortlink);
       } else {
-        res.sendStatus(404);
+        res.status(404).send({});
       }
     });
   });
@@ -78,7 +78,7 @@ module.exports = (server) => {
       if (shortlink) {
         res.send(shortlink);
       } else {
-        res.sendStatus(404);
+        res.status(404).send({});
       }
     });
   });
