@@ -6,18 +6,20 @@ module.exports = (authorized) => {
 
     if (req.method != "GET" && ! authorized(req)) {
       res.status(401).send({});
-      return;
+    } else {
+      next();
     }
 
-    next();
 
-    if (req.method === "GET" && ! authorized(req)) {
-      if (res.statusCode === 200) {
-        res.status(301).header("Location", "http://example.org");
-      } else {
-        res.status(404).send({});
-      }
-    }
+    // if (req.method === "GET" && authorized(req)) {
+    //
+    // } else {
+    //   if (res.statusCode === 200) {
+    //     res.status(301).header("Location", "http://example.org");
+    //   } else {
+    //     res.status(404).send({});
+    //   }
+    // }
 
   };
 

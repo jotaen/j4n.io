@@ -6,13 +6,13 @@ const match = (credentials, secret) => {
   if (! credentials) {
     return false;
   }
-  if (credentials.name !== secret.username) {
-    return false;
+  if (
+    credentials.name === secret.username
+    && credentials.pass === secret.password
+  ) {
+    return true;
   }
-  if (credentials.pass !== secret.password) {
-    return false;
-  }
-  return true;
+  return false;
 };
 
 module.exports = (username, password) => {

@@ -10,7 +10,7 @@ describe("shortlink schema", () => {
       url: "http://example.org",
       created: new Date(),
       updated: new Date(),
-      redirect_code: 301
+      status_code: 301
     });
 
     link.validate((err) => {

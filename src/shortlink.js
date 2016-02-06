@@ -9,21 +9,21 @@ module.exports = mongoose.model("Shortlink", new Schema({
 
   path: {
     type: String,
-    minlength: 1,
     required: true,
+    minlength: 1,
     index: true,
     unique: true
   },
 
   url: {
     type: String,
+    required: true,
     validate: {
       validator: (v) => {
         return (valid_uri(v) !== undefined);
       },
       message: "{VALUE} is not a valid URI"
-    },
-    required: true
+    }
   },
 
   created: {
@@ -36,7 +36,7 @@ module.exports = mongoose.model("Shortlink", new Schema({
     default: Date.now
   },
 
-  redirect_code: {
+  status_code: {
     type: Number,
     default: 301
   }
