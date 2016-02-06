@@ -33,7 +33,7 @@ describe("POST", () => {
         first_id = res.body._id;
       })
       .end((err, res) => {
-        validate(res).then(done);
+        validate(res.body).then(done);
       });
   });
 
@@ -54,10 +54,7 @@ describe("POST", () => {
     request(server)
       .get(route)
       .expect(200)
-      .expect("Content-Type", /json/)
-      .end((err, res) => {
-        validate(res).then(done);
-      });
+      .end(done);
   });
 
   it("should be able to update an existing shortlink", (done) => {
@@ -67,7 +64,7 @@ describe("POST", () => {
       .expect(200)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        validate(res).then(done);
+        validate(res.body).then(done);
       });
   });
 
@@ -75,10 +72,7 @@ describe("POST", () => {
     request(server)
       .get(route)
       .expect(200)
-      .expect("Content-Type", /json/)
-      .end((err, res) => {
-        validate(res).then(done);
-      });
+      .end(done);
   });
 
 });

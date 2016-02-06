@@ -30,15 +30,11 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     });
 
-    shortlink.save()
-    .then(() => {
+    shortlink.save().then(() => {
       res.status(201).send(shortlink);
-    })
-    .catch((error) => {
+    }).catch((error) => {
       if (error.code===11000) {
         res.status(405).header("Allow", "GET, POST, DELETE").send({});
-      } else {
-        res.status(500).send({});
       }
     });
   });

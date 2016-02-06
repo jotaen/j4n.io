@@ -25,7 +25,7 @@ describe("DELETE", () => {
       .expect(200)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        validate(res).then(done);
+        validate(res.body).then(done);
       });
   });
 

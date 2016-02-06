@@ -18,7 +18,7 @@ describe("PUT", () => {
       .expect(201)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        validate(res).then(done);
+        validate(res.body).then(done);
       });
   });
 
@@ -26,10 +26,7 @@ describe("PUT", () => {
     request(server)
       .get(route)
       .expect(200)
-      .expect("Content-Type", /json/)
-      .end((err, res) => {
-        validate(res).then(done);
-      });
+      .end(done);
   });
 
   it("should refuse to overwrite this existing resource", (done) => {

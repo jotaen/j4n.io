@@ -2,8 +2,8 @@
 
 const Shortlink = require("../../src/shortlink");
 
-module.exports = (express_response) => {
-  const schema = new Shortlink(express_response.body);
+module.exports = (data) => {
+  const schema = new Shortlink(data);
 
   return new Promise((resolve, reject) => {
     schema.validate((error) => {
