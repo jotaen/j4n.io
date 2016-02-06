@@ -41,7 +41,7 @@ describe("POST", () => {
         if (res.body._id != first_id) {
           done();
         }
-      })
+      });
   });
 
   it("GET should be able to access the new resource", (done) => {

@@ -20,7 +20,7 @@ describe("PUT", () => {
         const schema = new Shortlink(res.body);
         schema.validate((validation_error) => {
           if (!validation_error) done();
-        })
+        });
       });
   });
 
