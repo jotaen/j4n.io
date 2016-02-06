@@ -16,6 +16,7 @@
     "express": "^4.13.4",
     "mongoose": "^4.4.2",
     "morgan": "^1.6.1",
+    "random-string": "^0.1.2",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {

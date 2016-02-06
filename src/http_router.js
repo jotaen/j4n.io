@@ -2,6 +2,7 @@
 
 const Shortlink = require("./shortlink");
 const trim_slashes = require("./trim_slashes");
+const random_token = require("random-string");
 
 module.exports = (server) => {
 
@@ -37,6 +38,18 @@ module.exports = (server) => {
       } else {
         res.sendStatus(500);
       }
+    });
+  });
+
+  server.post("/", (req, res) => {
+    const shortlink = new Shortlink({
+      url: req.query.url,
+      path: random_token({length: 6})
+    });
+
+    shortlink.save()
+    .then((shortlink) => {
+      res.status(200).send(shortlink);
     });
   });
 
