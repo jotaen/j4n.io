@@ -13,25 +13,29 @@ describe("DELETE", () => {
     request(server)
       .put(route)
       .query({"url": url})
-      .expect(200, done);
+      .expect(200)
+      .end(done);
   });
 
   it("should delete the shortlink", (done) => {
     request(server)
       .delete(route)
-      .expect(200, done);
+      .expect(200)
+      .end(done);
   });
 
   it("the resource must be removed now", (done) => {
     request(server)
       .get(route)
-      .expect(404, done);
+      .expect(404)
+      .end(done);
   });
 
   it("should return 404 when trying to delete this shortlink again", (done) => {
     request(server)
       .delete(route)
-      .expect(404, done);
+      .expect(404)
+      .end(done);
   });
 
 });

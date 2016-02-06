@@ -30,7 +30,7 @@ module.exports = (server) => {
 
     shortlink.save()
     .then(() => {
-      res.sendStatus(200);
+      res.status(200).send(shortlink);
     })
     .catch((error) => {
       if (error.code===11000) {
@@ -42,9 +42,11 @@ module.exports = (server) => {
   });
 
   server.post("/", (req, res) => {
+    let token = random_token({length: 6});
+
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: random_token({length: 6})
+      path: token
     });
 
     shortlink.save()

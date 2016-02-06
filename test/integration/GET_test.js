@@ -13,13 +13,15 @@ describe("GET", () => {
     request(server)
       .get("/")
       .expect("Location", base)
-      .expect(301, done);
+      .expect(301)
+      .end(done);
   });
 
   it("should return 404 if a token was not found", (done) => {
     request(server)
       .get(route)
-      .expect(404, done);
+      .expect(404)
+      .end(done);
   });
 
 });

@@ -15,52 +15,57 @@ describe("POST", () => {
     request(server)
       .post("/some_specific_resource")
       .query({"url": url})
-      .expect(404, done);
+      .expect(404)
+      .end(done);
   });
 
   it("should create new resources under the baseroute", (done) => {
     request(server)
       .post("/")
       .query({"url": url})
+      .expect(200)
       .expect((res) => {
         token = res.body.path;
         route = "/" + token;
         first_id = res.body._id;
       })
-      .expect(200, done);
+      .end(done);
   });
 
   it("should not create the same token each time", (done) => {
     request(server)
       .post("/")
       .query({"url": url})
-      .expect((res) => {
-        if (res.body._id == first_id) {
-          throw new Error("Must not be the same id");
+      .expect(200)
+      .end((err, res) => {
+        if (res.body._id != first_id) {
+          done();
         }
       })
-      .expect(200, done);
   });
 
   it("GET should be able to access the new resource", (done) => {
     request(server)
       .get(route)
       .expect("Location", url)
-      .expect(301, done);
+      .expect(301)
+      .end(done);
   });
 
   it("should do overwrite instead", (done) => {
     request(server)
       .post(route)
       .query({"url": url_2})
-      .expect(200, done);
+      .expect(200)
+      .end(done);
   });
 
   it("GET should redirect to the new location", (done) => {
     request(server)
       .get(route)
       .expect("Location", url_2)
-      .expect(301, done);
+      .expect(301)
+      .end(done);
   });
 
 });
