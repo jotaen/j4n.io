@@ -6,7 +6,7 @@ const express   = require("express");
 const router    = require("./src/http_router");
 const logging   = require("morgan");
 const protector = require("./src/protector");
-const runtime   = require("./src/runtime");
+const runtime   = require("./src/cli_args");
 const db        = require("mongoose");
 
 const server    = express();
@@ -14,8 +14,8 @@ const server    = express();
 const port      = runtime.port(process.argv);
 const verbose   = runtime.verbose(process.argv);
 const db_host   = runtime.db(process.argv);
-const user      = runtime.user(process.env);
-const password  = runtime.password(process.env);
+const user      = process.env.PROTECTOR_USER;
+const password  = process.env.PROTECTOR_PASSWORD;
 
 db.connect(db_host);
 
