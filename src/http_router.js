@@ -9,8 +9,8 @@ module.exports = (server) => {
     res.redirect(301, "http://jotaen.net");
   });
 
-  server.get("*", (req, res) => {
-    const path = trim_slashes(req.params[0]);
+  server.get("/:token", (req, res) => {
+    const path = trim_slashes(req.params.token);
     Shortlink.findOne({
       path: path
     }).then((shortlink) => {
@@ -22,10 +22,10 @@ module.exports = (server) => {
     });
   });
 
-  server.put("*", (req, res) => {
+  server.put("/:token", (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: trim_slashes(req.params[0])
+      path: trim_slashes(req.params.token)
     });
 
     shortlink
