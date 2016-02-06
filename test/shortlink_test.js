@@ -3,6 +3,7 @@
 const Shortlink = require("../src/shortlink");
 
 describe("shortlink schema", () => {
+  
   it("should validate against correct data", (done) => {
     let link = new Shortlink({
       path: "foo",

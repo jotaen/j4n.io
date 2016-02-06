@@ -5,25 +5,15 @@
 const logging = require("morgan");
 const express = require("express");
 const router  = require("./src/http_router");
+const args    = require("./src/cli_args");
+const db      = require("mongoose");
+
 const server  = express();
+const port    = args.port(process.argv);
+const verbose = args.verbose(process.argv);
+const db_host = args.db(process.argv);
 
-const port = ((args) => {
-  const i = args.indexOf("--port");
-  if (i >= 0) {
-    if (args[i+1]) {
-      return args[i+1];
-    }
-  }
-  return 3000;
-})(process.argv);
-
-const verbose = ((args) => {
-  const i = args.indexOf("--verbose");
-  if (i >= 0) {
-    return true;
-  }
-  return false;
-})(process.argv);
+db.connect(db_host);
 
 if (verbose) {
   console.log("Verbose mode: active");
