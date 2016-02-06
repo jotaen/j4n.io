@@ -5,7 +5,7 @@
     "lint": "./node_modules/.bin/eslint src test serve.js",
     "pretest": "npm run --silent lint",
     "cover": "istanbul cover _mocha",
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha && pkill -f mockgoose"
   },
   "author": "Jan Heuermann",
   "license": "Apache-2.0",
