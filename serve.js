@@ -23,5 +23,5 @@ if (verbose) {
 router(server);
 
 server.listen(port, () => {
-  console.log("Server listening on port "+port+"…");
+  console.log("Server listening on port " + port + "…");
 });
