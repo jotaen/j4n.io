@@ -50,6 +50,15 @@ describe("POST", () => {
       });
   });
 
+  it("should reject the request, if url parameter invalid", (done) => {
+    request(server)
+      .post(route)
+      .query({"url": "not_a_valid_url"})
+      .expect(422)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
   it("[CONDITION] The new shortlink should be accessible now", (done) => {
     request(server)
       .get(route)
@@ -63,9 +72,7 @@ describe("POST", () => {
       .query({"url": url_2})
       .expect(200)
       .expect("Content-Type", /json/)
-      .end((err, res) => {
-        validate(res.body).then(done);
-      });
+      .end(done);
   });
 
   it("[CONDITION] The shortlink data should be updated", (done) => {

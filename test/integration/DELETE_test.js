@@ -2,7 +2,6 @@
 
 const request = require("supertest");
 const server  = require("./_server");
-const validate = require("./_validate");
 
 describe("DELETE", () => {
 
@@ -24,9 +23,7 @@ describe("DELETE", () => {
       .delete(route)
       .expect(200)
       .expect("Content-Type", /json/)
-      .end((err, res) => {
-        validate(res.body).then(done);
-      });
+      .end(done);
   });
 
   it("[CONDITION] The shortlink must be removed now", (done) => {

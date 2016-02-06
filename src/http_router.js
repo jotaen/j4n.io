@@ -24,6 +24,10 @@ module.exports = (server) => {
     });
   });
 
+  server.put("/", (_, res) => {
+    res.status(405).header("Allow", "GET, POST").send({});
+  });
+
   server.put("/:token", (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
@@ -35,6 +39,8 @@ module.exports = (server) => {
     }).catch((error) => {
       if (error.code===11000) {
         res.status(405).header("Allow", "GET, POST, DELETE").send({});
+      } else {
+        res.status(422).send(error);
       }
     });
   });
@@ -58,12 +64,16 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }, {
       url: req.query.url
+    }, {
+      runValidators: true
     }).then((shortlink) => {
       if (shortlink) {
-        res.send(shortlink);
+        res.status(200).send({});
       } else {
         res.status(404).send({});
       }
+    }).catch((error) => {
+      res.status(422).send(error);
     });
   });
 
@@ -72,7 +82,7 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.send(shortlink);
+        res.status(200).send({});
       } else {
         res.status(404).send({});
       }

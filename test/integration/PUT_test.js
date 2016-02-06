@@ -22,6 +22,25 @@ describe("PUT", () => {
       });
   });
 
+  it("should reject the request, if url parameter invalid", (done) => {
+    request(server)
+      .put(route)
+      .query({"url": "not_a_valid_url"})
+      .expect(422)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("should not be allowed to call on the baseroute", (done) => {
+    request(server)
+      .put("/")
+      .query({"url": "not_a_valid_url"})
+      .expect(405)
+      .expect("Allow", "GET, POST")
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
   it("[CONDITION] The shortlink should be available now", (done) => {
     request(server)
       .get(route)
