@@ -15,7 +15,7 @@ module.exports = (server) => {
       path: path
     }).then((shortlink) => {
       if (shortlink) {
-        res.status(200).send(shortlink);
+        res.redirect(301, shortlink.url);
       } else {
         res.sendStatus(404);
       }
