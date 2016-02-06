@@ -27,8 +27,7 @@ describe("PUT", () => {
   it("the resource should be available afterwards", (done) => {
     request(server)
       .get(route)
-      .expect("Location", url)
-      .expect(301)
+      .expect(200)
       .end(done);
   });
 

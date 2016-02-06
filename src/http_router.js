@@ -7,7 +7,9 @@ const random_token = require("random-string");
 module.exports = (server) => {
 
   server.get("/", (req, res) => {
-    res.redirect(301, "http://jotaen.net");
+    Shortlink.find({}).then((shortlinks) => {
+      res.send(shortlinks);
+    });
   });
 
   server.get("/:token", (req, res) => {
@@ -15,7 +17,7 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.redirect(301, shortlink.url);
+        res.send(shortlink.url);
       } else {
         res.sendStatus(404);
       }

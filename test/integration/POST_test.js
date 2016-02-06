@@ -47,8 +47,7 @@ describe("POST", () => {
   it("GET should be able to access the new resource", (done) => {
     request(server)
       .get(route)
-      .expect("Location", url)
-      .expect(301)
+      .expect(200)
       .end(done);
   });
 
@@ -63,8 +62,7 @@ describe("POST", () => {
   it("GET should redirect to the new location", (done) => {
     request(server)
       .get(route)
-      .expect("Location", url_2)
-      .expect(301)
+      .expect(200)
       .end(done);
   });
 
