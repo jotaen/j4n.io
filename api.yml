@@ -1,0 +1,43 @@
+swagger: '2.0'
+info:
+  title: shortly
+  description: RESTful shortlink service
+  version: "alpha"
+#host: foo.com
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /:token:
+    get:
+      summary: Redirect to deposit URL
+      responses:
+        301:
+          description: Data
+          schema:
+            $ref: '#/definitions/shortlink'
+definitions:
+  shortlink:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: Unique, internal identifier
+      path:
+        type: string
+        description: The path under which the shortlink is reachable
+      url:
+        type: string
+        description: The URL where the shortlink is about to redirect
+      redirect_code:
+        type: integer
+        description: The HTTP status code for this redirection
+      created:
+        type: string
+        format: date
+        description: Timestamp when this shortlink resource was created (ISO 8601)
+      updated:
+        type: string
+        format: date
+        description: Timestamp when this shortlink resource was updated the last time (ISO 8601)
