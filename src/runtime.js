@@ -24,3 +24,13 @@ exports.db = (args) => {
   }
   return "mongodb://localhost";
 };
+
+exports.user = (env) => {
+  env;
+  return "Jan";
+};
+
+exports.password = (env) => {
+  env;
+  return "SECRET";
+};

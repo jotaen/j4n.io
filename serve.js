@@ -2,16 +2,20 @@
 
 /*eslint no-console: 0*/
 
-const logging = require("morgan");
-const express = require("express");
-const router  = require("./src/http_router");
-const args    = require("./src/cli_args");
-const db      = require("mongoose");
+const express   = require("express");
+const router    = require("./src/http_router");
+const logging   = require("morgan");
+const protector = require("./src/protector");
+const runtime   = require("./src/runtime");
+const db        = require("mongoose");
 
-const server  = express();
-const port    = args.port(process.argv);
-const verbose = args.verbose(process.argv);
-const db_host = args.db(process.argv);
+const server    = express();
+
+const port      = runtime.port(process.argv);
+const verbose   = runtime.verbose(process.argv);
+const db_host   = runtime.db(process.argv);
+const user      = runtime.user(process.env);
+const password  = runtime.password(process.env);
 
 db.connect(db_host);
 
@@ -19,6 +23,8 @@ if (verbose) {
   console.log("Verbose mode: active");
   server.use(logging("dev"));
 }
+
+server.use(protector(user, password));
 
 router(server);
 

@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("assert");
-const args = require("../../src/cli_args");
+const args = require("../../src/runtime");
 
 describe("cli_args", () => {
 
@@ -66,6 +66,10 @@ describe("cli_args", () => {
     const expect = "mongodb://192.168.15.16/foo";
     const result = args.db(input);
     assert.strictEqual(expect, result);
+  });
+
+  it("should return PROTECTOR_USER env var", () => {
+
   });
 
 });
