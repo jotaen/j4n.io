@@ -6,7 +6,7 @@
     "lint": "./node_modules/.bin/eslint src test serve.js",
     "pretest": "npm run --silent lint",
     "cover": "istanbul cover _mocha",
-    "test": "./node_modules/.bin/mocha --recursive",
+    "test": "./node_modules/.bin/mocha",
     "unit-tests": "./node_modules/.bin/mocha test/unit",
     "integration-tests": "./node_modules/.bin/mocha test/integration && pkill -f mockgoose"
   },
