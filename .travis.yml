@@ -4,5 +4,5 @@ node_js:
   - "5.5"
 
 after_script:
-  - npm run cover
+  - npm run coverage
   - codeclimate-test-reporter < coverage/lcov.info

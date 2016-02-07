@@ -1,17 +1,19 @@
 {
   "name": "shortly",
   "description": "RESTful shortlink service",
-  "scripts": {
-    "start": "node serve.js --port 3000 --verbose",
-    "lint": "./node_modules/.bin/eslint src test serve.js",
-    "pretest": "npm run --silent lint",
-    "cover": "istanbul cover _mocha",
-    "test": "./node_modules/.bin/mocha",
-    "unit-tests": "./node_modules/.bin/mocha test/unit",
-    "integration-tests": "./node_modules/.bin/mocha test/integration && pkill -f mockgoose"
-  },
   "author": "Jan Heuermann",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/jotaen/shortly",
+  "scripts": {
+    "start": "node serve.js",
+    "pretest": "npm run --silent linter",
+    "test": "mocha test/unit test/integration",
+    "dev-mode": "PROTECTOR_USER=foo PROTECTOR_PASSWORD=asdf node serve.js --verbose --db 192.168.59.103",
+    "linter": "eslint src test serve.js",
+    "coverage": "istanbul cover _mocha -- test/unit test/integration",
+    "unit-tests": "mocha test/unit",
+    "integration-tests": "mocha test/integration && pkill -f mockgoose"
+  },
   "dependencies": {
     "basic-auth": "^1.0.3",
     "express": "^4.13.4",
