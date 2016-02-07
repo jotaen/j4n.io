@@ -50,9 +50,18 @@ describe("POST", () => {
       });
   });
 
-  it("should reject the request, if url parameter invalid", (done) => {
+  it("should reject the request for specific route, if url parameter invalid", (done) => {
     request(server)
       .post(route)
+      .query({"url": "not_a_valid_url"})
+      .expect(422)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("should reject the request for baseroute, if url parameter invalid", (done) => {
+    request(server)
+      .post("/")
       .query({"url": "not_a_valid_url"})
       .expect(422)
       .expect("Content-Type", /json/)

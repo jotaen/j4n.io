@@ -4,6 +4,16 @@ const Shortlink = require("./shortlink");
 const trim_slashes = require("./trim_slashes");
 const random_token = require("random-string");
 
+const handle = (res, error) => {
+  if (! error) {
+    res.status(404).send({});
+  } else if (error.name === "ValidationError") {
+    res.status(422).send(error);
+  } else {
+    res.sendStatus(500);
+  }
+};
+
 module.exports = (server) => {
 
   server.get("/", (req, res) => {
@@ -17,13 +27,14 @@ module.exports = (server) => {
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res
-        .status(shortlink.status_code)
+        res.status(shortlink.status_code)
         .header("Location", shortlink.url)
         .send(shortlink);
       } else {
-        res.status(404).send({});
+        handle(res);
       }
+    }).catch((error) => {
+      handle(res, error);
     });
   });
 
@@ -43,7 +54,7 @@ module.exports = (server) => {
       if (error.code===11000) {
         res.status(405).header("Allow", "GET, POST, DELETE").send({});
       } else {
-        res.status(422).send(error);
+        handle(res, error);
       }
     });
   });
@@ -59,6 +70,8 @@ module.exports = (server) => {
     shortlink.save()
     .then((shortlink) => {
       res.status(201).send(shortlink);
+    }).catch((error) => {
+      handle(res, error);
     });
   });
 
@@ -73,10 +86,10 @@ module.exports = (server) => {
       if (shortlink) {
         res.status(200).send({});
       } else {
-        res.status(404).send({});
+        handle(res);
       }
     }).catch((error) => {
-      res.status(422).send(error);
+      handle(res, error);
     });
   });
 
@@ -87,8 +100,10 @@ module.exports = (server) => {
       if (shortlink) {
         res.status(200).send({});
       } else {
-        res.status(404).send({});
+        handle(res);
       }
+    }).catch((error) => {
+      handle(res, error);
     });
   });
 
