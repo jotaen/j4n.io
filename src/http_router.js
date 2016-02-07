@@ -79,7 +79,8 @@ module.exports = (server) => {
     Shortlink.findOneAndUpdate({
       path: trim_slashes(req.params.token)
     }, {
-      url: req.query.url
+      url: req.query.url,
+      updated: Date.now()
     }, {
       runValidators: true
     }).then((shortlink) => {
