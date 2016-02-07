@@ -12,7 +12,7 @@
     "linter": "eslint src test serve.js",
     "coverage": "istanbul cover _mocha -- test/unit test/integration",
     "unit-tests": "mocha test/unit",
-    "integration-tests": "mocha test/integration && pkill -f mockgoose"
+    "integration-tests": "mocha test/integration"
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
