@@ -1,23 +1,10 @@
 "use strict";
 
-const protector = require("../../src/protector");
-
-const assert_401 = (done) => {
-  return {
-    status: (code) => {
-      if (code === 401) {
-        done();
-      }
-      return {
-        send: () => {}
-      };
-    }
-  };
-};
+const protector  = require("../../src/protector");
+const assert_response_status = require("./_assert_response_status");
 
 const not_authorized = () => false;
-
-const authorized = () => true;
+const authorized     = () => true;
 
 describe("protector middleware", () => {
 
@@ -50,7 +37,7 @@ describe("protector middleware", () => {
       method: "GET",
       path: "/"
     };
-    protector(not_authorized)(req, assert_401(done));
+    protector(not_authorized)(req, assert_response_status(401, done));
   });
 
   it("should not allow POST for unauthorized users", (done) => {
@@ -58,7 +45,7 @@ describe("protector middleware", () => {
       method: "POST",
       path: "/"
     };
-    protector(not_authorized)(req, assert_401(done));
+    protector(not_authorized)(req, assert_response_status(401, done));
   });
 
   it("should not allow PUT for unauthorized users", (done) => {
@@ -66,7 +53,7 @@ describe("protector middleware", () => {
       method: "PUT",
       path: "/"
     };
-    protector(not_authorized)(req, assert_401(done));
+    protector(not_authorized)(req, assert_response_status(401, done));
   });
 
   it("should not allow DELETE for unauthorized users", (done) => {
@@ -74,7 +61,7 @@ describe("protector middleware", () => {
       method: "DELETE",
       path: "/"
     };
-    protector(not_authorized)(req, assert_401(done));
+    protector(not_authorized)(req, assert_response_status(401, done));
   });
 
 });
