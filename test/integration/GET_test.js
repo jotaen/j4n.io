@@ -10,7 +10,7 @@ describe("GET", () => {
   const route = "/" + token;
   let route_2 = ""; // will be set later in the test
 
-  it("should return 404 if a shortlink was not found", (done) => {
+  it("should return 404 if a resource was not found", (done) => {
     request(server)
       .get(route)
       .expect(404)
@@ -18,7 +18,7 @@ describe("GET", () => {
       .end(done);
   });
 
-  it("[PRECONDITION] Some shortlink should be existing", (done) => {
+  it("[PRECONDITION] Some resource should be existing for the next test", (done) => {
     request(server)
       .post("/")
       .query({"url": "http://foo.bar"})
@@ -29,7 +29,7 @@ describe("GET", () => {
       .end(done);
   });
 
-  it("should send correct headers, if called separately", (done) => {
+  it("should send response in correct format, when a specific URI is requested", (done) => {
     request(server)
       .get(route_2)
       .expect(301)
@@ -39,7 +39,7 @@ describe("GET", () => {
       });
   });
 
-  it("should list all shortlinks on baseroute", (done) => {
+  it("should list all shortlinks on base URI", (done) => {
     request(server)
       .get("/")
       .expect(200)

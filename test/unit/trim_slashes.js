@@ -3,7 +3,7 @@
 const assert = require("assert");
 const trim_slashes = require("../../src/trim_slashes");
 
-describe("string_utility", () => {
+describe("trim_slashes", () => {
 
   it("should trim nothing, when there is no leading or trailing slash", () => {
     const input  = "foo";

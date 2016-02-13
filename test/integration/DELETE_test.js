@@ -9,7 +9,7 @@ describe("DELETE", () => {
   const route = "/" + token;
   const url   = "http://example.org/delete";
 
-  it("[CONDITION] There should exist a shortlink for this test", (done) => {
+  it("[CONDITION] There should exist a resource for this test", (done) => {
     request(server)
       .put(route)
       .query({"url": url})
@@ -18,7 +18,7 @@ describe("DELETE", () => {
       .end(done);
   });
 
-  it("should delete the shortlink", (done) => {
+  it("should delete the resource", (done) => {
     request(server)
       .delete(route)
       .expect(200)
@@ -26,7 +26,7 @@ describe("DELETE", () => {
       .end(done);
   });
 
-  it("[CONDITION] The shortlink must be removed now", (done) => {
+  it("[CONDITION] The resource must be removed now", (done) => {
     request(server)
       .get(route)
       .expect(404)
@@ -34,7 +34,7 @@ describe("DELETE", () => {
       .end(done);
   });
 
-  it("should return 404 when trying to delete this shortlink again", (done) => {
+  it("should return 404 when trying to delete this resource again", (done) => {
     request(server)
       .delete(route)
       .expect(404)

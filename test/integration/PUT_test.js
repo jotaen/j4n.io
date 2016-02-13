@@ -11,7 +11,7 @@ describe("PUT", () => {
   const url   = "http://example.org/put";
   const url_2 = "http://another.url/with?some=parameter&and=a#hastag";
 
-  it("should save a new shortlink", (done) => {
+  it("should accept and create a new resource", (done) => {
     request(server)
       .put(route)
       .query({"url": url})
@@ -22,7 +22,7 @@ describe("PUT", () => {
       });
   });
 
-  it("should reject the request, if url parameter invalid", (done) => {
+  it("should reject the request, if parameters are invalid", (done) => {
     request(server)
       .put(route)
       .query({"url": "not_a_valid_url"})
@@ -31,7 +31,7 @@ describe("PUT", () => {
       .end(done);
   });
 
-  it("should not be allowed to call on the baseroute", (done) => {
+  it("should not be allowed to be called on the base URI", (done) => {
     request(server)
       .put("/")
       .query({"url": "not_a_valid_url"})
@@ -41,7 +41,7 @@ describe("PUT", () => {
       .end(done);
   });
 
-  it("[CONDITION] The shortlink should be available now", (done) => {
+  it("[CONDITION] The resource should be available now", (done) => {
     request(server)
       .get(route)
       .expect(301)
