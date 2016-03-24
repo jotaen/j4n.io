@@ -6,3 +6,13 @@
 ![Dependencies](https://david-dm.org/jotaen/shortly.svg)
 
 A shortlink web service.
+
+## TODOs for version 1.0
+
+### Router
+
+- Make sure, the randomly created tokens by "PUT /" are in fact unique
+
+### api.yml
+
+- Update authentication info
