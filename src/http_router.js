@@ -7,7 +7,7 @@ const random_token = require("random-string");
 const handle = (res, error) => {
   if (! error) {
     res.status(404).send({});
-  } else if (error.name === "ValidationError") {
+  } else if (error.name === "ValidationError" || error.name === "CastError") {
     res.status(422).send(error);
   } else {
     res.sendStatus(500);
@@ -45,7 +45,8 @@ module.exports = (server) => {
   server.put("/:token", (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: trim_slashes(req.params.token)
+      path: trim_slashes(req.params.token),
+      status_code: req.query.status_code
     });
 
     shortlink.save().then(() => {
@@ -64,7 +65,8 @@ module.exports = (server) => {
 
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: token
+      path: token,
+      status_code: req.query.status_code
     });
 
     shortlink.save()
@@ -76,12 +78,16 @@ module.exports = (server) => {
   });
 
   server.post("/:token", (req, res) => {
-    Shortlink.findOneAndUpdate({
-      path: trim_slashes(req.params.token)
-    }, {
+    let new_data = { // todo: const?
       url: req.query.url,
       updated: Date.now()
-    }, {
+    };
+    if (req.query.status_code) {
+      new_data.status_code = req.query.status_code;
+    }
+    Shortlink.findOneAndUpdate({
+      path: trim_slashes(req.params.token)
+    }, new_data, {
       runValidators: true
     }).then((shortlink) => {
       if (shortlink) {

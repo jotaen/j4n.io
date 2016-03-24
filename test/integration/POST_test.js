@@ -73,7 +73,7 @@ describe("POST", () => {
       .end(done);
   });
 
-  it("should reject the request for a specific URI, if parameters are invalid", (done) => {
+  it("should reject the request for a specific URI, if parameter `url` is invalid", (done) => {
     request(server)
       .post(route)
       .query({"url": "not_a_valid_url"})
@@ -82,10 +82,31 @@ describe("POST", () => {
       .end(done);
   });
 
-  it("should reject the request for base URI, if parameters are invalid", (done) => {
+  it("should reject the request, if parameter `status_code` is invalid", (done) => {
+    request(server)
+      .post(route)
+      .query({
+        "url": "http://google.de",
+        "status_code": "not_a_valid_status_code"
+      })
+      .expect(422)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("should reject the request for base URI, if parameter `url` is invalid", (done) => {
     request(server)
       .post("/")
       .query({"url": "not_a_valid_url"})
+      .expect(422)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("should reject the request for base URI, if parameter `url` is not given", (done) => {
+    request(server)
+      .post("/")
+      .query({})
       .expect(422)
       .expect("Content-Type", /json/)
       .end(done);
