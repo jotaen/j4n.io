@@ -15,8 +15,8 @@ const server     = express();
 const port       = runtime.port(process.argv);
 const verbose    = runtime.verbose(process.argv);
 const db_host    = runtime.db(process.argv);
-const user       = process.env.PROTECTOR_USER;
-const password   = process.env.PROTECTOR_PASSWORD;
+const user       = process.env.USER;
+const password   = process.env.PASSWORD;
 
 db.connect(db_host);
 
