@@ -9,10 +9,6 @@ A shortlink web service.
 
 ## TODOs for version 1.0
 
-### Router
-
-- Make sure, the randomly created tokens by "PUT /" are in fact unique
-
-### api.yml
-
-- Update authentication info
+- Router: Make sure, the randomly created tokens by "PUT /" are in fact unique
+- (Global) versioning parameter
+- api.yml: Insert authentication info
