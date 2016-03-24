@@ -1,22 +1,50 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: shortly
   description: RESTful shortlink service
   version: "alpha"
-#host: foo.com
 schemes:
   - http
 produces:
   - application/json
 paths:
+  /:
+    post:
+      summary: Create shortlink with random token
+      responses:
+        201:
+          description: Shortlink was created successfully
+          schema:
+            $ref: "#/definitions/shortlink"
   /:token:
     get:
       summary: Redirect to deposit URL
       responses:
         301:
-          description: Data
+          description: OK
           schema:
-            $ref: '#/definitions/shortlink'
+            $ref: "#/definitions/shortlink"
+    post:
+      summary: Update shortlink information
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/shortlink"
+    delete:
+      summary: Delete shortlink resource
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/shortlink"
+    put:
+      summary: Create a new shortlink under this very path
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/shortlink"
 definitions:
   shortlink:
     type: object
