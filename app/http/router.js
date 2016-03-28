@@ -3,6 +3,8 @@
 const Shortlink = require("../shortlink");
 const trim_slashes = require("../trim_slashes");
 const random_token = require("random-string");
+const request = require("../request_schema");
+const validator = require("./validator");
 
 const handle = (res, error) => {
   if (! error) {
@@ -42,7 +44,7 @@ module.exports = (server) => {
     res.status(405).header("Allow", "GET, POST").send({});
   });
 
-  server.put("/:token", (req, res) => {
+  server.put("/:token", validator(request.shortlink), (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
       path: trim_slashes(req.params.token),
@@ -60,7 +62,7 @@ module.exports = (server) => {
     });
   });
 
-  server.post("/", (req, res) => {
+  server.post("/", validator(request.shortlink), (req, res) => {
     let token = random_token({length: 6});
 
     const shortlink = new Shortlink({
@@ -77,7 +79,7 @@ module.exports = (server) => {
     });
   });
 
-  server.post("/:token", (req, res) => {
+  server.post("/:token", validator(request.shortlink), (req, res) => {
     let new_data = { // todo: const?
       url: req.query.url,
       updated: Date.now()
