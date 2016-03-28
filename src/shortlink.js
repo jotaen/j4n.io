@@ -39,6 +39,12 @@ module.exports = mongoose.model("Shortlink", new Schema({
 
   status_code: {
     type: Number,
+    validate: {
+      validator: (v) => {
+        return (!isNaN(parseFloat(v)) && isFinite(v));
+      },
+      message: "{VALUE} must be a valid http status code (i.e. a number)"
+    },
     default: 301
   }
 
