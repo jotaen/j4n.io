@@ -1,7 +1,7 @@
 "use strict";
 
-const Shortlink = require("./shortlink");
-const trim_slashes = require("./trim_slashes");
+const Shortlink = require("../shortlink");
+const trim_slashes = require("../trim_slashes");
 const random_token = require("random-string");
 
 const handle = (res, error) => {

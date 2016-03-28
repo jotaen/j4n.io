@@ -3,11 +3,11 @@
 /*eslint no-console: 0*/
 
 const express    = require("express");
-const router     = require("./src/http_router");
+const router     = require("./router");
 const logging    = require("morgan");
-const protector  = require("./src/protector");
-const authorized = require("./src/authorized");
-const runtime    = require("./src/cli_args");
+const protector  = require("./protector");
+const authorized = require("../authorized");
+const runtime    = require("../cli_args");
 const db         = require("mongoose");
 
 const server     = express();

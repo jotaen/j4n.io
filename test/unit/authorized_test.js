@@ -1,7 +1,7 @@
 "use strict";
 
 const assert        = require("assert");
-const authorized    = require("../../src/authorized");
+const authorized    = require("../../app/authorized");
 
 const auth_request = (username, password) => {
   const credentials = username + ":" + password;

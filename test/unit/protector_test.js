@@ -1,6 +1,6 @@
 "use strict";
 
-const protector  = require("../../src/protector");
+const protector  = require("../../app/http/protector");
 const assert_response_status = require("./_assert_response_status");
 
 const not_authorized = () => false;

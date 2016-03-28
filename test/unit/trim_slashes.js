@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require("assert");
-const trim_slashes = require("../../src/trim_slashes");
+const trim_slashes = require("../../app/trim_slashes");
 
 describe("trim_slashes", () => {
 

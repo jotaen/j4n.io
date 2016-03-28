@@ -1,6 +1,6 @@
 "use strict";
 
-const Shortlink = require("../../src/shortlink");
+const Shortlink = require("../../app/shortlink");
 
 describe("shortlink schema", () => {
 
