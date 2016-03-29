@@ -1,9 +1,9 @@
 # j4n.io
 
-[![Build Status](https://api.travis-ci.org/jotaen/shortly.svg)](https://travis-ci.org/jotaen/shortly)
-[![Code Climate](https://codeclimate.com/github/jotaen/shortly/badges/gpa.svg)](https://codeclimate.com/github/jotaen/shortly)
-[![Test Coverage](https://codeclimate.com/github/jotaen/shortly/badges/coverage.svg)](https://codeclimate.com/github/jotaen/shortly/coverage)
-![Dependencies](https://david-dm.org/jotaen/shortly.svg)
+[![Build Status](https://api.travis-ci.org/jotaen/j4n.io.svg)](https://travis-ci.org/jotaen/j4n.io)
+[![Code Climate](https://codeclimate.com/github/jotaen/j4n.io/badges/gpa.svg)](https://codeclimate.com/github/jotaen/j4n.io)
+[![Test Coverage](https://codeclimate.com/github/jotaen/j4n.io/badges/coverage.svg)](https://codeclimate.com/github/jotaen/j4n.io/coverage)
+![Dependencies](https://david-dm.org/jotaen/j4n.io.svg)
 
 The source code of my [shortlink webservice](http://blog.jotaen.net/Toqw4/lets-build-a-rest-service).
 
