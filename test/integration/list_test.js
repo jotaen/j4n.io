@@ -15,7 +15,7 @@ describe("GET /", () => {
       .expect("Content-Type", /json/)
       .end((err, res) => {
         if (res.body instanceof Array) {
-          validate(res.body[0]).then(done);
+          validate.shortlink(res.body[0]).then(done);
         }
       });
   });

@@ -27,7 +27,10 @@ module.exports = (server, credentials) => {
         .header("Location", shortlink.url)
         .send(shortlink);
       } else {
-        res.status(404).send({});
+        res.status(404).send({
+          message: "Error - resource not found",
+          code: 404
+        });
       }
     }).catch(() => {
       res.sendStatus(500);
@@ -35,7 +38,10 @@ module.exports = (server, credentials) => {
   });
 
   server.put("/", protector(admin), (_, res) => {
-    res.status(405).header("Allow", "GET, POST").send({});
+    res.status(405).header("Allow", "GET, POST").send({
+      message: "Error - PUT is not allowed on the base route",
+      code: 405
+    });
   });
 
   server.put("/:token", protector(admin), validator(request.shortlink), (req, res) => {
@@ -49,7 +55,11 @@ module.exports = (server, credentials) => {
       res.status(201).send(shortlink);
     }).catch((error) => {
       if (error.code===11000) {
-        res.status(405).header("Allow", "GET, POST, DELETE").send({});
+        // 11000 means, that the token already exists. In this case, PUT is not allowed.
+        res.status(405).header("Allow", "GET, POST, DELETE").send({
+          message: "Error - PUT is not allowed on existing resources",
+          code: 405
+        });
       } else {
         res.sendStatus(500);
       }
@@ -77,7 +87,7 @@ module.exports = (server, credentials) => {
   });
 
   server.post("/:token", protector(admin), validator(request.shortlink), (req, res) => {
-    let new_data = { // todo: const?
+    const new_data = {
       url: req.query.url,
       updated: Date.now()
     };
@@ -88,9 +98,12 @@ module.exports = (server, credentials) => {
       token: trim_slashes(req.params.token)
     }, new_data).then((shortlink) => {
       if (shortlink) {
-        res.status(200).send({});
+        res.status(200).send(shortlink);
       } else {
-        res.status(404).send({});
+        res.status(404).send({
+          message: "Error - resource not found",
+          code: 404
+        });
       }
     }).catch(() => {
       res.sendStatus(500);
@@ -102,9 +115,12 @@ module.exports = (server, credentials) => {
       token: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
-        res.status(200).send({});
+        res.status(200).send(shortlink);
       } else {
-        res.status(404).send({});
+        res.status(404).send({
+          message: "Error - resource not found",
+          code: 404
+        });
       }
     }).catch(() => {
       res.sendStatus(500);

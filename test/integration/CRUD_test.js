@@ -12,14 +12,6 @@ describe("CRUD operations", () => {
   const url       = "https://foo.baz/myroute?param=1#hash";
   let first_token = ""; // will be set later in the test
 
-  it("GET should return 404 if a resource was not found", (done) => {
-    request(server)
-      .get(route)
-      .expect(404)
-      .expect("Content-Type", /json/)
-      .end(done);
-  });
-
   it("PUT should accept and create a new resource", (done) => {
     request(server)
       .put(route)
@@ -31,7 +23,7 @@ describe("CRUD operations", () => {
       .expect(201)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        validate(res.body).then(done);
+        validate.shortlink(res.body).then(done);
       });
   });
 
@@ -40,7 +32,9 @@ describe("CRUD operations", () => {
       .get(route)
       .expect(code)
       .expect("Content-Type", /json/)
-      .end(done);
+      .end((err, res) => {
+        validate.shortlink(res.body).then(done);
+      });
   });
 
   it("GET should send response in correct format, when a specific URI is requested", (done) => {
@@ -49,19 +43,8 @@ describe("CRUD operations", () => {
       .expect(301)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        validate(res.body).then(done);
+        validate.shortlink(res.body).then(done);
       });
-  });
-
-  it("PUT should refuse to overwrite this existing resource", (done) => {
-    request(server)
-      .put(route)
-      .auth(admin.username, admin.password)
-      .query({"url": "http://example.org/qwer"})
-      .expect(405)
-      .expect("Allow", "GET, POST, DELETE")
-      .expect("Content-Type", /json/)
-      .end(done);
   });
 
   it("POST should update the existing resource", (done) => {
@@ -71,17 +54,9 @@ describe("CRUD operations", () => {
       .query({"url": url})
       .expect(200)
       .expect("Content-Type", /json/)
-      .end(done);
-  });
-
-  it("POST should return 404 if resource if not available", (done) => {
-    request(server)
-      .post("/some_specific_resource")
-      .auth(admin.username, admin.password)
-      .query({"url": url})
-      .expect(404)
-      .expect("Content-Type", /json/)
-      .end(done);
+      .end((err, res) => {
+        validate.shortlink(res.body).then(done);
+      });
   });
 
   it("GET should return the updated resource", (done) => {
@@ -101,21 +76,14 @@ describe("CRUD operations", () => {
       .auth(admin.username, admin.password)
       .expect(200)
       .expect("Content-Type", /json/)
-      .end(done);
+      .end((err, res) => {
+        validate.shortlink(res.body).then(done);
+      });
   });
 
   it("GET should return a 404 now", (done) => {
     request(server)
       .get(route)
-      .expect(404)
-      .expect("Content-Type", /json/)
-      .end(done);
-  });
-
-  it("DELETE should return 404 when trying to delete this resource again", (done) => {
-    request(server)
-      .delete(route)
-      .auth(admin.username, admin.password)
       .expect(404)
       .expect("Content-Type", /json/)
       .end(done);
@@ -132,7 +100,7 @@ describe("CRUD operations", () => {
         first_token = res.body.token;
       })
       .end((err, res) => {
-        validate(res.body).then(done);
+        validate.shortlink(res.body).then(done);
       });
   });
 
@@ -154,7 +122,9 @@ describe("CRUD operations", () => {
     request(server)
       .get("/" + first_token)
       .expect(301)
-      .end(done);
+      .end((err, res) => {
+        validate.shortlink(res.body).then(done);
+      });
   });
 
 });
