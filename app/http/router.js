@@ -25,7 +25,7 @@ module.exports = (server) => {
       } else {
         res.status(404).send({});
       }
-    }).catch((error) => {
+    }).catch(() => {
       res.sendStatus(500);
     });
   });
@@ -64,7 +64,7 @@ module.exports = (server) => {
     shortlink.save()
     .then((shortlink) => {
       res.status(201).send(shortlink);
-    }).catch((error) => {
+    }).catch(() => {
       res.sendStatus(500);
     });
   });
@@ -87,7 +87,7 @@ module.exports = (server) => {
       } else {
         res.status(404).send({});
       }
-    }).catch((error) => {
+    }).catch(() => {
       res.sendStatus(500);
     });
   });
@@ -101,7 +101,7 @@ module.exports = (server) => {
       } else {
         res.status(404).send({});
       }
-    }).catch((error) => {
+    }).catch(() => {
       res.sendStatus(500);
     });
   });
