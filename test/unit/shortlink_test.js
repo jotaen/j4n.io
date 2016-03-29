@@ -54,17 +54,6 @@ describe("shortlink schema", () => {
     });
   });
 
-  it("should fail if url is not valid", (done) => {
-    let link = new Shortlink({
-      path: "foo",
-      url: "void"
-    });
-
-    link.validate((err) => {
-      if (err) done();
-    });
-  });
-
   it("should fail if path is not set", (done) => {
     let link = new Shortlink({
       url: "http://example.org"

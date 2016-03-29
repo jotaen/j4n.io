@@ -1,6 +1,5 @@
 "use strict";
 
-const valid_uri = require("valid-url").isUri;
 const mongoose  = require("mongoose");
 mongoose.Promise = global.Promise;
 
@@ -18,13 +17,7 @@ module.exports = mongoose.model("Shortlink", new Schema({
 
   url: {
     type: String,
-    required: true,
-    validate: {
-      validator: (v) => {
-        return (valid_uri(v) !== undefined);
-      },
-      message: "{VALUE} is not a valid URI"
-    }
+    required: true
   },
 
   created: {
@@ -39,12 +32,6 @@ module.exports = mongoose.model("Shortlink", new Schema({
 
   status_code: {
     type: Number,
-    validate: {
-      validator: (v) => {
-        return (!isNaN(parseFloat(v)) && isFinite(v));
-      },
-      message: "{VALUE} must be a valid http status code (i.e. a number)"
-    },
     default: 301
   }
 

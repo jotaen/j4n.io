@@ -20,8 +20,7 @@
     "joi": "^8.0.5",
     "mongoose": "^4.4.3",
     "morgan": "^1.6.1",
-    "random-string": "^0.1.2",
-    "valid-url": "^1.0.9"
+    "random-string": "^0.1.2"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.1",
