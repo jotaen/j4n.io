@@ -7,12 +7,12 @@
   "scripts": {
     "start": "node ./app/http/serve.js",
     "pretest": "npm run --silent linter",
-    "test": "./node_modules/.bin/mocha test/unit test/http",
+    "test": "./node_modules/.bin/mocha test/unit test/integration",
     "dev-mode": "USER=admin PASSWORD=a node ./app/http/serve.js --verbose --db 192.168.59.103",
     "linter": "./node_modules/.bin/eslint src test ./app/http/serve.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/http",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration",
     "unit-tests": "./node_modules/.bin/mocha test/unit",
-    "http-tests": "./node_modules/.bin/mocha test/http"
+    "integration-tests": "./node_modules/.bin/mocha test/integration"
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
