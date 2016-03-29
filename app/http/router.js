@@ -1,16 +1,16 @@
 "use strict";
 
-const Shortlink = require("../shortlink");
+const Shortlink    = require("../shortlink");
 const trim_slashes = require("../trim_slashes");
 const random_token = require("random-string");
-const request = require("../request");
-const validator = require("./validator");
-const protector   = require("./protector");
-const auth        = require("../auth");
+const request      = require("../request");
+const validator    = require("./validator");
+const protector    = require("./protector");
+const auth         = require("../auth");
 
 module.exports = (server, credentials) => {
 
-  const admin = auth(credentials.user, credentials.password);
+  const admin = auth(credentials.username, credentials.password);
 
   server.get("/", protector(admin), (req, res) => {
     Shortlink.find({}).then((shortlinks) => {

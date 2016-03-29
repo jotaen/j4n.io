@@ -14,7 +14,7 @@ const port        = runtime.port(process.argv);
 const verbose     = runtime.verbose(process.argv);
 const db_host     = runtime.db(process.argv);
 const credentials = {
-  user: process.env.USER,
+  username: process.env.USERNAME,
   password: process.env.PASSWORD
 };
 
