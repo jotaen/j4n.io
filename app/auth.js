@@ -1,6 +1,5 @@
 "use strict";
 
-const basic_auth = require("basic-auth");
 
 const match = (login, secret) => {
   if (! login) {
@@ -22,9 +21,8 @@ module.exports = (username, password) => {
     password: password
   };
 
-  return (http_request) => {
-    const login_attempt = basic_auth(http_request);
-    return match(login_attempt, secret);
+  return (login) => {
+    return match(login, secret);
   };
 
 };
