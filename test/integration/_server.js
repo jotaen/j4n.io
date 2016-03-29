@@ -1,10 +1,11 @@
 "use strict";
 
-const express   = require("express");
-const router    = require("../../app/http/router");
-const server    = express();
-const db        = require("mongoose");
-const mock      = require("mockgoose");
+const express     = require("express");
+const router      = require("../../app/http/router");
+const server      = express();
+const db          = require("mongoose");
+const mock        = require("mockgoose");
+const credentials = require("./_credentials");
 
 after((done) => {
   //  Temporary workaround for avoiding the issue, that
@@ -21,7 +22,7 @@ after((done) => {
 
 before((done) => {
   mock(db);
-  router(server, {user: "foo", password: "bar"});
+  router(server, credentials);
   db.connect("mongodb://foo", (error) => {
     if (error) {
       console.log(error);
