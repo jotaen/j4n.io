@@ -2,7 +2,7 @@
   "name": "shortly",
   "description": "RESTful shortlink service",
   "author": "Jan Heuermann",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://github.com/jotaen/shortly",
   "scripts": {
     "start": "node ./app/http/serve.js",
