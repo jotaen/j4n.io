@@ -7,7 +7,6 @@ const admin    = require("./_credentials");
 describe("validation", () => {
 
   const route = "/asdfqwer";
-  const url   = "http://example.org/put";
 
   it("PUT should fail if parameter `url` is not given (since it is required)", (done) => {
     request(server)
