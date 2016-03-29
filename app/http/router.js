@@ -2,7 +2,7 @@
 
 const Shortlink    = require("../shortlink");
 const trim_slashes = require("../trim_slashes");
-const random_token = require("random-string");
+const random_token = require("randomstring");
 const request      = require("../request");
 const validator    = require("./validator");
 const protector    = require("./protector");
@@ -57,7 +57,10 @@ module.exports = (server, credentials) => {
   });
 
   server.post("/", protector(admin), validator(request.shortlink), (req, res) => {
-    let token = random_token({length: 6});
+    let token = random_token.generate({
+      charset: "alphanumeric",
+      length: 6
+    });
 
     const shortlink = new Shortlink({
       url: req.query.url,
