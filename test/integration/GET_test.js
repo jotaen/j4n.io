@@ -21,6 +21,7 @@ describe("GET", () => {
   it("[PRECONDITION] Some resource should be existing for the next test", (done) => {
     request(server)
       .post("/")
+      .auth("foo", "bar")
       .query({"url": "http://foo.bar"})
       .expect(201)
       .expect((res) => {
@@ -42,6 +43,7 @@ describe("GET", () => {
   it("should list all shortlinks on base URI", (done) => {
     request(server)
       .get("/")
+      .auth("foo", "bar")
       .expect(200)
       .expect("Content-Type", /json/)
       .end((err, res) => {

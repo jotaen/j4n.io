@@ -12,6 +12,7 @@ describe("DELETE", () => {
   it("[CONDITION] There should exist a resource for this test", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({"url": url})
       .expect(201)
       .expect("Content-Type", /json/)
@@ -21,6 +22,7 @@ describe("DELETE", () => {
   it("should delete the resource", (done) => {
     request(server)
       .delete(route)
+      .auth("foo", "bar")
       .expect(200)
       .expect("Content-Type", /json/)
       .end(done);
@@ -37,6 +39,7 @@ describe("DELETE", () => {
   it("should return 404 when trying to delete this resource again", (done) => {
     request(server)
       .delete(route)
+      .auth("foo", "bar")
       .expect(404)
       .expect("Content-Type", /json/)
       .end(done);

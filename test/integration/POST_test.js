@@ -15,6 +15,7 @@ describe("POST", () => {
   it("should refuse to create a new resource under a specific URI", (done) => {
     request(server)
       .post("/some_specific_resource")
+      .auth("foo", "bar")
       .query({"url": url})
       .expect(404)
       .expect("Content-Type", /json/)
@@ -24,6 +25,7 @@ describe("POST", () => {
   it("should create new resources under the base URI", (done) => {
     request(server)
       .post("/")
+      .auth("foo", "bar")
       .query({"url": url})
       .expect(201)
       .expect("Content-Type", /json/)
@@ -40,6 +42,7 @@ describe("POST", () => {
   it("should not recreate a resource (i.e. it should return a different URI each time)", (done) => {
     request(server)
       .post("/")
+      .auth("foo", "bar")
       .query({"url": url})
       .expect(201)
       .expect("Content-Type", /json/)
@@ -60,6 +63,7 @@ describe("POST", () => {
   it("should be able to update an existing resource", (done) => {
     request(server)
       .post(route)
+      .auth("foo", "bar")
       .query({"url": url_2})
       .expect(200)
       .expect("Content-Type", /json/)
@@ -76,6 +80,7 @@ describe("POST", () => {
   it("should reject the request for a specific URI, if parameter `url` is invalid", (done) => {
     request(server)
       .post(route)
+      .auth("foo", "bar")
       .query({"url": "not_a_valid_url"})
       .expect(422)
       .expect("Content-Type", /json/)
@@ -85,6 +90,7 @@ describe("POST", () => {
   it("should reject the request, if parameter `status_code` is invalid", (done) => {
     request(server)
       .post(route)
+      .auth("foo", "bar")
       .query({
         "url": "http://google.de",
         "status_code": "not_a_valid_status_code"
@@ -97,6 +103,7 @@ describe("POST", () => {
   it("should reject the request for base URI, if parameter `url` is invalid", (done) => {
     request(server)
       .post("/")
+      .auth("foo", "bar")
       .query({"url": "not_a_valid_url"})
       .expect(422)
       .expect("Content-Type", /json/)
@@ -106,6 +113,7 @@ describe("POST", () => {
   it("should reject the request for base URI, if parameter `url` is not given", (done) => {
     request(server)
       .post("/")
+      .auth("foo", "bar")
       .query({})
       .expect(422)
       .expect("Content-Type", /json/)

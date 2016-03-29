@@ -15,6 +15,7 @@ describe("PUT", () => {
   it("should accept and create a new resource", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({
         "url": url,
         "status_code": code
@@ -37,6 +38,7 @@ describe("PUT", () => {
   it("should refuse to overwrite this existing resource", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({"url": url_2})
       .expect(405)
       .expect("Allow", "GET, POST, DELETE")
@@ -47,6 +49,7 @@ describe("PUT", () => {
   it("should fail if parameter `url` is not given (since it is required)", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({})
       .expect(422)
       .expect("Content-Type", /json/)
@@ -56,6 +59,7 @@ describe("PUT", () => {
   it("should reject the request, if parameter `url` is invalid", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({"url": "not_a_valid_url"})
       .expect(422)
       .expect("Content-Type", /json/)
@@ -65,6 +69,7 @@ describe("PUT", () => {
   it("should reject the request, if parameter `status_code` is invalid", (done) => {
     request(server)
       .put(route)
+      .auth("foo", "bar")
       .query({
         "url": "http://google.de",
         "status_code": "not_a_valid_status_code"
@@ -77,6 +82,7 @@ describe("PUT", () => {
   it("should not be allowed to be called on the base URI", (done) => {
     request(server)
       .put("/")
+      .auth("foo", "bar")
       .query({"url": "not_a_valid_url"})
       .expect(405)
       .expect("Allow", "GET, POST")

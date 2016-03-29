@@ -5,10 +5,14 @@ const trim_slashes = require("../trim_slashes");
 const random_token = require("random-string");
 const request = require("../request");
 const validator = require("./validator");
+const protector   = require("./protector");
+const auth        = require("../auth");
 
-module.exports = (server) => {
+module.exports = (server, credentials) => {
 
-  server.get("/", (req, res) => {
+  const admin = auth(credentials.user, credentials.password);
+
+  server.get("/", protector(admin), (req, res) => {
     Shortlink.find({}).then((shortlinks) => {
       res.status(200).send(shortlinks);
     });
@@ -30,11 +34,11 @@ module.exports = (server) => {
     });
   });
 
-  server.put("/", (_, res) => {
+  server.put("/", protector(admin), (_, res) => {
     res.status(405).header("Allow", "GET, POST").send({});
   });
 
-  server.put("/:token", validator(request.shortlink), (req, res) => {
+  server.put("/:token", protector(admin), validator(request.shortlink), (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
       path: trim_slashes(req.params.token),
@@ -52,7 +56,7 @@ module.exports = (server) => {
     });
   });
 
-  server.post("/", validator(request.shortlink), (req, res) => {
+  server.post("/", protector(admin), validator(request.shortlink), (req, res) => {
     let token = random_token({length: 6});
 
     const shortlink = new Shortlink({
@@ -69,7 +73,7 @@ module.exports = (server) => {
     });
   });
 
-  server.post("/:token", validator(request.shortlink), (req, res) => {
+  server.post("/:token", protector(admin), validator(request.shortlink), (req, res) => {
     let new_data = { // todo: const?
       url: req.query.url,
       updated: Date.now()
@@ -92,7 +96,7 @@ module.exports = (server) => {
     });
   });
 
-  server.delete("/:token", (req, res) => {
+  server.delete("/:token", protector(admin), (req, res) => {
     Shortlink.findOneAndRemove({
       path: trim_slashes(req.params.token)
     }).then((shortlink) => {

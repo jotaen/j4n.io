@@ -21,7 +21,7 @@ after((done) => {
 
 before((done) => {
   mock(db);
-  router(server);
+  router(server, {user: "foo", password: "bar"});
   db.connect("mongodb://foo", (error) => {
     if (error) {
       console.log(error);
