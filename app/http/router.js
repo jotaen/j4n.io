@@ -20,7 +20,7 @@ module.exports = (server, credentials) => {
 
   server.get("/:token", (req, res) => {
     Shortlink.findOne({
-      path: trim_slashes(req.params.token)
+      token: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
         res.status(shortlink.status_code)
@@ -41,7 +41,7 @@ module.exports = (server, credentials) => {
   server.put("/:token", protector(admin), validator(request.shortlink), (req, res) => {
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: trim_slashes(req.params.token),
+      token: trim_slashes(req.params.token),
       status_code: req.query.status_code
     });
 
@@ -64,7 +64,7 @@ module.exports = (server, credentials) => {
 
     const shortlink = new Shortlink({
       url: req.query.url,
-      path: token,
+      token: token,
       status_code: req.query.status_code
     });
 
@@ -85,7 +85,7 @@ module.exports = (server, credentials) => {
       new_data.status_code = req.query.status_code;
     }
     Shortlink.findOneAndUpdate({
-      path: trim_slashes(req.params.token)
+      token: trim_slashes(req.params.token)
     }, new_data).then((shortlink) => {
       if (shortlink) {
         res.status(200).send({});
@@ -99,7 +99,7 @@ module.exports = (server, credentials) => {
 
   server.delete("/:token", protector(admin), (req, res) => {
     Shortlink.findOneAndRemove({
-      path: trim_slashes(req.params.token)
+      token: trim_slashes(req.params.token)
     }).then((shortlink) => {
       if (shortlink) {
         res.status(200).send({});

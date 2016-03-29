@@ -129,7 +129,7 @@ describe("CRUD operations", () => {
       .expect(201)
       .expect("Content-Type", /json/)
       .expect((res) => {
-        first_token = res.body.path;
+        first_token = res.body.token;
       })
       .end((err, res) => {
         validate(res.body).then(done);
@@ -144,7 +144,7 @@ describe("CRUD operations", () => {
       .expect(201)
       .expect("Content-Type", /json/)
       .end((err, res) => {
-        if (res.body.path != first_token) {
+        if (res.body.token != first_token) {
           done();
         }
       });

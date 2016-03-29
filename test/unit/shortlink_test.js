@@ -6,7 +6,7 @@ describe("shortlink schema", () => {
 
   it("should validate against correct data", (done) => {
     let link = new Shortlink({
-      path: "foo",
+      token: "foo",
       url: "http://example.org",
       created: new Date(),
       updated: new Date(),

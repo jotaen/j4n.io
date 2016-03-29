@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 module.exports = mongoose.model("Shortlink", new Schema({
 
-  path: {
+  token: {
     type: String,
     required: true,
     minlength: 1,
