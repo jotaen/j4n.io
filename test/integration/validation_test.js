@@ -9,16 +9,6 @@ describe("validation", () => {
   const route = "/asdfqwer";
   const url   = "http://example.org/put";
 
-  it("POST should refuse to create a new resource under a specific URI", (done) => {
-    request(server)
-      .post("/some_specific_resource")
-      .auth(admin.username, admin.password)
-      .query({"url": url})
-      .expect(404)
-      .expect("Content-Type", /json/)
-      .end(done);
-  });
-
   it("PUT should fail if parameter `url` is not given (since it is required)", (done) => {
     request(server)
       .put(route)

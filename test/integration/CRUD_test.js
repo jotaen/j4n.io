@@ -74,6 +74,16 @@ describe("CRUD operations", () => {
       .end(done);
   });
 
+  it("POST should return 404 if resource if not available", (done) => {
+    request(server)
+      .post("/some_specific_resource")
+      .auth(admin.username, admin.password)
+      .query({"url": url})
+      .expect(404)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
   it("GET should return the updated resource", (done) => {
     request(server)
       .get(route)
