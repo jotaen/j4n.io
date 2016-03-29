@@ -6,16 +6,6 @@ const random_token = require("random-string");
 const request = require("../request");
 const validator = require("./validator");
 
-const handle = (res, error) => {
-  if (! error) {
-    res.status(404).send({});
-  } else if (error.name === "ValidationError" || error.name === "CastError") {
-    res.status(422).send(error);
-  } else {
-    res.sendStatus(500);
-  }
-};
-
 module.exports = (server) => {
 
   server.get("/", (req, res) => {
@@ -33,10 +23,10 @@ module.exports = (server) => {
         .header("Location", shortlink.url)
         .send(shortlink);
       } else {
-        handle(res);
+        res.status(404).send({});
       }
     }).catch((error) => {
-      handle(res, error);
+      res.sendStatus(500);
     });
   });
 
@@ -57,7 +47,7 @@ module.exports = (server) => {
       if (error.code===11000) {
         res.status(405).header("Allow", "GET, POST, DELETE").send({});
       } else {
-        handle(res, error);
+        res.sendStatus(500);
       }
     });
   });
@@ -75,7 +65,7 @@ module.exports = (server) => {
     .then((shortlink) => {
       res.status(201).send(shortlink);
     }).catch((error) => {
-      handle(res, error);
+      res.sendStatus(500);
     });
   });
 
@@ -95,10 +85,10 @@ module.exports = (server) => {
       if (shortlink) {
         res.status(200).send({});
       } else {
-        handle(res);
+        res.status(404).send({});
       }
     }).catch((error) => {
-      handle(res, error);
+      res.sendStatus(500);
     });
   });
 
@@ -109,10 +99,10 @@ module.exports = (server) => {
       if (shortlink) {
         res.status(200).send({});
       } else {
-        handle(res);
+        res.status(404).send({});
       }
     }).catch((error) => {
-      handle(res, error);
+      res.sendStatus(500);
     });
   });
 
