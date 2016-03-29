@@ -1,5 +1,5 @@
 {
-  "name": "shortly",
+  "name": "j4n.io",
   "description": "RESTful shortlink service",
   "author": "Jan Heuermann",
   "license": "MIT",
@@ -12,7 +12,8 @@
     "linter": "./node_modules/.bin/eslint app test ./app/http/serve.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration",
     "unit-tests": "./node_modules/.bin/mocha test/unit",
-    "integration-tests": "./node_modules/.bin/mocha test/integration"
+    "integration-tests": "./node_modules/.bin/mocha test/integration",
+    "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
