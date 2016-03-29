@@ -3,7 +3,7 @@
 const Shortlink = require("../shortlink");
 const trim_slashes = require("../trim_slashes");
 const random_token = require("random-string");
-const request = require("../request_schema");
+const request = require("../request");
 const validator = require("./validator");
 
 const handle = (res, error) => {

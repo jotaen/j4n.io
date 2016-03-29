@@ -1,7 +1,7 @@
 "use strict";
 
 const Joi = require("joi");
-const shortlink_schema = require("../../app/request_schema").shortlink;
+const shortlink_schema = require("../../app/request").shortlink;
 
 const assert_accept = (data, schema, done) => {
   Joi.validate(data, schema, (err) => {
