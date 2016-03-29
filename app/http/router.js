@@ -83,9 +83,7 @@ module.exports = (server, credentials) => {
     }
     Shortlink.findOneAndUpdate({
       path: trim_slashes(req.params.token)
-    }, new_data, {
-      runValidators: true
-    }).then((shortlink) => {
+    }, new_data).then((shortlink) => {
       if (shortlink) {
         res.status(200).send({});
       } else {
