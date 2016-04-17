@@ -31,6 +31,14 @@ describe("ODM integration test", () => {
     });
   });
 
+  it("should find the new document", (done) => {
+    shortlinks.find("foo1").then((result) => {
+      if (result.token === "foo1" && result.url === "http://google.com") {
+        done();
+      }
+    });
+  });
+
   it("should wait 1 second for the next test", (done) => {
     setTimeout(() => {done();}, 1000);
   });
@@ -40,6 +48,12 @@ describe("ODM integration test", () => {
       if (result.token === "foo1" && result.url === "http://bing.com") {
         done();
       }
+    });
+  });
+
+  it("should delete an existing document", (done) => {
+    shortlinks.delete("foo1").then((result) => {
+        done();
     });
   });
 

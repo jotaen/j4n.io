@@ -15,45 +15,39 @@ module.exports = (collection) => {
     };
 
     return new Promise((resolve, reject) => {
-      collection.insertOne(doc, (err, doc) => {
-        if (err) {
-          reject();
-        } else {
-          const result = doc.ops[0];
-          delete result._id;
-          resolve(result);
-        }
+      collection.insertOne(doc).then((doc) => {
+        const result = doc.ops[0];
+        delete result._id;
+        resolve(result);
+      }).catch((error) => {
+        reject();
       });
     });
   };
 
   odm.find = (token) => {
     return new Promise((resolve, reject) => {
-      collection.findOne({token: token}, (error, doc) => {
-        if (error) {
-          reject(error);
+      collection.findOne({token: token}).then((doc) => {
+        if (! doc) {
+          reject(null);
         } else {
-          if (! doc) {
-            reject(null);
-          } else {
-            resolve(doc);
-          }
+          resolve(doc);
         }
+      }).catch((error) => {
+        reject(error);
       });
     });
   };
 
   odm.list = () => {
     return new Promise((resolve, reject) => {
-      collection.find().toArray((err, docs) => {
-        if (err) {
-          reject();
-        } else {
-          resolve(docs);
-        }
+      collection.find().toArray().then((docs) => {
+        resolve(docs);
+      }).catch((error) => {
+        reject();
       });
     });
-  }
+  };
 
   odm.update = (token, changeset) => {
     changeset.updated = new Date();
@@ -77,16 +71,11 @@ module.exports = (collection) => {
 
   odm.delete = (token) => {
     return new Promise((resolve, reject) => {
-      collection.remove({token: token}, (err, result) => {
-        if (err) {
-          reject("Database error");
-          return;
-        }
-        if (result.ok == 0 && result.n == 1) {
-          resolve(doc);
-          return;
-        }
-
+      collection.findOneAndDelete({token: token}).then((doc) => {
+        const result = doc.value;
+        delete result._id;
+        resolve(result);
+      }).catch((error) => {
         reject();
       });
     });
