@@ -6,7 +6,8 @@ const express     = require("express");
 const router      = require("./router");
 const logging     = require("morgan");
 const runtime     = require("../cli_args");
-const db          = require("mongoose");
+const mongojs     = require("mongojs");
+const odm         = require("../odm");
 
 const server      = express();
 
@@ -18,14 +19,16 @@ const credentials = {
   password: process.env.PASSWORD
 };
 
-db.connect(db_host);
+const db = mongojs(db_host);
+const collection = db.collection('shortlinks');
+const shortlinks = odm(collection);
 
 if (verbose) {
   console.log("Verbose mode: active");
   server.use(logging("dev"));
 }
 
-router(server, credentials);
+router(server, credentials, shortlinks);
 
 server.listen(port, () => {
   console.log("Server listening on port " + port + "…");

@@ -3,32 +3,16 @@
 const express     = require("express");
 const router      = require("../../app/http/router");
 const server      = express();
-const db          = require("mongoose");
-const mock        = require("mockgoose");
+const mongojs     = require("mongojs");
+const odm         = require("../../app/odm");
 const credentials = require("./_credentials");
 
-after((done) => {
-  //  Temporary workaround for avoiding the issue, that
-  //  mockgoose doesn’t terminates the mongod background process.
-  //  See: https://github.com/mccormicka/Mockgoose/issues/178
-  db.connection.db.dropDatabase((error) => {
-    if (error) { console.log(error); }
-    db.disconnect((error) => {
-      if (error) { console.log(error); }
-      done();
-    });
-  });
-});
-
 before((done) => {
-  mock(db);
-  router(server, credentials);
-  db.connect("mongodb://foo", (error) => {
-    if (error) {
-      console.log(error);
-    }
-    done();
-  });
+  const db = mongojs("mongodb://192.168.99.100:32768");
+  const collection = db.collection("shortlinks");
+  collection.remove({});
+  const shortlinks = odm(collection);
+  done();
 });
 
 module.exports = server;

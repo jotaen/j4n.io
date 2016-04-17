@@ -3,12 +3,12 @@
   "description": "RESTful shortlink service",
   "author": "Jan Heuermann",
   "license": "MIT",
-  "homepage": "https://github.com/jotaen/shortly",
+  "homepage": "https://github.com/jotaen/j4n.io",
   "scripts": {
     "start": "node ./app/http/serve.js",
     "pretest": "npm run --silent linter",
     "test": "./node_modules/.bin/mocha test/unit test/integration",
-    "dev-mode": "USERNAME=admin PASSWORD=a npm start --verbose --db 192.168.59.103",
+    "dev-mode": "USERNAME=admin PASSWORD=a npm start -- --verbose --db 192.168.99.100:32768",
     "linter": "./node_modules/.bin/eslint app test ./app/http/serve.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration",
     "unit-tests": "./node_modules/.bin/mocha test/unit",
@@ -19,7 +19,7 @@
     "basic-auth": "^1.0.3",
     "express": "^4.13.4",
     "joi": "^8.0.5",
-    "mongoose": "^4.4.3",
+    "mongojs": "^2.3.0",
     "morgan": "^1.6.1",
     "randomstring": "^1.1.4"
   },
@@ -28,7 +28,6 @@
     "eslint": "^1.10.3",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
-    "mockgoose": "^5.2.4",
     "supertest": "^1.1.0"
   }
 }
