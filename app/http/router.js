@@ -23,10 +23,8 @@ module.exports = (server, credentials, shortlinks) => {
       res.status(data.status_code)
       .header("Location", data.url)
       .send(data.url);
-    }).catch((a, b) => {
-      console.log(a);
-      console.log(b);
-      if (a == "a") {
+    }).catch((error) => {
+      if (error == "a") {
         res.status(404).send({
           message: "Error - resource not found",
           code: 404
@@ -45,6 +43,7 @@ module.exports = (server, credentials, shortlinks) => {
   });
 
   server.put("/:token", protector(admin), validator(request.shortlink), (req, res) => {
+    const token = trim_slashes(req.params.token);
     const data = {
       url: req.query.url,
       status_code: req.query.status_code

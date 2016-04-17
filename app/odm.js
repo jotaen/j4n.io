@@ -1,25 +1,25 @@
 "use strict";
 
+const clean = require("./clean");
+
 module.exports = (collection) => {
 
   const odm = {};
 
-  odm.create = (token, data) => {
+  odm.create = (token, url, status_code) => {
     const now = new Date();
     const doc = {
       token: token,
-      url: data.url,
-      status_code: (typeof data.status_code !== 'undefined' ? data.status_code : 301),
+      url: url,
+      status_code: (typeof status_code !== "undefined" ? status_code : 301),
       created: now,
       updated: now
     };
 
     return new Promise((resolve, reject) => {
       collection.insertOne(doc).then((doc) => {
-        const result = doc.ops[0];
-        delete result._id;
-        resolve(result);
-      }).catch((error) => {
+        resolve(clean.one(doc.ops[0]));
+      }).catch(() => {
         reject();
       });
     });
@@ -31,10 +31,10 @@ module.exports = (collection) => {
         if (! doc) {
           reject(null);
         } else {
-          resolve(doc);
+          resolve(clean.one(doc));
         }
-      }).catch((error) => {
-        reject(error);
+      }).catch(() => {
+        reject();
       });
     });
   };
@@ -42,8 +42,8 @@ module.exports = (collection) => {
   odm.list = () => {
     return new Promise((resolve, reject) => {
       collection.find().toArray().then((docs) => {
-        resolve(docs);
-      }).catch((error) => {
+        resolve(clean.many(docs));
+      }).catch(() => {
         reject();
       });
     });
@@ -62,9 +62,7 @@ module.exports = (collection) => {
           reject();
           return;
         }
-        const result = doc.value;
-        delete result._id;
-        resolve(result);
+        resolve(clean.one(doc.value));
       });
     });
   };
@@ -72,10 +70,8 @@ module.exports = (collection) => {
   odm.delete = (token) => {
     return new Promise((resolve, reject) => {
       collection.findOneAndDelete({token: token}).then((doc) => {
-        const result = doc.value;
-        delete result._id;
-        resolve(result);
-      }).catch((error) => {
+        resolve(clean.one(doc.value));
+      }).catch(() => {
         reject();
       });
     });
