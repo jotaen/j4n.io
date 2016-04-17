@@ -23,8 +23,10 @@ module.exports = (server, credentials, shortlinks) => {
       res.status(data.status_code)
       .header("Location", data.url)
       .send(data.url);
-    }).catch((error) => {
-      if (error == 1) {
+    }).catch((a, b) => {
+      console.log(a);
+      console.log(b);
+      if (a == "a") {
         res.status(404).send({
           message: "Error - resource not found",
           code: 404
@@ -62,12 +64,7 @@ module.exports = (server, credentials, shortlinks) => {
       length: 6
     });
 
-    const data = {
-      url: req.query.url,
-      status_code: req.query.status_code
-    };
-
-    shortlinks.create(token, data)
+    shortlinks.create(token, req.query.url, req.query.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink);
     }).catch(() => {
@@ -76,16 +73,15 @@ module.exports = (server, credentials, shortlinks) => {
   });
 
   server.post("/:token", protector(admin), validator(request.shortlink), (req, res) => {
-    const new_data = {
-      url: req.query.url,
-      updated: Date.now()
-    };
+    const token = trim_slashes(req.params.token);
+    const data = {};
     if (req.query.status_code) {
-      new_data.status_code = req.query.status_code;
+      data.status_code = req.query.status_code;
     }
-    Shortlink.findOneAndUpdate({
-      token: trim_slashes(req.params.token)
-    }, new_data).then((shortlink) => {
+    if (req.query.url) {
+      data.url = req.query.url;
+    }
+    shortlinks.update(token, data).then((shortlink) => {
       if (shortlink) {
         res.status(200).send(shortlink);
       } else {
@@ -100,9 +96,8 @@ module.exports = (server, credentials, shortlinks) => {
   });
 
   server.delete("/:token", protector(admin), (req, res) => {
-    Shortlink.findOneAndRemove({
-      token: trim_slashes(req.params.token)
-    }).then((shortlink) => {
+    const token = trim_slashes(req.params.token);
+    shortlinks.delete(token).then((shortlink) => {
       if (shortlink) {
         res.status(200).send(shortlink);
       } else {

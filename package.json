@@ -13,13 +13,14 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration",
     "unit-tests": "./node_modules/.bin/mocha test/unit",
     "integration-tests": "./node_modules/.bin/mocha test/integration",
+    "system-tests": "./node_modules/.bin/mocha test/system",
     "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
     "express": "^4.13.4",
     "joi": "^8.0.5",
-    "mongojs": "^2.3.0",
+    "mongodb": "^2.1.16",
     "morgan": "^1.6.1",
     "randomstring": "^1.1.4"
   },

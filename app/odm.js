@@ -5,20 +5,23 @@ module.exports = (collection) => {
   const odm = {};
 
   odm.create = (token, data) => {
-    data.token = token;
-    if (! data.status_code) {
-      data.status_code = 301;
-    }
     const now = new Date();
-    data.created = now;
-    data.updated = now;
+    const doc = {
+      token: token,
+      url: data.url,
+      status_code: (typeof data.status_code !== 'undefined' ? data.status_code : 301),
+      created: now,
+      updated: now
+    };
+
     return new Promise((resolve, reject) => {
-      collection.insert(data, (err, doc) => {
+      collection.insertOne(doc, (err, doc) => {
         if (err) {
           reject();
         } else {
-          delete doc._id;
-          resolve(doc);
+          const result = doc.ops[0];
+          delete result._id;
+          resolve(result);
         }
       });
     });
@@ -26,14 +29,13 @@ module.exports = (collection) => {
 
   odm.find = (token) => {
     return new Promise((resolve, reject) => {
-      collection.findOne({token: token}, (err, doc) => {
-        if (err) {
-          reject();
+      collection.findOne({token: token}, (error, doc) => {
+        if (error) {
+          reject(error);
         } else {
           if (! doc) {
-            reject(1);
+            reject(null);
           } else {
-            delete doc._id;
             resolve(doc);
           }
         }
@@ -43,7 +45,7 @@ module.exports = (collection) => {
 
   odm.list = () => {
     return new Promise((resolve, reject) => {
-      collection.find({}, (err, docs) => {
+      collection.find().toArray((err, docs) => {
         if (err) {
           reject();
         } else {
@@ -53,30 +55,43 @@ module.exports = (collection) => {
     });
   }
 
-  odm.update = (token, data) => {
-    data.token = token;
-    if (! data.status_code) {
-      data.status_code = 301;
-    }
-    const now = new Date();
-    data.created = now;
-    data.updated = now;
+  odm.update = (token, changeset) => {
+    changeset.updated = new Date();
+
     return new Promise((resolve, reject) => {
-      collection.findAndModify(data, (err, doc) => {
-        if (err) {
+      collection.findOneAndUpdate({token: token}, {
+        $set: changeset
+      }, {
+        returnOriginal: false
+      }, (err, doc) => {
+        if (! doc) {
           reject();
-        } else {
-          delete doc._id;
-          resolve(doc);
+          return;
         }
+        const result = doc.value;
+        delete result._id;
+        resolve(result);
       });
     });
   };
 
   odm.delete = (token) => {
+    return new Promise((resolve, reject) => {
+      collection.remove({token: token}, (err, result) => {
+        if (err) {
+          reject("Database error");
+          return;
+        }
+        if (result.ok == 0 && result.n == 1) {
+          resolve(doc);
+          return;
+        }
 
+        reject();
+      });
+    });
   };
 
   return odm;
 
-}
+};
