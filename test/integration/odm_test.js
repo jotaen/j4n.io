@@ -8,10 +8,10 @@ const runtime = require("../../app/cli_args");
 let shortlinks = {};
 
 before((done) => {
-  const db_url      = runtime.db(process.argv);
+  const db_url = runtime.db(process.argv);
   mongodb.connect(db_url, function(error, db) {
-    const collection = db.collection("shortlinks");
-    collection.remove({});
+    const now = new Date();
+    const collection = db.collection("shortlinks-integration-test-"+now.toISOString());
     shortlinks = odm(collection);
     done();
   });

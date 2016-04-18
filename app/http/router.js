@@ -7,6 +7,20 @@ const validator    = require("./validator");
 const protector    = require("./protector");
 const auth         = require("../auth");
 
+const handle = (error, res) => {
+  if (error === "NOT_FOUND") {
+    res.status(404).send({
+      message: "Error: resource not found",
+      code: 404
+    });
+  } else {
+    res.status(500).send({
+      message: "Internal server error",
+      code: 500
+    });
+  }
+};
+
 module.exports = (server, credentials, shortlinks) => {
 
   const admin = auth(credentials.username, credentials.password);
@@ -22,16 +36,9 @@ module.exports = (server, credentials, shortlinks) => {
     shortlinks.find(token).then((data) => {
       res.status(data.status_code)
       .header("Location", data.url)
-      .send(data.url);
+      .send(data);
     }).catch((error) => {
-      if (error == "a") {
-        res.status(404).send({
-          message: "Error - resource not found",
-          code: 404
-        });
-      } else {
-        res.sendStatus(500);
-      }
+      handle(error, res);
     });
   });
 
@@ -52,8 +59,15 @@ module.exports = (server, credentials, shortlinks) => {
     shortlinks.create(token, data)
     .then((shortlink) => {
       res.status(201).send(shortlink);
-    }).catch(() => {
-      res.sendStatus(500);
+    }).catch((error) => {
+      if (error === "ALREADY_EXISTS") {
+        res.status(405).header("Allow", "GET, POST").send({
+          message: "Error - PUT is not allowed on the base route",
+          code: 405
+        });
+      } else {
+        handle(error, res);
+      }
     });
   });
 
@@ -66,8 +80,8 @@ module.exports = (server, credentials, shortlinks) => {
     shortlinks.create(token, req.query.url, req.query.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink);
-    }).catch(() => {
-      res.sendStatus(500);
+    }).catch((error) => {
+      handle(error, res);
     });
   });
 
@@ -81,32 +95,18 @@ module.exports = (server, credentials, shortlinks) => {
       data.url = req.query.url;
     }
     shortlinks.update(token, data).then((shortlink) => {
-      if (shortlink) {
-        res.status(200).send(shortlink);
-      } else {
-        res.status(404).send({
-          message: "Error - resource not found",
-          code: 404
-        });
-      }
-    }).catch(() => {
-      res.sendStatus(500);
+      res.status(200).send(shortlink);
+    }).catch((error) => {
+      handle(error, res);
     });
   });
 
   server.delete("/:token", protector(admin), (req, res) => {
     const token = trim_slashes(req.params.token);
     shortlinks.delete(token).then((shortlink) => {
-      if (shortlink) {
-        res.status(200).send(shortlink);
-      } else {
-        res.status(404).send({
-          message: "Error - resource not found",
-          code: 404
-        });
-      }
-    }).catch(() => {
-      res.sendStatus(500);
+      res.status(200).send(shortlink);
+    }).catch((error) => {
+      handle(error, res);
     });
   });
 

@@ -10,7 +10,7 @@ module.exports = (schema) => {
         next();
       } else {
         res.status(422).send({
-          message: "Error – the parameters of your request could not be validated.",
+          message: "Error – the request parameters could not be validated.",
           code: 422,
           errors: error.details
         });

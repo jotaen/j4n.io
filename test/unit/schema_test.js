@@ -3,17 +3,6 @@
 const assert = require("assert");
 const schema = require("../../app/schema");
 
-const validate = (data) => {
-  const iso8601 = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))$/;
-  assert(typeof data.token === "string");
-  assert(typeof data.url === "string");
-  assert(typeof data.status_code === "number");
-  assert(typeof data.created === "string");
-  assert(typeof data.updated === "string");
-  assert(iso8601.test(data.created));
-  assert(iso8601.test(data.updated));
-};
-
 describe("schema", () => {
 
   it("should leave correct data untouched", () => {
@@ -25,7 +14,7 @@ describe("schema", () => {
       updated: new Date()
     });
 
-    validate(result);
+    assert(schema.validate(result));
   });
 
   it("should cast the types into the desired format", () => {
@@ -37,7 +26,7 @@ describe("schema", () => {
       updated: new Date()
     });
 
-    validate(result);
+    assert(schema.validate(result));
   });
 
   it("should liberate the data from unknown properties", () => {
@@ -51,7 +40,7 @@ describe("schema", () => {
       lalala: "hooray!!!"
     });
 
-    validate(result);
+    assert(schema.validate(result));
     assert(Object.keys(result).length === 5);
   });
 
@@ -69,7 +58,7 @@ describe("schema", () => {
       created: "2011-03-17T12:00:00.182Z",
       updated: "2011-03-17T12:00:00.182Z"
     });
-    validate(result);
+    assert(schema.validate(result));
     assert(Object.keys(result).length === 5);
   });
 

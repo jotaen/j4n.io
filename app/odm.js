@@ -19,8 +19,12 @@ module.exports = (collection) => {
     return new Promise((resolve, reject) => {
       collection.insertOne(doc).then((doc) => {
         resolve(schema.output(doc.ops[0]));
-      }).catch(() => {
-        reject();
+      }).catch((error) => {
+        if (error.code === 11000) {
+          reject("ALREADY_EXISTS");
+        } else {
+          reject();
+        }
       });
     });
   };
@@ -29,7 +33,7 @@ module.exports = (collection) => {
     return new Promise((resolve, reject) => {
       collection.findOne({token: token}).then((doc) => {
         if (! doc) {
-          reject(null);
+          reject("NOT_FOUND");
         } else {
           resolve(schema.output(doc));
         }
@@ -58,12 +62,12 @@ module.exports = (collection) => {
         $set: schema.input(changeset)
       }, {
         returnOriginal: false
-      }, (err, doc) => {
-        if (! doc) {
-          reject();
-          return;
+      }, (error, doc) => {
+        if (! doc.value) {
+          reject("NOT_FOUND");
+        } else {
+          resolve(schema.output(doc.value));
         }
-        resolve(schema.output(doc.value));
       });
     });
   };
