@@ -10,13 +10,14 @@ const runtime     = require("../../app/cli_args");
 
 const db_url = runtime.db(process.argv);
 
-mongodb.connect("mongodb://192.168.99.100:32768").then((db) => {
+mongodb.connect(db_url).then((db) => {
   const now = new Date();
   const collection = db.collection("shortlinks-system-test-"+now.toISOString());
   const shortlinks = odm(collection);
   router(server, credentials, shortlinks);
   return collection.createIndex({token:1}, {unique:true});
 }).then(() => {
+  /* global run */
   run();
 });
 
