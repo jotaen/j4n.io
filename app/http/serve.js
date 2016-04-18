@@ -8,15 +8,14 @@ const logging     = require("morgan");
 const runtime     = require("../cli_args");
 const mongodb     = require("mongodb");
 const odm         = require("../odm");
-
 const server      = express();
 
 const port        = runtime.port(process.argv);
 const verbose     = runtime.verbose(process.argv);
 const db_url      = runtime.db(process.argv);
 const credentials = {
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD
+  username: "admin",
+  password: runtime.password(process.argv)
 };
 
 if (verbose) {
