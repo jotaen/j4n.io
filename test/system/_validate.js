@@ -1,18 +1,14 @@
 "use strict";
 
-const Shortlink = require("../../app/shortlink");
+const schema = require("../../app/schema");
 
 exports.shortlink = (body) => {
-  const schema = new Shortlink(body);
-
   return new Promise((resolve, reject) => {
-    schema.validate((error) => {
-      if (error) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
+    if (schema.validate(body)) {
+      resolve();
+    } else {
+      reject();
+    }
   });
 };
 
