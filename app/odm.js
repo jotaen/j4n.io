@@ -1,6 +1,6 @@
 "use strict";
 
-const clean = require("./clean");
+const schema = require("./schema");
 
 module.exports = (collection) => {
 
@@ -8,17 +8,17 @@ module.exports = (collection) => {
 
   odm.create = (token, url, status_code) => {
     const now = new Date();
-    const doc = {
-      token: token,
+    const doc = schema.input({
+      token: String(token),
       url: url,
-      status_code: (typeof status_code !== "undefined" ? status_code : 301),
+      status_code: (typeof status_code !== "undefined" ? parseInt(status_code) : 301),
       created: now,
       updated: now
-    };
+    });
 
     return new Promise((resolve, reject) => {
       collection.insertOne(doc).then((doc) => {
-        resolve(clean.one(doc.ops[0]));
+        resolve(schema.output(doc.ops[0]));
       }).catch(() => {
         reject();
       });
@@ -31,7 +31,7 @@ module.exports = (collection) => {
         if (! doc) {
           reject(null);
         } else {
-          resolve(clean.one(doc));
+          resolve(schema.output(doc));
         }
       }).catch(() => {
         reject();
@@ -42,7 +42,8 @@ module.exports = (collection) => {
   odm.list = () => {
     return new Promise((resolve, reject) => {
       collection.find().toArray().then((docs) => {
-        resolve(clean.many(docs));
+        const result = docs.map(schema.output);
+        resolve(result);
       }).catch(() => {
         reject();
       });
@@ -54,7 +55,7 @@ module.exports = (collection) => {
 
     return new Promise((resolve, reject) => {
       collection.findOneAndUpdate({token: token}, {
-        $set: changeset
+        $set: schema.input(changeset)
       }, {
         returnOriginal: false
       }, (err, doc) => {
@@ -62,7 +63,7 @@ module.exports = (collection) => {
           reject();
           return;
         }
-        resolve(clean.one(doc.value));
+        resolve(schema.output(doc.value));
       });
     });
   };
@@ -70,7 +71,7 @@ module.exports = (collection) => {
   odm.delete = (token) => {
     return new Promise((resolve, reject) => {
       collection.findOneAndDelete({token: token}).then((doc) => {
-        resolve(clean.one(doc.value));
+        resolve(schema.output(doc.value));
       }).catch(() => {
         reject();
       });

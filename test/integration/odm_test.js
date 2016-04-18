@@ -40,17 +40,8 @@ describe("ODM integration test", () => {
       assert(typeof result.token === "string");
       assert(typeof result.url === "string");
       assert(typeof result.status_code === "number");
-      assert(typeof result.created === "object");
-      assert(typeof result.updated === "object");
-      assert(result.created instanceof Date);
-      assert(result.updated instanceof Date);
-      done();
-    });
-  });
-
-  it("should not output superfluous information", (done) => {
-    shortlinks.find("foo").then((result) => {
-      assert(Object.keys(result).length === 5);
+      assert(typeof result.created === "string");
+      assert(typeof result.updated === "string");
       done();
     });
   });
@@ -59,9 +50,11 @@ describe("ODM integration test", () => {
     const start = new Date();
     shortlinks.create("baz", "http://wikipedia.org").then((result) => {
       const end = new Date();
-      assert(result.updated.valueOf() == result.created.valueOf());
-      assert(result.created >= start);
-      assert(result.created <= end);
+      const created = new Date(result.created);
+      const updated = new Date(result.updated);
+      assert(updated.valueOf() == created.valueOf());
+      assert(created >= start);
+      assert(created <= end);
       done();
     });
   });
@@ -81,6 +74,7 @@ describe("ODM integration test", () => {
       assert(result[0].token === "foo");
       assert(result[1].token === "baz");
       assert(result[2].token === "asdf");
+      assert(result[0]._id === undefined);
       done();
     });
   });
