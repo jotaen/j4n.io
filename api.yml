@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  title: shortly
+  title: j4n.io
   description: RESTful shortlink service
   version: "alpha"
 schemes:
