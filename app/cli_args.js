@@ -22,5 +22,5 @@ exports.db = (args) => {
   if (i >= 0 && args[i+1]) {
     return ("mongodb://" + args[i+1]);
   }
-  return "mongodb://localhost";
+  return "mongodb://127.0.0.1";
 };

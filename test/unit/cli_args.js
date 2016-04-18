@@ -49,14 +49,14 @@ describe("cli_args", () => {
 
   it("should return default db host when no option given", () => {
     const input  = [];
-    const expect = "mongodb://localhost";
+    const expect = "mongodb://127.0.0.1";
     const result = args.db(input);
     assert.strictEqual(expect, result);
   });
 
   it("should return default db host when option (but no value) given", () => {
     const input  = ["--db"];
-    const expect = "mongodb://localhost";
+    const expect = "mongodb://127.0.0.1";
     const result = args.db(input);
     assert.strictEqual(expect, result);
   });

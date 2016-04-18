@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node ./app/http/serve.js",
     "pretest": "npm run --silent linter",
-    "test": "./node_modules/.bin/mocha test/unit test/integration",
+    "test": "npm run unit-tests && npm run integration-tests",
     "dev-mode": "USERNAME=admin PASSWORD=a npm start -- --verbose --db 192.168.99.100:32768",
     "linter": "./node_modules/.bin/eslint app test ./app/http/serve.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration",

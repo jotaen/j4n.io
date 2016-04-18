@@ -12,7 +12,7 @@ before((done) => {
   const collection = db.collection("shortlinks");
   collection.remove({});
   const shortlinks = odm(collection);
-  router;
+  router(server, credentials, shortlinks);
   done();
 });
 

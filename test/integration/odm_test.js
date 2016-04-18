@@ -2,12 +2,14 @@
 
 const mongodb = require("mongodb");
 const odm     = require("../../app/odm");
-const assert = require("assert");
+const assert  = require("assert");
+const runtime = require("../../app/cli_args");
 
 let shortlinks = {};
 
 before((done) => {
-  mongodb.connect("mongodb://192.168.99.100:32768", function(error, db) {
+  const db_url      = runtime.db(process.argv);
+  mongodb.connect(db_url, function(error, db) {
     const collection = db.collection("shortlinks");
     collection.remove({});
     shortlinks = odm(collection);

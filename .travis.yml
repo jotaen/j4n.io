@@ -3,6 +3,9 @@ script: npm test
 node_js:
   - "5.5"
 
+services:
+  - mongodb
+
 after_script:
   - npm run coverage
   - codeclimate-test-reporter < coverage/lcov.info
