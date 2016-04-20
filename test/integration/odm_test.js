@@ -3,13 +3,12 @@
 const mongodb = require("mongodb");
 const odm     = require("../../app/odm");
 const assert  = require("assert");
-const runtime = require("../../app/cli_args");
+const config  = require("../../app/config");
 
 let shortlinks = {};
 
 before((done) => {
-  const db_url = runtime.db(process.argv);
-  mongodb.connect(db_url, function(error, db) {
+  mongodb.connect(config.db_url, function(error, db) {
     const now = new Date();
     const collection = db.collection("shortlinks-integration-test-"+now.toISOString());
     shortlinks = odm(collection);

@@ -6,11 +6,9 @@ const server      = express();
 const mongodb     = require("mongodb");
 const odm         = require("../../app/odm");
 const credentials = require("./_credentials");
-const runtime     = require("../../app/cli_args");
+const config      = require("../../app/config");
 
-const db_url = runtime.db(process.argv);
-
-mongodb.connect(db_url).then((db) => {
+mongodb.connect(config.db_url).then((db) => {
   const now = new Date();
   const collection = db.collection("shortlinks-system-test-"+now.toISOString());
   const shortlinks = odm(collection);

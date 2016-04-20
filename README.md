@@ -20,14 +20,7 @@ Run `npm install` on your UNIX CLI.
 
 ### Run
 
-Run `npm start`. You need to provide the following parameters:
-
-- `USERNAME` and `PASSWORD` as environment variables
-- `--db` as option with the host of your mongoDB
-
-E.g.: `USERNAME=admin PASSWORD=a npm start --db 192.168.59.103`
-
-For your convenience, you can run `npm run dev-mode` (see `package.json`).
+Run `npm start`.
 
 ### Test
 
