@@ -62,12 +62,14 @@ module.exports = (collection) => {
         $set: schema.input(changeset)
       }, {
         returnOriginal: false
-      }, (error, doc) => {
+      }).then((doc) => {
         if (! doc.value) {
           reject("NOT_FOUND");
         } else {
           resolve(schema.output(doc.value));
         }
+      }).catch(() => {
+        reject();
       });
     });
   };
@@ -75,7 +77,11 @@ module.exports = (collection) => {
   odm.delete = (token) => {
     return new Promise((resolve, reject) => {
       collection.findOneAndDelete({token: token}).then((doc) => {
-        resolve(schema.output(doc.value));
+        if (! doc.value) {
+          reject("NOT_FOUND");
+        } else {
+          resolve(schema.output(doc.value));
+        }
       }).catch(() => {
         reject();
       });
