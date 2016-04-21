@@ -51,7 +51,10 @@ describe("CRUD operations", () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({"url": url})
+      .query({
+        "url": url,
+        "status_code": 302
+      })
       .expect(200)
       .expect("Content-Type", /json/)
       .end((err, res) => {
@@ -62,7 +65,7 @@ describe("CRUD operations", () => {
   it("GET should return the updated resource", (done) => {
     request(server)
       .get(route)
-      .expect(301)
+      .expect(302)
       .end((err, res) => {
         if (res.body.url == url) {
           done();
@@ -84,6 +87,27 @@ describe("CRUD operations", () => {
   it("GET should return a 404 now", (done) => {
     request(server)
       .get(route)
+      .expect(404)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("DELETE should return a 404 now", (done) => {
+    request(server)
+      .delete(route)
+      .auth(admin.username, admin.password)
+      .expect(404)
+      .expect("Content-Type", /json/)
+      .end(done);
+  });
+
+  it("POST should return a 404 now", (done) => {
+    request(server)
+      .post(route)
+      .auth(admin.username, admin.password)
+      .query({
+        "url": url
+      })
       .expect(404)
       .expect("Content-Type", /json/)
       .end(done);
