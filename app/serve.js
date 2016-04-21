@@ -20,17 +20,15 @@ if (config.debug) {
   server.use(logging("dev"));
 }
 
-mongodb.connect(config.db_url, function(error, db) {
-  if (error) {
-    console.log(error);
-  } else {
-    const collection = db.collection("shortlinks");
-    const shortlinks = odm(collection);
-
-    router(server, credentials, shortlinks);
-
-    server.listen(config.port, () => {
-      console.log("Server listening on port " + config.port + "…");
-    });
-  }
+mongodb.connect(config.db_url).then((db) => {
+  const collection = db.collection("shortlinks");
+  const shortlinks = odm(collection);
+  router(server, credentials, shortlinks);
+  return collection.createIndex({token:1}, {unique:true});
+}).then(() => {
+  server.listen(config.port, () => {
+    console.log("Server listening on port " + config.port + "…");
+  });
+}).catch((error) => {
+  console.log(error);
 });
