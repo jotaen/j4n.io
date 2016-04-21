@@ -51,18 +51,14 @@ module.exports = (server, credentials, shortlinks) => {
 
   server.put("/:token", protector(admin), validator(request.shortlink), (req, res) => {
     const token = trim_slashes(req.params.token);
-    const data = {
-      url: req.query.url,
-      status_code: req.query.status_code
-    };
 
-    shortlinks.create(token, data)
+    shortlinks.create(token, req.query.url, req.query.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink);
     }).catch((error) => {
       if (error === "ALREADY_EXISTS") {
         res.status(405).header("Allow", "GET, POST").send({
-          message: "Error - PUT is not allowed on the base route",
+          message: "Error - PUT is not allowed on an existing resource",
           code: 405
         });
       } else {
