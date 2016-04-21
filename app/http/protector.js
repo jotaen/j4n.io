@@ -9,7 +9,10 @@ module.exports = (is_authorized) => {
     if (is_authorized(login_attempt)) {
       next();
     } else {
-      res.status(401).send({});
+      res.status(401).send({
+        message: "Error – you are not authorized",
+        code: 401
+      });
     }
   };
 
