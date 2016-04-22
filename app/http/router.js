@@ -5,6 +5,7 @@ const random_token = require("randomstring");
 const request      = require("./request");
 const validator    = require("./validator");
 const protector    = require("./protector");
+const redirector   = require("./redirector");
 const auth         = require("../auth");
 
 const handle = (error, res) => {
@@ -25,7 +26,7 @@ module.exports = (server, credentials, shortlinks) => {
 
   const admin = auth(credentials.username, credentials.password);
 
-  server.get("/", protector(admin), (req, res) => {
+  server.get("/", redirector("/", "http://jotaen.net"), protector(admin), (req, res) => {
     shortlinks.list().then((result) => {
       res.status(200).send(result);
     });

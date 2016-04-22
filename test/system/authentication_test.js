@@ -20,10 +20,20 @@ describe("authentication", () => {
       .end(done);
   });
 
-  it("PUT /... without authorization fails", (done) => {
+  it("PUT /... with wrong credentials fails", (done) => {
     request(server)
       .put(route)
       .auth(hacker.username, hacker.password)
+      .query({
+        "url": "http://example.org/asdf"
+      })
+      .expect(401)
+      .end(done);
+  });
+
+  it("PUT /... without any credentials fails", (done) => {
+    request(server)
+      .put(route)
       .query({
         "url": "http://example.org/asdf"
       })
@@ -42,10 +52,20 @@ describe("authentication", () => {
       .end(done);
   });
 
-  it("POST /... without authorization fails", (done) => {
+  it("POST /... with wrong credentials fails", (done) => {
     request(server)
       .post(route)
       .auth(hacker.username, hacker.password)
+      .query({
+        "url": "http://example.org/1234"
+      })
+      .expect(401)
+      .end(done);
+  });
+
+  it("POST /... without any credentials fails", (done) => {
+    request(server)
+      .post(route)
       .query({
         "url": "http://example.org/1234"
       })
@@ -64,10 +84,20 @@ describe("authentication", () => {
       .end(done);
   });
 
-  it("POST / without authorization fails", (done) => {
+  it("POST / with wrong credentials fails", (done) => {
     request(server)
       .post("/")
       .auth(hacker.username, hacker.password)
+      .query({
+        "url": "http://example.org/qwer"
+      })
+      .expect(401)
+      .end(done);
+  });
+
+  it("POST / without any credentials fails", (done) => {
+    request(server)
+      .post("/")
       .query({
         "url": "http://example.org/qwer"
       })
@@ -83,10 +113,17 @@ describe("authentication", () => {
       .end(done);
   });
 
-  it("DELETE /... without authorization fails", (done) => {
+  it("DELETE /... with wrong credentials fails", (done) => {
     request(server)
       .delete(route)
       .auth(hacker.username, hacker.password)
+      .expect(401)
+      .end(done);
+  });
+
+  it("DELETE /... without any credentials fails", (done) => {
+    request(server)
+      .delete(route)
       .expect(401)
       .end(done);
   });
@@ -99,11 +136,19 @@ describe("authentication", () => {
       .end(done);
   });
 
-  it("GET / without authorization fails", (done) => {
+  it("GET / with wrong credentials fails", (done) => {
     request(server)
       .get("/")
       .auth(hacker.username, hacker.password)
       .expect(401)
+      .end(done);
+  });
+
+  it("GET / without any credentials results in a redirect", (done) => {
+    request(server)
+      .get("/")
+      .expect(301)
+      .expect("Location", "http://jotaen.net")
       .end(done);
   });
 
