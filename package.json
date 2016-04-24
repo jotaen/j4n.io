@@ -9,14 +9,14 @@
     "node": "5.5.0"
   },
   "scripts": {
-    "start": "node ./app/serve.js",
+    "start": "node ./app/bootstrap/server.js",
     "pretest": "npm run --silent linter",
     "test": "npm run unit-tests && npm run integration-tests && npm run system-tests",
-    "linter": "./node_modules/.bin/eslint app test ./app/http/serve.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- test/unit test/integration test/system",
-    "unit-tests": "./node_modules/.bin/mocha test/unit",
-    "integration-tests": "./node_modules/.bin/mocha test/integration",
-    "system-tests": "./node_modules/.bin/mocha test/system --delay",
+    "linter": "eslint app test ./app/http/serve.js",
+    "coverage": "istanbul cover _mocha -- test/unit test/integration test/system",
+    "unit-tests": "mocha test/unit",
+    "integration-tests": "mocha test/integration",
+    "system-tests": "mocha test/system --delay",
     "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {

@@ -1,16 +1,15 @@
 "use strict";
 
-const mongodb = require("mongodb");
+const db      = require("../../app/bootstrap/db");
+const config  = require("../../app/bootstrap/config");
 const odm     = require("../../app/odm");
 const assert  = require("assert");
-const config  = require("../../app/config");
 
-let shortlinks = {};
+let shortlinks = undefined;
+const now = new Date();
 
 before((done) => {
-  mongodb.connect(config.db_url).then((db) => {
-    const now = new Date();
-    const collection = db.collection("shortlinks-integration-test-"+now.toISOString());
+  db(config.db_url, "shortlinks-integration-test-"+now.toISOString()).then((collection) => {
     shortlinks = odm(collection);
     done();
   }).catch((error) => {

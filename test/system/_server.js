@@ -1,22 +1,19 @@
 "use strict";
 
 const express     = require("express");
+const db          = require("../../app/bootstrap/db");
+const config      = require("../../app/bootstrap/config");
 const router      = require("../../app/http/router");
-const server      = express();
-const mongodb     = require("mongodb");
 const odm         = require("../../app/odm");
 const credentials = require("./_credentials");
-const config      = require("../../app/config");
+const server      = express();
 
-mongodb.connect(config.db_url).then((db) => {
-  const now = new Date();
-  const collection = db.collection("shortlinks-system-test-"+now.toISOString());
+const now = new Date();
+
+db(config.db_url, "shortlinks-system-test-"+now.toISOString()).then((collection) => {
   const shortlinks = odm(collection);
   router(server, credentials, shortlinks);
-  return collection.createIndex({token:1}, {unique:true});
-}).then(() => {
-  /* global run */
-  run();
+  run();  /* global run */
 }).catch((error) => {
   console.log(error);
   console.log("\n");
