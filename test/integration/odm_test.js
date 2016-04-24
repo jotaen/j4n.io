@@ -8,11 +8,17 @@ const config  = require("../../app/config");
 let shortlinks = {};
 
 before((done) => {
-  mongodb.connect(config.db_url, function(error, db) {
+  mongodb.connect(config.db_url).then((db) => {
     const now = new Date();
     const collection = db.collection("shortlinks-integration-test-"+now.toISOString());
     shortlinks = odm(collection);
     done();
+  }).catch((error) => {
+    console.log(error);
+    console.log("\n");
+    console.log(">>> In order to run this test, you need to have a mongodb and");
+    console.log(">>> provide the DB_HOST variable to the test process. E.g.");
+    console.log(">>> $ DB_HOST=localhost:27017 npm test");
   });
 });
 

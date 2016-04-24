@@ -14,18 +14,23 @@ The source code of my [shortlink webservice](http://blog.jotaen.net/Toqw4/lets-b
 - NodeJS 5.5
 - MongoDB 3.2
 
-### Build
+### Build and run
 
-Run `npm install` on your UNIX CLI.
+1. `npm install`
+2. See configuration `app/config.js` and use process env vars to overwrite parameters.
+3. `npm start`
 
-### Run
-
-Run `npm start`.
 
 ### Test
 
 Run `npm test` for the complete test-suite including linter. See `package.json`
 for the single commands, which are faster to run.
+
+For the integration tests you need to provide a mongo-db and specify its host
+via env variable. E.g.:
+
+`DB_HOST=localhost:27017 npm test`
+
 
 ## TODOs for version 1.0
 
