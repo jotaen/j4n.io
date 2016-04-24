@@ -71,7 +71,7 @@ module.exports = (server, credentials, shortlinks) => {
   server.post("/", protector(admin), validator(request.shortlink), (req, res) => {
     let token = random_token.generate({
       charset: "alphanumeric",
-      length: 6
+      length: 5
     });
 
     shortlinks.create(token, req.query.url, req.query.status_code)
