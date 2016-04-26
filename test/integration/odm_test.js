@@ -9,7 +9,7 @@ let shortlinks
 const now = new Date()
 
 before((done) => {
-  db(config.db_url, 'shortlinks-integration-test-' + now.toISOString()).then((collection) => {
+  db(config.dbUrl, 'shortlinks-integration-test-' + now.toISOString()).then((collection) => {
     shortlinks = odm(collection)
     done()
   }).catch((error) => {

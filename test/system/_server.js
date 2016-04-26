@@ -10,7 +10,7 @@ const server = express()
 
 const now = new Date()
 
-db(config.db_url, 'shortlinks-system-test-' + now.toISOString()).then((collection) => {
+db(config.dbUrl, 'shortlinks-system-test-' + now.toISOString()).then((collection) => {
   const shortlinks = odm(collection)
   router(server, credentials, shortlinks)
   run()  /* global run */
