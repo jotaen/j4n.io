@@ -1,155 +1,153 @@
-"use strict";
+'use strict'
 
-const request  = require("supertest");
-const server   = require("./_server");
-const admin    = require("./_credentials");
-const hacker   = {username: "h4ck3r", password: "3vil"};
+const request = require('supertest')
+const server = require('./_server')
+const admin = require('./_credentials')
+const hacker = {username: 'h4ck3r', password: '3vil'}
 
-describe("authentication", () => {
+describe('authentication', () => {
+  const route = '/test123'
 
-  const route = "/test123";
-
-  it("PUT /... with authorization passes", (done) => {
+  it('PUT /... with authorization passes', (done) => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
       .query({
-        "url": "http://example.org/asdf"
+        'url': 'http://example.org/asdf'
       })
       .expect(201)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("PUT /... with wrong credentials fails", (done) => {
+  it('PUT /... with wrong credentials fails', (done) => {
     request(server)
       .put(route)
       .auth(hacker.username, hacker.password)
       .query({
-        "url": "http://example.org/asdf"
+        'url': 'http://example.org/asdf'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("PUT /... without any credentials fails", (done) => {
+  it('PUT /... without any credentials fails', (done) => {
     request(server)
       .put(route)
       .query({
-        "url": "http://example.org/asdf"
+        'url': 'http://example.org/asdf'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST /... with authorization passes", (done) => {
+  it('POST /... with authorization passes', (done) => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
       .query({
-        "url": "http://example.org/1234"
+        'url': 'http://example.org/1234'
       })
       .expect(200)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST /... with wrong credentials fails", (done) => {
+  it('POST /... with wrong credentials fails', (done) => {
     request(server)
       .post(route)
       .auth(hacker.username, hacker.password)
       .query({
-        "url": "http://example.org/1234"
+        'url': 'http://example.org/1234'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST /... without any credentials fails", (done) => {
+  it('POST /... without any credentials fails', (done) => {
     request(server)
       .post(route)
       .query({
-        "url": "http://example.org/1234"
+        'url': 'http://example.org/1234'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST / with authorization passes", (done) => {
+  it('POST / with authorization passes', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .auth(admin.username, admin.password)
       .query({
-        "url": "http://example.org/qwer"
+        'url': 'http://example.org/qwer'
       })
       .expect(201)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST / with wrong credentials fails", (done) => {
+  it('POST / with wrong credentials fails', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .auth(hacker.username, hacker.password)
       .query({
-        "url": "http://example.org/qwer"
+        'url': 'http://example.org/qwer'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("POST / without any credentials fails", (done) => {
+  it('POST / without any credentials fails', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .query({
-        "url": "http://example.org/qwer"
+        'url': 'http://example.org/qwer'
       })
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("DELETE /... with authorization passes", (done) => {
+  it('DELETE /... with authorization passes', (done) => {
     request(server)
       .delete(route)
       .auth(admin.username, admin.password)
       .expect(200)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("DELETE /... with wrong credentials fails", (done) => {
+  it('DELETE /... with wrong credentials fails', (done) => {
     request(server)
       .delete(route)
       .auth(hacker.username, hacker.password)
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("DELETE /... without any credentials fails", (done) => {
+  it('DELETE /... without any credentials fails', (done) => {
     request(server)
       .delete(route)
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("GET / with authorization passes", (done) => {
+  it('GET / with authorization passes', (done) => {
     request(server)
-      .get("/")
+      .get('/')
       .auth(admin.username, admin.password)
       .expect(200)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("GET / with wrong credentials fails", (done) => {
+  it('GET / with wrong credentials fails', (done) => {
     request(server)
-      .get("/")
+      .get('/')
       .auth(hacker.username, hacker.password)
       .expect(401)
-      .end(done);
-  });
+      .end(done)
+  })
 
-  it("GET / without any credentials results in a redirect", (done) => {
+  it('GET / without any credentials results in a redirect', (done) => {
     request(server)
-      .get("/")
+      .get('/')
       .expect(301)
-      .expect("Location", "http://jotaen.net")
-      .end(done);
-  });
-
-});
+      .expect('Location', 'http://jotaen.net')
+      .end(done)
+  })
+})

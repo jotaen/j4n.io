@@ -1,19 +1,17 @@
-"use strict";
+'use strict'
 
-const basic_auth = require("basic-auth");
+const basicAuth = require('basic-auth')
 
-module.exports = (is_authorized) => {
-
+module.exports = (isAuthorized) => {
   return (req, res, next) => {
-    const login_attempt = basic_auth(req);
-    if (is_authorized(login_attempt)) {
-      next();
+    const loginAttempt = basicAuth(req)
+    if (isAuthorized(loginAttempt)) {
+      next()
     } else {
       res.status(401).send({
-        message: "Error – you are not authorized",
+        message: 'Error – you are not authorized',
         code: 401
-      });
+      })
     }
-  };
-
-};
+  }
+}
