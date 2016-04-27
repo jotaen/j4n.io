@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node ./app/bootstrap/server.js",
     "pretest": "npm run --silent linter",
-    "test": "npm run unit-tests && npm run integration-tests && npm run system-tests",
+    "test": "mocha",
     "linter": "eslint app test ./app/http/serve.js",
     "coverage": "istanbul cover _mocha -- test/unit test/integration test/system",
     "unit-tests": "mocha test/unit",
