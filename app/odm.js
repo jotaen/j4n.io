@@ -36,9 +36,7 @@ module.exports = (collection) => {
         } else {
           resolve(schema.output(doc))
         }
-      }).catch(() => {
-        reject()
-      })
+      }).catch(reject)
     })
   }
 
@@ -47,9 +45,7 @@ module.exports = (collection) => {
       collection.find().toArray().then((docs) => {
         const result = docs.map(schema.output)
         resolve(result)
-      }).catch(() => {
-        reject()
-      })
+      }).catch(reject)
     })
   }
 
@@ -67,9 +63,7 @@ module.exports = (collection) => {
         } else {
           resolve(schema.output(doc.value))
         }
-      }).catch(() => {
-        reject()
-      })
+      }).catch(reject)
     })
   }
 
@@ -81,9 +75,7 @@ module.exports = (collection) => {
         } else {
           resolve(schema.output(doc.value))
         }
-      }).catch(() => {
-        reject()
-      })
+      }).catch(reject)
     })
   }
 
