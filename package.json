@@ -11,12 +11,12 @@
   "scripts": {
     "start": "node ./app/bootstrap/server.js",
     "pretest": "npm run --silent linter",
-    "test": "npm run unit-tests && npm run db-tests && npm run http-tests",
+    "test": "mocha",
     "linter": "eslint app test ./app/http/serve.js",
     "coverage": "istanbul cover _mocha -- test/unit test/db test/http",
     "unit-tests": "mocha test/unit",
     "db-tests": "mocha test/db",
-    "http-tests": "mocha test/http --delay",
+    "http-tests": "mocha test/http",
     "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {
