@@ -13,10 +13,10 @@
     "pretest": "npm run --silent linter",
     "test": "mocha",
     "linter": "eslint app test ./app/http/serve.js",
-    "coverage": "istanbul cover _mocha -- test/unit test/integration test/system",
+    "coverage": "istanbul cover _mocha -- test/unit test/db test/http",
     "unit-tests": "mocha test/unit",
-    "integration-tests": "mocha test/integration",
-    "system-tests": "mocha test/system --delay",
+    "db-tests": "mocha test/db",
+    "http-tests": "mocha test/http --delay",
     "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {
