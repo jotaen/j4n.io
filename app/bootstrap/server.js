@@ -1,7 +1,5 @@
 'use strict'
 
-/*eslint no-console: 0*/
-
 const express = require('express')
 const router = require('../http/router')
 const logging = require('morgan')

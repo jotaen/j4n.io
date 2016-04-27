@@ -18,19 +18,17 @@ The source code of my [shortlink webservice](http://blog.jotaen.net/Toqw4/lets-b
 ### Build and run
 
 1. `npm install`
-2. See configuration `app/config.js` and use process env vars to overwrite parameters.
+2. See configuration `app/bootstrap/config.js` and use process env vars to overwrite parameters.
 3. `npm start`
 
 
 ### Test
 
-Run `npm test` for the complete test-suite including linter. See `package.json`
-for the single commands, which are faster to run.
-
-For the integration tests you need to provide a mongo-db and specify its host
-via env variable. E.g.:
+Run `npm test` for the complete test-suite including linter. For the db and http tests you need to provide a mongo-db and specify its host via env variable. E.g.:
 
 `DB_HOST=localhost:27017 npm test`
+
+See `package.json` for the commands to run the single test suites – they are faster to execute.
 
 
 ## TODOs for version 1.0
