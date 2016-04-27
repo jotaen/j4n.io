@@ -1,21 +1,19 @@
-"use strict";
+'use strict'
 
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = (schema) => {
-
   return (req, res, next) => {
     Joi.validate(req.query, schema, (error) => {
       if (!error) {
-        next();
+        next()
       } else {
         res.status(422).send({
-          message: "Error – the request parameters could not be validated.",
+          message: 'Error – the request parameters could not be validated.',
           code: 422,
           errors: error.details
-        });
+        })
       }
-    });
-  };
-
-};
+    })
+  }
+}

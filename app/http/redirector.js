@@ -1,13 +1,11 @@
-"use strict";
+'use strict'
 
-module.exports = (path, redirect_url) => {
-
+module.exports = (path, redirectUrl) => {
   return (req, res, next) => {
-    if (req.path == path && req.headers.authorization) {
-      next();
+    if (req.path === path && req.headers.authorization) {
+      next()
     } else {
-      res.header("Location", redirect_url).sendStatus(301);
+      res.header('Location', redirectUrl).sendStatus(301)
     }
-  };
-
-};
+  }
+}

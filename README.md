@@ -4,6 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/jotaen/j4n.io/badges/gpa.svg)](https://codeclimate.com/github/jotaen/j4n.io)
 [![Test Coverage](https://codeclimate.com/github/jotaen/j4n.io/badges/coverage.svg)](https://codeclimate.com/github/jotaen/j4n.io/coverage)
 ![Dependencies](https://david-dm.org/jotaen/j4n.io.svg)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 The source code of my [shortlink webservice](http://blog.jotaen.net/Toqw4/lets-build-a-rest-service).
 

@@ -1,23 +1,21 @@
-"use strict";
+'use strict'
 
-const request  = require("supertest");
-const server   = require("./_server");
-const validate = require("./_validate");
-const admin    = require("./_credentials");
+const request = require('supertest')
+const server = require('./_server')
+const validate = require('./_validate')
+const admin = require('./_credentials')
 
-describe("GET /", () => {
-
-  it("should list all shortlinks on base URI", (done) => {
+describe('GET /', () => {
+  it('should list all shortlinks on base URI', (done) => {
     request(server)
-      .get("/")
+      .get('/')
       .auth(admin.username, admin.password)
       .expect(200)
-      .expect("Content-Type", /json/)
-      .end((err, res) => {
+      .expect('Content-Type', /json/)
+      .end((_, res) => {
         if (res.body instanceof Array) {
-          validate.shortlink(res.body[0]).then(done);
+          validate.shortlink(res.body[0]).then(done)
         }
-      });
-  });
-
-});
+      })
+  })
+})
