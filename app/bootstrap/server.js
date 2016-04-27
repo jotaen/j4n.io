@@ -20,7 +20,7 @@ if (config.debug) {
   server.use(logging('dev'))
 }
 
-db(config.db_url, 'shortlinks').then((collection) => {
+db(config.dbUrl, 'shortlinks').then((collection) => {
   const shortlinks = odm(collection)
   router(server, credentials, shortlinks)
   server.listen(config.port, () => {
