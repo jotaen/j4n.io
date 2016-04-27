@@ -1,7 +1,8 @@
 'use strict'
 
-const trimSlashes = require('../trimSlashes')
+const bodyParser = require('body-parser')
 const randomToken = require('randomstring')
+const trimSlashes = require('../trimSlashes')
 const request = require('./request')
 const validator = require('./validator')
 const protector = require('./protector')
@@ -24,6 +25,8 @@ const handle = (error, res) => {
 
 module.exports = (server, credentials, shortlinks) => {
   const admin = auth(credentials.username, credentials.password)
+
+  server.use(bodyParser.json())
 
   server.get('/', redirector('/', 'http://jotaen.net'), protector(admin), (req, res) => {
     shortlinks.list().then((result) => {
@@ -52,7 +55,7 @@ module.exports = (server, credentials, shortlinks) => {
   server.put('/:token', protector(admin), validator(request.shortlink), (req, res) => {
     const token = trimSlashes(req.params.token)
 
-    shortlinks.create(token, req.query.url, req.query.status_code)
+    shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink)
     }).catch((error) => {
@@ -73,7 +76,7 @@ module.exports = (server, credentials, shortlinks) => {
       length: 5
     })
 
-    shortlinks.create(token, req.query.url, req.query.status_code)
+    shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink)
     }).catch((error) => {
@@ -84,11 +87,11 @@ module.exports = (server, credentials, shortlinks) => {
   server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
     const token = trimSlashes(req.params.token)
     const data = {}
-    if (req.query.status_code) {
-      data.status_code = req.query.status_code
+    if (req.body.status_code) {
+      data.status_code = req.body.status_code
     }
-    if (req.query.url) {
-      data.url = req.query.url
+    if (req.body.url) {
+      data.url = req.body.url
     }
     shortlinks.update(token, data).then((shortlink) => {
       res.status(200).send(shortlink)

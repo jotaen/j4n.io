@@ -12,7 +12,7 @@ describe('validation', () => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
-      .query({})
+      .send({})
       .expect(422)
       .expect('Content-Type', /json/)
       .end((_, res) => {
@@ -24,7 +24,7 @@ describe('validation', () => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
-      .query({'url': 'not_a_valid_url'})
+      .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
       .end((_, res) => {
@@ -36,7 +36,7 @@ describe('validation', () => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://google.de',
         'status_code': 'not_a_valid_status_code'
       })
@@ -51,7 +51,7 @@ describe('validation', () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({'url': 'not_a_valid_url'})
+      .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
       .end((_, res) => {
@@ -63,7 +63,7 @@ describe('validation', () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://google.de',
         'status_code': 'not_a_valid_status_code'
       })
@@ -78,7 +78,7 @@ describe('validation', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .query({'url': 'not_a_valid_url'})
+      .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
       .end((_, res) => {
@@ -90,7 +90,7 @@ describe('validation', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .query({})
+      .send({})
       .expect(422)
       .expect('Content-Type', /json/)
       .end((_, res) => {

@@ -12,7 +12,7 @@ describe('authentication', () => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://example.org/asdf'
       })
       .expect(201)
@@ -23,7 +23,7 @@ describe('authentication', () => {
     request(server)
       .put(route)
       .auth(hacker.username, hacker.password)
-      .query({
+      .send({
         'url': 'http://example.org/asdf'
       })
       .expect(401)
@@ -33,7 +33,7 @@ describe('authentication', () => {
   it('PUT /... without any credentials fails', (done) => {
     request(server)
       .put(route)
-      .query({
+      .send({
         'url': 'http://example.org/asdf'
       })
       .expect(401)
@@ -44,7 +44,7 @@ describe('authentication', () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://example.org/1234'
       })
       .expect(200)
@@ -55,7 +55,7 @@ describe('authentication', () => {
     request(server)
       .post(route)
       .auth(hacker.username, hacker.password)
-      .query({
+      .send({
         'url': 'http://example.org/1234'
       })
       .expect(401)
@@ -65,7 +65,7 @@ describe('authentication', () => {
   it('POST /... without any credentials fails', (done) => {
     request(server)
       .post(route)
-      .query({
+      .send({
         'url': 'http://example.org/1234'
       })
       .expect(401)
@@ -76,7 +76,7 @@ describe('authentication', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://example.org/qwer'
       })
       .expect(201)
@@ -87,7 +87,7 @@ describe('authentication', () => {
     request(server)
       .post('/')
       .auth(hacker.username, hacker.password)
-      .query({
+      .send({
         'url': 'http://example.org/qwer'
       })
       .expect(401)
@@ -97,7 +97,7 @@ describe('authentication', () => {
   it('POST / without any credentials fails', (done) => {
     request(server)
       .post('/')
-      .query({
+      .send({
         'url': 'http://example.org/qwer'
       })
       .expect(401)

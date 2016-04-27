@@ -4,7 +4,7 @@ const Joi = require('joi')
 
 module.exports = (schema) => {
   return (req, res, next) => {
-    Joi.validate(req.query, schema, (error) => {
+    Joi.validate(req.body, schema, (error) => {
       if (!error) {
         next()
       } else {

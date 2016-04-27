@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node ./app/bootstrap/server.js",
     "pretest": "npm run --silent linter",
-    "test": "mocha",
+    "test": "npm run unit-tests && npm run db-tests && npm run http-tests",
     "linter": "eslint app test ./app/http/serve.js",
     "coverage": "istanbul cover _mocha -- test/unit test/db test/http",
     "unit-tests": "mocha test/unit",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "basic-auth": "^1.0.3",
+    "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "joi": "^8.0.5",
     "mongodb": "^2.1.16",

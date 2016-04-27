@@ -15,7 +15,7 @@ describe('CRUD operations', () => {
     request(server)
       .put(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': 'http://example.org/asdf',
         'status_code': code
       })
@@ -50,7 +50,7 @@ describe('CRUD operations', () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': url,
         'status_code': 302
       })
@@ -104,7 +104,7 @@ describe('CRUD operations', () => {
     request(server)
       .post(route)
       .auth(admin.username, admin.password)
-      .query({
+      .send({
         'url': url
       })
       .expect(404)
@@ -116,7 +116,7 @@ describe('CRUD operations', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .query({'url': url})
+      .send({'url': url})
       .expect(201)
       .expect('Content-Type', /json/)
       .expect((res) => {
@@ -131,7 +131,7 @@ describe('CRUD operations', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .query({'url': url})
+      .send({'url': url})
       .expect(201)
       .expect('Content-Type', /json/)
       .end((_, res) => {
