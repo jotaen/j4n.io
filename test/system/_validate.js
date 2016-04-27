@@ -17,7 +17,7 @@ exports.error = (body) => {
     if (body.message.substr(0, 5) !== 'Error') {
       reject()
     }
-    if (body.code.toString()[0] !== 4) {
+    if (body.code.toString()[0] !== '4') {
       reject()
     }
     if (body.errors && !Array.isArray(body.errors)) {
