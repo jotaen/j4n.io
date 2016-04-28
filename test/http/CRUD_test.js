@@ -16,8 +16,8 @@ describe('CRUD operations', () => {
       .put(route)
       .auth(admin.username, admin.password)
       .send({
-        'url': 'http://example.org/asdf',
-        'status_code': code
+        url: 'http://example.org/asdf',
+        status_code: code
       })
       .expect(201)
       .expect('Content-Type', /json/)
@@ -51,8 +51,8 @@ describe('CRUD operations', () => {
       .post(route)
       .auth(admin.username, admin.password)
       .send({
-        'url': url,
-        'status_code': 302
+        url: url,
+        status_code: 302
       })
       .expect(200)
       .expect('Content-Type', /json/)
@@ -105,7 +105,8 @@ describe('CRUD operations', () => {
       .post(route)
       .auth(admin.username, admin.password)
       .send({
-        'url': url
+        url: url,
+        status_code: 302
       })
       .expect(404)
       .expect('Content-Type', /json/)
@@ -116,7 +117,10 @@ describe('CRUD operations', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .send({'url': url})
+      .send({
+        url: url,
+        status_code: 305
+      })
       .expect(201)
       .expect('Content-Type', /json/)
       .expect((res) => {
@@ -131,7 +135,10 @@ describe('CRUD operations', () => {
     request(server)
       .post('/')
       .auth(admin.username, admin.password)
-      .send({'url': url})
+      .send({
+        url: url,
+        status_code: 404
+      })
       .expect(201)
       .expect('Content-Type', /json/)
       .end((_, res) => {

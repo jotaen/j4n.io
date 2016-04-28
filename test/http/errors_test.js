@@ -12,7 +12,6 @@ describe('errors', () => {
     request(server)
       .get(nonExistentRoute)
       .auth(admin.username, admin.password)
-      .send({'url': 'not_a_valid_url'})
       .expect(404)
       .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
@@ -23,9 +22,8 @@ describe('errors', () => {
 
   it('DELETE should return 404 on non existing resource', (done) => {
     request(server)
-      .put(nonExistentRoute)
+      .delete(nonExistentRoute)
       .auth(admin.username, admin.password)
-      .send({'url': 'not_a_valid_url'})
       .expect(404)
       .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
@@ -38,7 +36,10 @@ describe('errors', () => {
     request(server)
       .post(nonExistentRoute)
       .auth(admin.username, admin.password)
-      .send({'url': 'https://yahoo.org'})
+      .send({
+        url: 'https://yahoo.org',
+        status_code: 301
+      })
       .expect(404)
       .expect('Content-Type', /json/)
       .end(done)
@@ -48,7 +49,10 @@ describe('errors', () => {
     request(server)
       .put('/lalala')
       .auth(admin.username, admin.password)
-      .send({'url': 'http://example.org/qwer'})
+      .send({
+        url: 'http://example.org/qwer',
+        status_code: 308
+      })
       .expect(201)
       .end(done)
   })
@@ -57,7 +61,10 @@ describe('errors', () => {
     request(server)
       .put('/lalala')
       .auth(admin.username, admin.password)
-      .send({'url': 'http://example.org/1234'})
+      .send({
+        url: 'http://example.org/1234',
+        status_code: 307
+      })
       .expect(405)
       .expect('Allow', 'GET, POST, DELETE')
       .expect('Content-Type', /json/)

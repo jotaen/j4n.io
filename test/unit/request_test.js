@@ -27,15 +27,22 @@ describe('request_schema', () => {
     }, shortlinkSchema, done)
   })
 
-  it('should accept correct shortlink data with minimum parameters', (done) => {
-    assertAccept({
+  it('should reject incomplete shortlink data (missing status_code)', (done) => {
+    assertReject({
       url: 'http://google.com'
+    }, shortlinkSchema, done)
+  })
+
+  it('should reject incomplete shortlink data (missing url)', (done) => {
+    assertReject({
+      status_code: 300
     }, shortlinkSchema, done)
   })
 
   it('should reject incorrect URLs', (done) => {
     assertReject({
-      url: 'incorrect_URL'
+      url: 'incorrect_URL',
+      status_code: 305
     }, shortlinkSchema, done)
   })
 

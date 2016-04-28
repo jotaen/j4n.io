@@ -13,7 +13,8 @@ describe('authentication', () => {
       .put(route)
       .auth(admin.username, admin.password)
       .send({
-        'url': 'http://example.org/asdf'
+        'url': 'http://example.org/asdf',
+        status_code: 301
       })
       .expect(201)
       .end(done)
@@ -24,7 +25,8 @@ describe('authentication', () => {
       .put(route)
       .auth(hacker.username, hacker.password)
       .send({
-        'url': 'http://example.org/asdf'
+        'url': 'http://example.org/asdf',
+        status_code: 301
       })
       .expect(401)
       .end(done)
@@ -34,7 +36,8 @@ describe('authentication', () => {
     request(server)
       .put(route)
       .send({
-        'url': 'http://example.org/asdf'
+        'url': 'http://example.org/asdf',
+        status_code: 301
       })
       .expect(401)
       .end(done)
@@ -45,7 +48,8 @@ describe('authentication', () => {
       .post(route)
       .auth(admin.username, admin.password)
       .send({
-        'url': 'http://example.org/1234'
+        'url': 'http://example.org/1234',
+        status_code: 301
       })
       .expect(200)
       .end(done)
@@ -56,7 +60,8 @@ describe('authentication', () => {
       .post(route)
       .auth(hacker.username, hacker.password)
       .send({
-        'url': 'http://example.org/1234'
+        'url': 'http://example.org/1234',
+        status_code: 301
       })
       .expect(401)
       .end(done)
@@ -66,7 +71,8 @@ describe('authentication', () => {
     request(server)
       .post(route)
       .send({
-        'url': 'http://example.org/1234'
+        'url': 'http://example.org/1234',
+        status_code: 301
       })
       .expect(401)
       .end(done)
@@ -77,7 +83,8 @@ describe('authentication', () => {
       .post('/')
       .auth(admin.username, admin.password)
       .send({
-        'url': 'http://example.org/qwer'
+        'url': 'http://example.org/qwer',
+        status_code: 301
       })
       .expect(201)
       .end(done)
@@ -88,7 +95,8 @@ describe('authentication', () => {
       .post('/')
       .auth(hacker.username, hacker.password)
       .send({
-        'url': 'http://example.org/qwer'
+        'url': 'http://example.org/qwer',
+        status_code: 301
       })
       .expect(401)
       .end(done)
@@ -98,7 +106,8 @@ describe('authentication', () => {
     request(server)
       .post('/')
       .send({
-        'url': 'http://example.org/qwer'
+        'url': 'http://example.org/qwer',
+        status_code: 301
       })
       .expect(401)
       .end(done)

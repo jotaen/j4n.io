@@ -71,9 +71,10 @@ module.exports = (server, credentials, shortlinks) => {
 
   server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
     const token = trimSlashes(req.params.token)
-    const data = {}
-    if (req.body.status_code) data.status_code = req.body.status_code
-    if (req.body.url) data.url = req.body.url
+    const data = {
+      url: req.body.url,
+      status_code: req.body.status_code
+    }
     shortlinks.update(token, data).then((shortlink) => {
       if (shortlink) {
         res
