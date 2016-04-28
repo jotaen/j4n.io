@@ -9,7 +9,7 @@ const protector = require('./protector')
 const redirector = require('./redirector')
 const auth = require('../auth')
 
-const handle = (error, res) => {
+const handle = res => error => {
   if (error === 'NOT_FOUND') {
     res.status(404).send({
       message: 'Error: resource not found',
@@ -40,9 +40,7 @@ module.exports = (server, credentials, shortlinks) => {
       res.status(data.status_code)
       .header('Location', data.url)
       .send(data)
-    }).catch((error) => {
-      handle(error, res)
-    })
+    }).catch(handle(res))
   })
 
   server.put('/:token', protector(admin), validator(request.shortlink), (req, res) => {
@@ -58,7 +56,7 @@ module.exports = (server, credentials, shortlinks) => {
           code: 405
         })
       } else {
-        handle(error, res)
+        handle(res)(error)
       }
     })
   })
@@ -72,9 +70,7 @@ module.exports = (server, credentials, shortlinks) => {
     shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+    }).catch(handle(res))
   })
 
   server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
@@ -88,17 +84,13 @@ module.exports = (server, credentials, shortlinks) => {
     }
     shortlinks.update(token, data).then((shortlink) => {
       res.status(200).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+    }).catch(handle(res))
   })
 
   server.delete('/:token', protector(admin), (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
       res.status(200).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+    }).catch(handle(res))
   })
 }
