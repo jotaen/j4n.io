@@ -9,18 +9,22 @@ const protector = require('./protector')
 const redirector = require('./redirector')
 const auth = require('../auth')
 
-const handle = (error, res) => {
+const handle = res => error => {
   if (error === 'NOT_FOUND') {
-    res.status(404).send({
-      message: 'Error: resource not found',
-      code: 404
-    })
+    handleNotFound(res)
   } else {
     res.status(500).send({
       message: 'Internal server error',
       code: 500
     })
   }
+}
+
+const handleNotFound = res => {
+  res.status(404).send({
+    message: 'Error: resource not found',
+    code: 404
+  })
 }
 
 module.exports = (server, credentials, shortlinks) => {
@@ -37,19 +41,14 @@ module.exports = (server, credentials, shortlinks) => {
   server.get('/:token', (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.find(token).then((data) => {
-      res.status(data.status_code)
-      .header('Location', data.url)
-      .send(data)
-    }).catch((error) => {
-      handle(error, res)
-    })
-  })
-
-  server.put('/', protector(admin), (_, res) => {
-    res.status(405).header('Allow', 'GET, POST').send({
-      message: 'Error - PUT is not allowed on the base route',
-      code: 405
-    })
+      if (data) {
+        res.status(data.status_code)
+        .header('Location', data.url)
+        .send(data)
+      } else {
+        handleNotFound(res)
+      }
+    }).catch(handle(res))
   })
 
   server.put('/:token', protector(admin), validator(request.shortlink), (req, res) => {
@@ -59,13 +58,13 @@ module.exports = (server, credentials, shortlinks) => {
     .then((shortlink) => {
       res.status(201).send(shortlink)
     }).catch((error) => {
-      if (error === 'ALREADY_EXISTS') {
+      if (error.message === 'ALREADY_EXISTS') {
         res.status(405).header('Allow', 'GET, POST').send({
           message: 'Error - PUT is not allowed on an existing resource',
           code: 405
         })
       } else {
-        handle(error, res)
+        handle(res)(error)
       }
     })
   })
@@ -79,9 +78,7 @@ module.exports = (server, credentials, shortlinks) => {
     shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
       res.status(201).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+    }).catch(handle(res))
   })
 
   server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
@@ -94,18 +91,22 @@ module.exports = (server, credentials, shortlinks) => {
       data.url = req.body.url
     }
     shortlinks.update(token, data).then((shortlink) => {
-      res.status(200).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+      if (shortlink) {
+        res.status(200).send(shortlink)
+      } else {
+        handleNotFound(res)
+      }
+    }).catch(handle(res))
   })
 
   server.delete('/:token', protector(admin), (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
-      res.status(200).send(shortlink)
-    }).catch((error) => {
-      handle(error, res)
-    })
+      if (shortlink) {
+        res.status(200).send(shortlink)
+      } else {
+        handleNotFound(res)
+      }
+    }).catch(handle(res))
   })
 }
