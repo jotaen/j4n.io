@@ -44,13 +44,12 @@ module.exports = (server, credentials, shortlinks) => {
 
     shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
-      res.status(201).send(shortlink)
+      res
+        .status(201)
+        .send(shortlink)
     }).catch((error) => {
-      if (error.message === 'ALREADY_EXISTS') {
-        handle.methodNotAllowed(res)
-      } else {
-        handle.internalError(res)
-      }
+      if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res)
+      else handle.internalError(res)
     })
   })
 
@@ -62,7 +61,9 @@ module.exports = (server, credentials, shortlinks) => {
 
     shortlinks.create(token, req.body.url, req.body.status_code)
     .then((shortlink) => {
-      res.status(201).send(shortlink)
+      res
+        .status(201)
+        .send(shortlink)
     }).catch(() => {
       handle.internalError(res)
     })
@@ -71,15 +72,13 @@ module.exports = (server, credentials, shortlinks) => {
   server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
     const token = trimSlashes(req.params.token)
     const data = {}
-    if (req.body.status_code) {
-      data.status_code = req.body.status_code
-    }
-    if (req.body.url) {
-      data.url = req.body.url
-    }
+    if (req.body.status_code) data.status_code = req.body.status_code
+    if (req.body.url) data.url = req.body.url
     shortlinks.update(token, data).then((shortlink) => {
       if (shortlink) {
-        res.status(200).send(shortlink)
+        res
+          .status(200)
+          .send(shortlink)
       } else {
         handle.notFound(res)
       }
@@ -92,7 +91,9 @@ module.exports = (server, credentials, shortlinks) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
       if (shortlink) {
-        res.status(200).send(shortlink)
+        res
+          .status(200)
+          .send(shortlink)
       } else {
         handle.notFound(res)
       }
