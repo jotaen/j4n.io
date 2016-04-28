@@ -19,11 +19,8 @@ module.exports = (collection) => {
       .insertOne(doc)
       .then((doc) => schema.output(doc.ops[0]))
       .catch((error) => {
-        if (error.code === 11000) {
-          throw new Error('ALREADY_EXISTS')
-        } else {
-          throw error
-        }
+        if (error.code === 11000) throw new Error('ALREADY_EXISTS')
+        else throw error
       })
   }
 
@@ -33,10 +30,12 @@ module.exports = (collection) => {
       if (doc) return schema.output(doc)
     })
 
-  odm.list = () => collection
-    .find()
-    .toArray()
-    .then((docs) => docs.map(schema.output))
+  odm.list = () => {
+    return collection
+      .find()
+      .toArray()
+      .then((docs) => docs.map(schema.output))
+  }
 
   odm.update = (token, changeset) => {
     changeset.updated = new Date()
