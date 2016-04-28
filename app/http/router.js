@@ -8,7 +8,7 @@ const validator = require('./validator')
 const protector = require('./protector')
 const redirector = require('./redirector')
 const auth = require('../auth')
-const error = require('./error')
+const handle = require('./handleError')
 
 module.exports = (server, credentials, shortlinks) => {
   const admin = auth(credentials.username, credentials.password)
@@ -32,10 +32,10 @@ module.exports = (server, credentials, shortlinks) => {
           .header('Location', data.url)
           .send(data)
       } else {
-        error.notFound(res)
+        handle.notFound(res)
       }
-    }).catch((error) => {
-      error.internal(res)
+    }).catch(() => {
+      handle.internalError(res)
     })
   })
 
@@ -47,9 +47,9 @@ module.exports = (server, credentials, shortlinks) => {
       res.status(201).send(shortlink)
     }).catch((error) => {
       if (error.message === 'ALREADY_EXISTS') {
-        error.notAllowed(res)
+        handle.methodNotAllowed(res)
       } else {
-        error.internal(res)
+        handle.internalError(res)
       }
     })
   })
@@ -64,7 +64,7 @@ module.exports = (server, credentials, shortlinks) => {
     .then((shortlink) => {
       res.status(201).send(shortlink)
     }).catch(() => {
-      error.internal(res)
+      handle.internalError(res)
     })
   })
 
@@ -81,10 +81,10 @@ module.exports = (server, credentials, shortlinks) => {
       if (shortlink) {
         res.status(200).send(shortlink)
       } else {
-        error.notFound(res)
+        handle.notFound(res)
       }
     }).catch(() => {
-      error.internal(res)
+      handle.internalError(res)
     })
   })
 
@@ -94,10 +94,10 @@ module.exports = (server, credentials, shortlinks) => {
       if (shortlink) {
         res.status(200).send(shortlink)
       } else {
-        error.notFound(res)
+        handle.notFound(res)
       }
     }).catch(() => {
-      error.internal(res)
+      handle.internalError(res)
     })
   })
 }
