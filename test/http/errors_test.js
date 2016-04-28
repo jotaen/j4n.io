@@ -8,19 +8,6 @@ const validate = require('./_validate')
 describe('errors', () => {
   const nonExistentRoute = '/sud8f6g6aqq1u2e'
 
-  it('PUT should not be allowed to be called on the base URI', (done) => {
-    request(server)
-      .put('/')
-      .auth(admin.username, admin.password)
-      .send({'url': 'not_a_valid_url'})
-      .expect(405)
-      .expect('Allow', 'GET, POST')
-      .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
-      })
-  })
-
   it('GET should return 404 on non existing resource', (done) => {
     request(server)
       .get(nonExistentRoute)

@@ -45,13 +45,6 @@ module.exports = (server, credentials, shortlinks) => {
     })
   })
 
-  server.put('/', protector(admin), (_, res) => {
-    res.status(405).header('Allow', 'GET, POST').send({
-      message: 'Error - PUT is not allowed on the base route',
-      code: 405
-    })
-  })
-
   server.put('/:token', protector(admin), validator(request.shortlink), (req, res) => {
     const token = trimSlashes(req.params.token)
 
