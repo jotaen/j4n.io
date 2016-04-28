@@ -11,16 +11,20 @@ const auth = require('../auth')
 
 const handle = res => error => {
   if (error === 'NOT_FOUND') {
-    res.status(404).send({
-      message: 'Error: resource not found',
-      code: 404
-    })
+    handleNotFound(res)
   } else {
     res.status(500).send({
       message: 'Internal server error',
       code: 500
     })
   }
+}
+
+const handleNotFound = res => {
+  res.status(404).send({
+    message: 'Error: resource not found',
+    code: 404
+  })
 }
 
 module.exports = (server, credentials, shortlinks) => {
@@ -37,9 +41,13 @@ module.exports = (server, credentials, shortlinks) => {
   server.get('/:token', (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.find(token).then((data) => {
-      res.status(data.status_code)
-      .header('Location', data.url)
-      .send(data)
+      if (data) {
+        res.status(data.status_code)
+        .header('Location', data.url)
+        .send(data)
+      } else {
+        handleNotFound(res)
+      }
     }).catch(handle(res))
   })
 
@@ -50,7 +58,7 @@ module.exports = (server, credentials, shortlinks) => {
     .then((shortlink) => {
       res.status(201).send(shortlink)
     }).catch((error) => {
-      if (error === 'ALREADY_EXISTS') {
+      if (error.message === 'ALREADY_EXISTS') {
         res.status(405).header('Allow', 'GET, POST').send({
           message: 'Error - PUT is not allowed on an existing resource',
           code: 405
@@ -83,14 +91,22 @@ module.exports = (server, credentials, shortlinks) => {
       data.url = req.body.url
     }
     shortlinks.update(token, data).then((shortlink) => {
-      res.status(200).send(shortlink)
+      if (shortlink) {
+        res.status(200).send(shortlink)
+      } else {
+        handleNotFound(res)
+      }
     }).catch(handle(res))
   })
 
   server.delete('/:token', protector(admin), (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
-      res.status(200).send(shortlink)
+      if (shortlink) {
+        res.status(200).send(shortlink)
+      } else {
+        handleNotFound(res)
+      }
     }).catch(handle(res))
   })
 }
