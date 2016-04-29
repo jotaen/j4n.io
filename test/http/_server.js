@@ -1,20 +1,19 @@
 'use strict'
 
-const express = require('express')
 const db = require('../../app/bootstrap/db')
 const config = require('../../app/bootstrap/config')
 const router = require('../../app/http/router')
 const odm = require('../../app/odm')
 const credentials = require('./_credentials')
-const server = express()
 
+let server
 const now = new Date()
 
-before((done) => {
+before(() => {
   db(config.dbUrl, 'shortlinks-system-test-' + now.toISOString()).then((collection) => {
     const shortlinks = odm(collection)
-    router(server, credentials, shortlinks)
-    done()
+    server = router(shortlinks, credentials)
+    run()
   }).catch((error) => {
     console.log(error)
     console.log('\n')

@@ -1,6 +1,7 @@
 'use strict'
 
 const schema = require('./schema')
+const db = require('')
 
 module.exports = (collection) => {
   const odm = {}

@@ -1,26 +1,15 @@
 'use strict'
 
-const express = require('express')
-const router = require('../http/router')
-const logging = require('morgan')
+const config = require('./config')
 const db = require('./db')
 const odm = require('../odm')
-const config = require('./config')
-const server = express()
-
+const router = require('../http/router')
 const credentials = {
   username: 'admin',
   password: config.password
 }
 
-if (config.debug) {
-  console.log('Debug mode active')
-  server.use(logging('dev'))
-}
-
-db(config.dbUrl, 'shortlinks').then((collection) => {
-  const shortlinks = odm(collection)
-  router(server, credentials, shortlinks)
+db(config.dbUrl, 'shortlinks').then(() => {
   server.listen(config.port, () => {
     console.log('Server listening on port ' + config.port + '…')
   })

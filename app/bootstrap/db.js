@@ -2,7 +2,7 @@
 
 const mongodb = require('mongodb')
 
-module.exports = (dbPath, collectionName) => {
+exports.init = (dbPath, collectionName) => {
   return mongodb.connect(dbPath).then((db) => {
     const collection = db.collection(collectionName)
     return new Promise((resolve, reject) => {

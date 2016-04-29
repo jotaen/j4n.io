@@ -25,7 +25,6 @@
     "express": "^4.13.4",
     "joi": "^8.0.5",
     "mongodb": "^2.1.16",
-    "morgan": "^1.6.1",
     "randomstring": "^1.1.4"
   },
   "devDependencies": {
