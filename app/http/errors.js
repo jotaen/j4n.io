@@ -40,9 +40,9 @@ exports.unprocessableEntity = (res, details) => {
 
 exports.internal = (res) => {
   res
-  .status(500)
-  .send({
-    message: 'Error: internal server error',
-    code: 500
-  })
+    .status(500)
+    .send({
+      message: 'Error: internal server error',
+      code: 500
+    })
 }

@@ -11,9 +11,7 @@ exports.init = (dbPath, collectionName) => {
       collection.createIndex({token: 1}, {unique: true}).then(() => {
         savedCollection = collection
         resolve(collection)
-      }).catch((error) => {
-        reject(error)
-      })
+      }).catch(reject)
     })
   })
 }
