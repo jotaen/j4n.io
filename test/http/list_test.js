@@ -1,13 +1,13 @@
 'use strict'
 
 const request = require('supertest')
-const server = require('./_server')
+const app = require('../../app/http/app')
 const validate = require('./_validate')
 const admin = require('./_credentials')
 
 describe('GET /', () => {
   it('should list all shortlinks on base URI', (done) => {
-    request(server)
+    request(app)
       .get('/')
       .auth(admin.username, admin.password)
       .expect(200)
