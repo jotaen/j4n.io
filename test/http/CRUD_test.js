@@ -2,8 +2,8 @@
 
 const request = require('supertest')
 const app = require('../../app/http/app')
+const config = require('../../app/bootstrap/config')
 const validate = require('./_validate')
-const admin = require('./_credentials')
 
 describe('CRUD operations', () => {
   const route = '/foobaz'
@@ -15,7 +15,7 @@ describe('CRUD operations', () => {
   it('PUT should accept and create a new resource', (done) => {
     request(app)
       .put(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'http://example.org/asdf',
         status_code: code
@@ -53,7 +53,7 @@ describe('CRUD operations', () => {
   it('POST should update the existing resource', (done) => {
     request(app)
       .post(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: url,
         status_code: 302
@@ -79,7 +79,7 @@ describe('CRUD operations', () => {
   it('DELETE should delete the resource', (done) => {
     request(app)
       .delete(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
@@ -99,7 +99,7 @@ describe('CRUD operations', () => {
   it('DELETE should return a 404 now', (done) => {
     request(app)
       .delete(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(404)
       .expect('Content-Type', /json/)
       .end(done)
@@ -108,7 +108,7 @@ describe('CRUD operations', () => {
   it('POST should return a 404 now', (done) => {
     request(app)
       .post(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: url,
         status_code: 302
@@ -121,7 +121,7 @@ describe('CRUD operations', () => {
   it('POST should create new resources under the base URI with random token', (done) => {
     request(app)
       .post('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: url,
         status_code: 305
@@ -139,7 +139,7 @@ describe('CRUD operations', () => {
   it('POST should not recreate a resource (i.e. it should return a different URI each time)', (done) => {
     request(app)
       .post('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: url,
         status_code: 404

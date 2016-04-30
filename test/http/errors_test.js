@@ -2,7 +2,7 @@
 
 const request = require('supertest')
 const app = require('../../app/http/app')
-const admin = require('./_credentials')
+const config = require('../../app/bootstrap/config')
 const validate = require('./_validate')
 
 describe('errors', () => {
@@ -11,7 +11,7 @@ describe('errors', () => {
   it('GET should return 404 on non existing resource', (done) => {
     request(app)
       .get(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(404)
       .expect('Content-Type', /json/)
       .end((err, res) => {
@@ -23,7 +23,7 @@ describe('errors', () => {
   it('DELETE should return 404 on non existing resource', (done) => {
     request(app)
       .delete(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(404)
       .expect('Content-Type', /json/)
       .end((err, res) => {
@@ -35,7 +35,7 @@ describe('errors', () => {
   it('POST should return 404 if resource if not available', (done) => {
     request(app)
       .post(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'https://yahoo.org',
         status_code: 301
@@ -48,7 +48,7 @@ describe('errors', () => {
   it('[PRECONDITION] Create a resource (needed for the next test case)', (done) => {
     request(app)
       .put('/lalala')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'http://example.org/qwer',
         status_code: 308
@@ -60,7 +60,7 @@ describe('errors', () => {
   it('PUT should refuse to overwrite an existing resource', (done) => {
     request(app)
       .put('/lalala')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'http://example.org/1234',
         status_code: 307

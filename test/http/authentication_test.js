@@ -2,7 +2,7 @@
 
 const request = require('supertest')
 const app = require('../../app/http/app')
-const admin = require('./_credentials')
+const config = require('../../app/bootstrap/config')
 const hacker = {username: 'h4ck3r', password: '3vil'}
 
 describe('authentication', () => {
@@ -11,7 +11,7 @@ describe('authentication', () => {
   it('PUT /... with authorization passes', (done) => {
     request(app)
       .put(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/asdf',
         status_code: 301
@@ -46,7 +46,7 @@ describe('authentication', () => {
   it('POST /... with authorization passes', (done) => {
     request(app)
       .post(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/1234',
         status_code: 301
@@ -81,7 +81,7 @@ describe('authentication', () => {
   it('POST / with authorization passes', (done) => {
     request(app)
       .post('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/qwer',
         status_code: 301
@@ -116,7 +116,7 @@ describe('authentication', () => {
   it('DELETE /... with authorization passes', (done) => {
     request(app)
       .delete(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(200)
       .end(done)
   })
@@ -139,7 +139,7 @@ describe('authentication', () => {
   it('GET / with authorization passes', (done) => {
     request(app)
       .get('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(200)
       .end(done)
   })
