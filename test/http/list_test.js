@@ -12,10 +12,9 @@ describe('GET /', () => {
       .auth(admin.username, admin.password)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        if (res.body instanceof Array) {
-          validate.shortlink(res.body[0]).then(done)
-        }
+      .end((err, res) => {
+        if (err) done(err)
+        else if (res.body instanceof Array) validate.shortlink(res.body[0]).then(done)
       })
   })
 })

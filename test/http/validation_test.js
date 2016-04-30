@@ -15,8 +15,9 @@ describe('validation', () => {
       .send({})
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -27,8 +28,9 @@ describe('validation', () => {
       .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -42,8 +44,9 @@ describe('validation', () => {
       })
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -54,8 +57,9 @@ describe('validation', () => {
       .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -69,8 +73,9 @@ describe('validation', () => {
       })
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -81,8 +86,9 @@ describe('validation', () => {
       .send({'url': 'not_a_valid_url'})
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -93,8 +99,9 @@ describe('validation', () => {
       .send({})
       .expect(422)
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 })

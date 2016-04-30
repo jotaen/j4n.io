@@ -13,10 +13,10 @@ describe('errors', () => {
       .get(nonExistentRoute)
       .auth(admin.username, admin.password)
       .expect(404)
-      .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -25,10 +25,10 @@ describe('errors', () => {
       .delete(nonExistentRoute)
       .auth(admin.username, admin.password)
       .expect(404)
-      .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
@@ -68,8 +68,9 @@ describe('errors', () => {
       .expect(405)
       .expect('Allow', 'GET, POST, DELETE')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 })
