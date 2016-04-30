@@ -4,3 +4,4 @@
 /.gitignore
 /.modulusignore
 /.travis.yml
+/.healthCheck.js
