@@ -1,17 +1,15 @@
 'use strict'
 
 const basicAuth = require('basic-auth')
+const handle = require('./errors')
 
-module.exports = (isAuthorized) => {
+module.exports = (secretUsername, secretPassword) => {
   return (req, res, next) => {
-    const loginAttempt = basicAuth(req)
-    if (isAuthorized(loginAttempt)) {
+    const loginAttempt = basicAuth(req) || {name: undefined, pass: undefined}
+    if (secretUsername === loginAttempt.name && secretPassword === loginAttempt.pass) {
       next()
     } else {
-      res.status(401).send({
-        message: 'Error – you are not authorized',
-        code: 401
-      })
+      handle.unauthorized(res)
     }
   }
 }

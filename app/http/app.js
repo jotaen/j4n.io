@@ -9,11 +9,9 @@ const request = require('./requestSchema')
 const validator = require('./validator')
 const protector = require('./protector')
 const redirector = require('./redirector')
-const auth = require('../auth')
-const handle = require('./handleError')
+const handle = require('./errors')
 const shortlinks = require('../odm')
 const config = require('../bootstrap/config')
-const admin = auth('admin', config.password)
 
 module.exports = router
 
@@ -22,7 +20,7 @@ router.use(bodyParser.json())
 router.get(
   '/',
   redirector('/', 'http://jotaen.net'),
-  protector(admin),
+  protector(config.username, config.password),
   (req, res) => {
     shortlinks.list().then((result) => {
       res
@@ -53,7 +51,7 @@ router.get(
 
 router.put(
   '/:token',
-  protector(admin),
+  protector(config.username, config.password),
   validator(request.shortlink),
   (req, res) => {
     const token = trimSlashes(req.params.token)
@@ -64,7 +62,7 @@ router.put(
         .status(201)
         .send(shortlink)
     }).catch((error) => {
-      if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res)
+      if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res, 'GET, POST, DELETE')
       else handle.internalError(res)
     })
   }
@@ -72,7 +70,7 @@ router.put(
 
 router.post(
   '/',
-  protector(admin),
+  protector(config.username, config.password),
   validator(request.shortlink),
   (req, res) => {
     let token = randomToken.generate({
@@ -93,7 +91,7 @@ router.post(
 
 router.post(
   '/:token',
-  protector(admin),
+  protector(config.username, config.password),
   validator(request.shortlink),
   (req, res) => {
     const token = trimSlashes(req.params.token)
@@ -117,7 +115,7 @@ router.post(
 
 router.delete(
   '/:token',
-  protector(admin),
+  protector(config.username, config.password),
   (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
