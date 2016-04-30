@@ -28,10 +28,3 @@ Run `npm test` for the complete test-suite including linter. For the db and http
 `DB_HOST=localhost:27017 npm test`
 
 See `package.json` for the commands to run the single test suites – they are faster to execute.
-
-
-## TODOs for version 1.0
-
-- Router: Make sure, the randomly created tokens by "POST /" are in fact unique
-- (Global) versioning parameter
-- api.yml: Insert authentication info

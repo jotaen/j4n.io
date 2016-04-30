@@ -2,15 +2,37 @@ swagger: "2.0"
 info:
   title: j4n.io
   description: RESTful shortlink service
-  version: "alpha"
+  version: "1.0"
 schemes:
   - http
+host: j4n.io
 produces:
   - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication.
 paths:
   /:
+    get:
+      security:
+       - basicAuth: []
+      summary: Retrieve complete list of shortlinks
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/shortlink"
     post:
+      security:
+       - basicAuth: []
       summary: Create shortlink with random token
+      parameters:
+      - name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/request'
       responses:
         201:
           description: Shortlink was created successfully
@@ -20,18 +42,28 @@ paths:
     get:
       summary: Redirect to deposit URL
       responses:
-        301:
-          description: OK
+        default:
+          description: The status code, which was stored for this shortlink
           schema:
             $ref: "#/definitions/shortlink"
     post:
+      security:
+       - basicAuth: []
       summary: Update shortlink information
+      parameters:
+      - name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/request'
       responses:
         200:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
     delete:
+      security:
+       - basicAuth: []
       summary: Delete shortlink resource
       responses:
         200:
@@ -39,28 +71,46 @@ paths:
           schema:
             $ref: "#/definitions/shortlink"
     put:
+      security:
+       - basicAuth: []
       summary: Create a new shortlink under this very path
+      parameters:
+      - name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/request'
       responses:
         200:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
 definitions:
+  request:
+    type: object
+    properties:
+      url:
+        type: string
+        description: The URL where the shortlink is about to redirect
+      status_code:
+        type: integer
+        description: The HTTP status code for this shortlink
+      version:
+        type: number
+        format: float
+        description: The API version
   shortlink:
     type: object
     properties:
-      _id:
-        type: string
-        description: Unique, internal identifier
-      path:
+      token:
         type: string
         description: The path under which the shortlink is reachable
       url:
         type: string
         description: The URL where the shortlink is about to redirect
-      redirect_code:
+      status_code:
         type: integer
-        description: The HTTP status code for this redirection
+        description: The HTTP status code for this shortlink
       created:
         type: string
         format: date
