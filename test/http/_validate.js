@@ -1,10 +1,10 @@
 'use strict'
 
-const schema = require('../../app/schema')
+const validate = require('../_validate_output')
 
 exports.shortlink = (body) => {
   return new Promise((resolve, reject) => {
-    if (schema.validate(body)) {
+    if (validate(body)) {
       resolve()
     } else {
       reject()
