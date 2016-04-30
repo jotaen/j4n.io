@@ -17,6 +17,7 @@
     "unit-tests": "mocha test/unit",
     "db-tests": "mocha test/db",
     "http-tests": "mocha test/http",
+    "health-check": "mocha healthCheck.js --timeout 10000 --slow 1000",
     "statistics": "echo \"Lines of code:\\n\" && find app/ -name \"*.js\" | xargs wc -l"
   },
   "dependencies": {
