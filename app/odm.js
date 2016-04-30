@@ -1,60 +1,55 @@
 'use strict'
 
-const convert = require('./convert')
+const transform = require('./transform')
+const collection = require('./bootstrap/db').collection
 
-module.exports = (collection) => {
-  const odm = {}
+exports.create = (token, url, statusCode) => {
+  const now = new Date()
+  const doc = transform.input({
+    token: String(token),
+    url: url,
+    status_code: (typeof statusCode !== 'undefined' ? parseInt(statusCode) : 301),
+    created: now,
+    updated: now
+  })
 
-  odm.create = (token, url, statusCode) => {
-    const now = new Date()
-    const doc = convert.input({
-      token: String(token),
-      url: url,
-      status_code: (typeof statusCode !== 'undefined' ? parseInt(statusCode) : 301),
-      created: now,
-      updated: now
+  return collection()
+    .insertOne(doc)
+    .then((doc) => transform.output(doc.ops[0]))
+    .catch((error) => {
+      if (error.code === 11000) throw new Error('ALREADY_EXISTS')
+      else throw error
     })
-
-    return collection
-      .insertOne(doc)
-      .then((doc) => convert.output(doc.ops[0]))
-      .catch((error) => {
-        if (error.code === 11000) throw new Error('ALREADY_EXISTS')
-        else throw error
-      })
-  }
-
-  odm.find = (token) => collection
-    .findOne({token: token})
-    .then((doc) => {
-      if (doc) return convert.output(doc)
-    })
-
-  odm.list = () => {
-    return collection
-      .find()
-      .toArray()
-      .then((docs) => docs.map(convert.output))
-  }
-
-  odm.update = (token, changeset) => {
-    changeset.updated = new Date()
-    return collection
-      .findOneAndUpdate({token: token}, {
-        $set: convert.input(changeset)
-      }, {
-        returnOriginal: false
-      })
-      .then((doc) => {
-        if (doc.value) return convert.output(doc.value)
-      })
-  }
-
-  odm.delete = (token) => collection
-    .findOneAndDelete({token: token})
-    .then((doc) => {
-      if (doc.value) return convert.output(doc.value)
-    })
-
-  return odm
 }
+
+exports.find = (token) => collection()
+  .findOne({token: token})
+  .then((doc) => {
+    if (doc) return transform.output(doc)
+  })
+
+exports.list = () => {
+  return collection()
+    .find()
+    .toArray()
+    .then((docs) => docs.map(transform.output))
+}
+
+exports.update = (token, changeset) => {
+  changeset.updated = new Date()
+  return collection()
+    .findOneAndUpdate({token: token}, {
+      $set: transform.input(changeset)
+    }, {
+      returnOriginal: false
+    })
+    .then((doc) => {
+      if (doc.value) return transform.output(doc.value)
+    })
+}
+
+exports.delete = (token) => collection()
+  .findOneAndDelete({token: token})
+  .then((doc) => {
+    if (doc.value) return transform.output(doc.value)
+  })

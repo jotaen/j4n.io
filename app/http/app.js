@@ -2,28 +2,39 @@
 
 const bodyParser = require('body-parser')
 const randomToken = require('randomstring')
+const express = require('express')
+const router = express()
 const trimSlashes = require('../trimSlashes')
-const request = require('./request')
+const request = require('./requestSchema')
 const validator = require('./validator')
 const protector = require('./protector')
 const redirector = require('./redirector')
 const auth = require('../auth')
 const handle = require('./handleError')
+const shortlinks = require('../odm')
+const config = require('../bootstrap/config')
+const admin = auth('admin', config.password)
 
-module.exports = (server, credentials, shortlinks) => {
-  const admin = auth(credentials.username, credentials.password)
+module.exports = router
 
-  server.use(bodyParser.json())
+router.use(bodyParser.json())
 
-  server.get('/', redirector('/', 'http://jotaen.net'), protector(admin), (req, res) => {
+router.get(
+  '/',
+  redirector('/', 'http://jotaen.net'),
+  protector(admin),
+  (req, res) => {
     shortlinks.list().then((result) => {
       res
         .status(200)
         .send(result)
     })
-  })
+  }
+)
 
-  server.get('/:token', (req, res) => {
+router.get(
+  '/:token',
+  (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.find(token).then((data) => {
       if (data) {
@@ -37,9 +48,14 @@ module.exports = (server, credentials, shortlinks) => {
     }).catch(() => {
       handle.internalError(res)
     })
-  })
+  }
+)
 
-  server.put('/:token', protector(admin), validator(request.shortlink), (req, res) => {
+router.put(
+  '/:token',
+  protector(admin),
+  validator(request.shortlink),
+  (req, res) => {
     const token = trimSlashes(req.params.token)
 
     shortlinks.create(token, req.body.url, req.body.status_code)
@@ -51,9 +67,14 @@ module.exports = (server, credentials, shortlinks) => {
       if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res)
       else handle.internalError(res)
     })
-  })
+  }
+)
 
-  server.post('/', protector(admin), validator(request.shortlink), (req, res) => {
+router.post(
+  '/',
+  protector(admin),
+  validator(request.shortlink),
+  (req, res) => {
     let token = randomToken.generate({
       charset: 'alphanumeric',
       length: 5
@@ -67,9 +88,14 @@ module.exports = (server, credentials, shortlinks) => {
     }).catch(() => {
       handle.internalError(res)
     })
-  })
+  }
+)
 
-  server.post('/:token', protector(admin), validator(request.shortlink), (req, res) => {
+router.post(
+  '/:token',
+  protector(admin),
+  validator(request.shortlink),
+  (req, res) => {
     const token = trimSlashes(req.params.token)
     const data = {
       url: req.body.url,
@@ -86,9 +112,13 @@ module.exports = (server, credentials, shortlinks) => {
     }).catch(() => {
       handle.internalError(res)
     })
-  })
+  }
+)
 
-  server.delete('/:token', protector(admin), (req, res) => {
+router.delete(
+  '/:token',
+  protector(admin),
+  (req, res) => {
     const token = trimSlashes(req.params.token)
     shortlinks.delete(token).then((shortlink) => {
       if (shortlink) {
@@ -101,5 +131,5 @@ module.exports = (server, credentials, shortlinks) => {
     }).catch(() => {
       handle.internalError(res)
     })
-  })
-}
+  }
+)

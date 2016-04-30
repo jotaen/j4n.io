@@ -1,17 +1,17 @@
 'use strict'
 
 const request = require('supertest')
-const server = require('./_server')
-const admin = require('./_credentials')
+const app = require('../../app/http/app')
+const config = require('../../app/bootstrap/config')
 const hacker = {username: 'h4ck3r', password: '3vil'}
 
 describe('authentication', () => {
   const route = '/test123'
 
   it('PUT /... with authorization passes', (done) => {
-    request(server)
+    request(app)
       .put(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/asdf',
         status_code: 301
@@ -21,7 +21,7 @@ describe('authentication', () => {
   })
 
   it('PUT /... with wrong credentials fails', (done) => {
-    request(server)
+    request(app)
       .put(route)
       .auth(hacker.username, hacker.password)
       .send({
@@ -33,7 +33,7 @@ describe('authentication', () => {
   })
 
   it('PUT /... without any credentials fails', (done) => {
-    request(server)
+    request(app)
       .put(route)
       .send({
         'url': 'http://example.org/asdf',
@@ -44,9 +44,9 @@ describe('authentication', () => {
   })
 
   it('POST /... with authorization passes', (done) => {
-    request(server)
+    request(app)
       .post(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/1234',
         status_code: 301
@@ -56,7 +56,7 @@ describe('authentication', () => {
   })
 
   it('POST /... with wrong credentials fails', (done) => {
-    request(server)
+    request(app)
       .post(route)
       .auth(hacker.username, hacker.password)
       .send({
@@ -68,7 +68,7 @@ describe('authentication', () => {
   })
 
   it('POST /... without any credentials fails', (done) => {
-    request(server)
+    request(app)
       .post(route)
       .send({
         'url': 'http://example.org/1234',
@@ -79,9 +79,9 @@ describe('authentication', () => {
   })
 
   it('POST / with authorization passes', (done) => {
-    request(server)
+    request(app)
       .post('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         'url': 'http://example.org/qwer',
         status_code: 301
@@ -91,7 +91,7 @@ describe('authentication', () => {
   })
 
   it('POST / with wrong credentials fails', (done) => {
-    request(server)
+    request(app)
       .post('/')
       .auth(hacker.username, hacker.password)
       .send({
@@ -103,7 +103,7 @@ describe('authentication', () => {
   })
 
   it('POST / without any credentials fails', (done) => {
-    request(server)
+    request(app)
       .post('/')
       .send({
         'url': 'http://example.org/qwer',
@@ -114,15 +114,15 @@ describe('authentication', () => {
   })
 
   it('DELETE /... with authorization passes', (done) => {
-    request(server)
+    request(app)
       .delete(route)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(200)
       .end(done)
   })
 
   it('DELETE /... with wrong credentials fails', (done) => {
-    request(server)
+    request(app)
       .delete(route)
       .auth(hacker.username, hacker.password)
       .expect(401)
@@ -130,22 +130,22 @@ describe('authentication', () => {
   })
 
   it('DELETE /... without any credentials fails', (done) => {
-    request(server)
+    request(app)
       .delete(route)
       .expect(401)
       .end(done)
   })
 
   it('GET / with authorization passes', (done) => {
-    request(server)
+    request(app)
       .get('/')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(200)
       .end(done)
   })
 
   it('GET / with wrong credentials fails', (done) => {
-    request(server)
+    request(app)
       .get('/')
       .auth(hacker.username, hacker.password)
       .expect(401)
@@ -153,7 +153,7 @@ describe('authentication', () => {
   })
 
   it('GET / without any credentials results in a redirect', (done) => {
-    request(server)
+    request(app)
       .get('/')
       .expect(301)
       .expect('Location', 'http://jotaen.net')

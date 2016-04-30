@@ -1,41 +1,41 @@
 'use strict'
 
 const request = require('supertest')
-const server = require('./_server')
-const admin = require('./_credentials')
+const app = require('../../app/http/app')
+const config = require('../../app/bootstrap/config')
 const validate = require('./_validate')
 
 describe('errors', () => {
   const nonExistentRoute = '/sud8f6g6aqq1u2e'
 
   it('GET should return 404 on non existing resource', (done) => {
-    request(server)
+    request(app)
       .get(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(404)
-      .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
   it('DELETE should return 404 on non existing resource', (done) => {
-    request(server)
+    request(app)
       .delete(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .expect(404)
-      .expect('Allow', 'GET, POST')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 
   it('POST should return 404 if resource if not available', (done) => {
-    request(server)
+    request(app)
       .post(nonExistentRoute)
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'https://yahoo.org',
         status_code: 301
@@ -46,9 +46,9 @@ describe('errors', () => {
   })
 
   it('[PRECONDITION] Create a resource (needed for the next test case)', (done) => {
-    request(server)
+    request(app)
       .put('/lalala')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'http://example.org/qwer',
         status_code: 308
@@ -58,9 +58,9 @@ describe('errors', () => {
   })
 
   it('PUT should refuse to overwrite an existing resource', (done) => {
-    request(server)
+    request(app)
       .put('/lalala')
-      .auth(admin.username, admin.password)
+      .auth(config.username, config.password)
       .send({
         url: 'http://example.org/1234',
         status_code: 307
@@ -68,8 +68,9 @@ describe('errors', () => {
       .expect(405)
       .expect('Allow', 'GET, POST, DELETE')
       .expect('Content-Type', /json/)
-      .end((_, res) => {
-        validate.error(res.body).then(done)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
       })
   })
 })

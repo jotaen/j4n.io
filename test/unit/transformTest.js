@@ -1,12 +1,12 @@
 'use strict'
 
 const assert = require('assert')
-const convert = require('../../app/convert')
+const tansform = require('../../app/transform')
 const validate = require('../_validate_output')
 
-describe('convert', () => {
+describe('tansform', () => {
   it('should leave correct data untouched', () => {
-    const result = convert.input({
+    const result = tansform.input({
       token: 'asdf',
       url: 'http://googe.de',
       status_code: 302,
@@ -18,7 +18,7 @@ describe('convert', () => {
   })
 
   it('should cast the types into the desired format', () => {
-    const result = convert.input({
+    const result = tansform.input({
       token: 12345,
       url: 'http://googe.de',
       status_code: '302',
@@ -30,7 +30,7 @@ describe('convert', () => {
   })
 
   it('should liberate the data from unknown properties', () => {
-    const result = convert.input({
+    const result = tansform.input({
       token: 'asdf',
       foo: 'bar',
       url: 'http://googe.de',
@@ -45,12 +45,12 @@ describe('convert', () => {
   })
 
   it('should not expect the presence of any property', () => {
-    const result = convert.input({})
+    const result = tansform.input({})
     assert(Object.keys(result).length === 0)
   })
 
   it('should remove the mongo-id on output', () => {
-    const result = convert.output({
+    const result = tansform.output({
       _id: 'a6028bc9b87a6816aa8dc069c7e901b3',
       token: 'asdf',
       url: 'http://googe.de',

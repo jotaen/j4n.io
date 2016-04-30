@@ -2,15 +2,13 @@
 
 const db = require('../../app/bootstrap/db')
 const config = require('../../app/bootstrap/config')
-const odm = require('../../app/odm')
+const shortlinks = require('../../app/odm')
 const assert = require('assert')
 
-let shortlinks
 const now = new Date()
 
 before((done) => {
-  db(config.dbUrl, 'shortlinks-integration-test-' + now.toISOString()).then((collection) => {
-    shortlinks = odm(collection)
+  db.init(config.dbUrl, 'shortlinks-integration-test-' + now.toISOString()).then(() => {
     done()
   }).catch((error) => {
     console.log(error)
@@ -18,6 +16,7 @@ before((done) => {
     console.log('>>> In order to run this test, you need to have a mongodb and')
     console.log('>>> provide the DB_HOST variable to the test process. E.g.')
     console.log('>>> $ DB_HOST=localhost:27017 npm test')
+    process.exit(1)
   })
 })
 
