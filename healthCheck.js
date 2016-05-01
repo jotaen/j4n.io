@@ -8,6 +8,9 @@ const url = 'http://j4n.io'
 const now = new Date()
 const route = '/healthCheckTest_' + now.getTime()
 
+/* global describe */
+/* global it */
+
 describe('Health check against production system', () => {
   it('Call on URL results in redirect', (done) => {
     request(url)

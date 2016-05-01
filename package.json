@@ -12,7 +12,7 @@
     "start": "node ./app/bootstrap/server.js",
     "pretest": "npm run --silent linter",
     "test": "mocha",
-    "linter": "eslint app test ./app/http/serve.js",
+    "linter": "eslint .",
     "coverage": "istanbul cover _mocha",
     "unit-tests": "mocha test/unit",
     "db-tests": "mocha test/db",
