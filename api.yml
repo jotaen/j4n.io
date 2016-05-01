@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: j4n.io
   description: RESTful shortlink service
-  version: "1.0"
+  version: "v1"
 schemes:
   - http
 host: j4n.io
@@ -18,6 +18,12 @@ paths:
       security:
        - basicAuth: []
       summary: Retrieve complete list of shortlinks
+      parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       responses:
         200:
           description: OK
@@ -28,9 +34,13 @@ paths:
        - basicAuth: []
       summary: Create shortlink with random token
       parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       - name: request
         in: body
-        required: true
         schema:
           $ref: '#/definitions/request'
       responses:
@@ -38,9 +48,19 @@ paths:
           description: Shortlink was created successfully
           schema:
             $ref: "#/definitions/shortlink"
+        422:
+          description: Invalid parameters
+          schema:
+            $ref: "#/definitions/error"
   /:token:
     get:
       summary: Redirect to deposit URL
+      parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       responses:
         default:
           description: The status code, which was stored for this shortlink
@@ -51,9 +71,13 @@ paths:
        - basicAuth: []
       summary: Update shortlink information
       parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       - name: request
         in: body
-        required: true
         schema:
           $ref: '#/definitions/request'
       responses:
@@ -61,10 +85,20 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
+        422:
+          description: Invalid parameters
+          schema:
+            $ref: "#/definitions/error"
     delete:
       security:
        - basicAuth: []
       summary: Delete shortlink resource
+      parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       responses:
         200:
           description: OK
@@ -75,9 +109,13 @@ paths:
        - basicAuth: []
       summary: Create a new shortlink under this very path
       parameters:
+      - name: api
+        in: query
+        description: The desired API version, e.g. `v1`, `v2`, etc. Defaults to the latest version.
+        required: false
+        type: string
       - name: request
         in: body
-        required: true
         schema:
           $ref: '#/definitions/request'
       responses:
@@ -85,9 +123,16 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
+        422:
+          description: Invalid parameters
+          schema:
+            $ref: "#/definitions/error"
 definitions:
   request:
     type: object
+    required:
+    - url
+    - status_code
     properties:
       url:
         type: string
@@ -95,10 +140,6 @@ definitions:
       status_code:
         type: integer
         description: The HTTP status code for this shortlink
-      version:
-        type: number
-        format: float
-        description: The API version
   shortlink:
     type: object
     properties:
@@ -119,3 +160,20 @@ definitions:
         type: string
         format: date
         description: Timestamp when this shortlink resource was updated the last time (ISO 8601)
+  error:
+    type: object
+    required:
+    - message
+    - code
+    properties:
+      message:
+        type: string
+        description: Human readable error message
+      code:
+        type: integer
+        description: HTTP status code of this error
+      details:
+        type: array
+        items:
+          type: string
+        description: Detailed information about
