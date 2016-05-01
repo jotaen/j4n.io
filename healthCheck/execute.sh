@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Wait for servo to come up...
-sleep 10
-
 message="Health check failed! j4n.io seems not to be healthy."
 color="danger"
 
