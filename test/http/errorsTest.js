@@ -73,4 +73,17 @@ describe('errors', () => {
         else validate.error(res.body).then(done)
       })
   })
+
+  it('should refuse unkown methods, such as PATCH', (done) => {
+    request(app)
+      .patch('/lalala')
+      .auth(config.username, config.password)
+      .expect(405)
+      .expect('Allow', 'GET, POST, PUT, DELETE')
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if (err) done(err)
+        else validate.error(res.body).then(done)
+      })
+  })
 })

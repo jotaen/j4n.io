@@ -131,3 +131,7 @@ router.delete(
     })
   }
 )
+
+router.all('*', (req, res) => {
+  handle.methodNotAllowed(res, 'GET, POST, PUT, DELETE')
+})
