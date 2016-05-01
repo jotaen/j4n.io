@@ -3,7 +3,6 @@
 const request = require('supertest')
 const config = require('../app/bootstrap/config')
 const validate = require('../test/http/_validate')
-const http = require('http')
 
 const url = 'http://j4n.io'
 const now = new Date()
