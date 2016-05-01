@@ -3,10 +3,8 @@
 const db = require('../../app/bootstrap/db')
 const config = require('../../app/bootstrap/config')
 
-const now = new Date()
-
 before((done) => {
-  db.init(config.dbUrl, 'shortlinks-system-test-' + now.toISOString()).then(() => {
+  db.init(config.dbUrl, 'shortlinks-system-test-' + (new Date()).toISOString()).then(() => {
     done()
   }).catch((error) => {
     console.log(error)

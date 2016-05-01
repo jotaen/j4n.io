@@ -5,8 +5,7 @@ const config = require('../app/bootstrap/config')
 const validate = require('../test/http/_validate')
 
 const url = 'http://j4n.io'
-const now = new Date()
-const route = '/healthCheckTest_' + now.getTime()
+const route = '/healthCheckTest_' + (new Date()).getTime()
 
 /* global describe */
 /* global it */

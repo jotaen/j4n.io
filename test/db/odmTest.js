@@ -5,10 +5,8 @@ const config = require('../../app/bootstrap/config')
 const shortlinks = require('../../app/odm')
 const assert = require('assert')
 
-const now = new Date()
-
 before((done) => {
-  db.init(config.dbUrl, 'shortlinks-integration-test-' + now.toISOString()).then(() => {
+  db.init(config.dbUrl, 'shortlinks-integration-test-' + (new Date()).toISOString()).then(() => {
     done()
   }).catch((error) => {
     console.log(error)
