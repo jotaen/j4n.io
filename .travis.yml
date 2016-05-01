@@ -4,11 +4,14 @@ node_js:
 - '5.5'
 services:
 - mongodb
-after_script:
-- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+notifications:
+  slack:
+    secure: kmmBHxnXboUR47xrA0NhVRBtx769tcp5wM47cxkCEOS6PISt0m9sRF5qKtEYx095eVxm0hYMOz5Ov8S1+0y+csSQnukksOlROaFAskzFr2IfnbEA66iAPUYeyvmcEyNkYbOAFeK2LoX4lOopYEwelB9g7VQt76Tgflx+smezAZz3/UynLCtTJU+CMErYHeZqqKVq2XcA4VI9RV9zvFmuU3p8lrEwatJ1SoQFnsHGKt1OiILbQ0wJumhE0jkm++XxoqS7is52FxLZ13BSF/epJltDBkkjAC5yMMte0XvtpjyiMz632ZmQzYRFtExrIyq7yGkHp6f2EewJ2DOxOkZ/KsETtYfIJtiU4s3xmYAMdrdhFH0UH1wnTNngEf2R7RX7l6w/qX+/grznLVylvNzTXvxpeaKc9/5k7XY/2NVaUWDZTdvNDe5SWm+TT/hg2Y5yG+naaCaYieM8luevPnE5PwMlRex1uTlvpk2L3wsiEsDx/5b9Ggf98roEJ6fuz5UzBiGo16nuwXjy9mZtMMctc43LF3Soy16OmZT4zIp4u8oPg5R9HoaNKcnBPtdM4P3HjnKP0dDpdUv2kAb1ZB5BZVqJgp0t5cMZM30fdRcW1pwh/cWdN4OzlUy/q/zMp+yOfK/EXLrgGOq/MychC+UZHG93nECkXkEiKC0SwQIyb7c=
 deploy:
   provider: modulus
   api_key:
     secure: APCqNnTyAFLnw38OZa//AgmSW4qieEIFsnHs6KISUZT4bxEgE2//fkwNJXKo/xmEtWhfhsbtlIOsKXErATRaJYC0Lh8Wr9EwjPb37V+/rfZBwsx3Y9/H6t0ZxzFARxifFBcqTM1Jp3FbyT1Ec7KWdPUgDx86z95KHwTXZQMZjV6VmLaunRNjR5o380sFym7WxIlVRjVrkvO33uynUCuKA2/lPirtfqEA4diKIAYVlhUUXTPvhZB0Umno0Mz21pnzuKy+PWHLmlWPfi8WGOOQRBoe3Lr0KSKBfMAYH3pFJVwdgbZSkcZ9QLGkQ0oYsik+CuozL3b/HHLbeNbwcRoTIHQWHOl7YziLZus0oBc54pG9hFD+z3h+geQzGHg1Al+Y0mNVGXRNU7u6O1HHI07M4RWyFcNiaL0sF/iERVgZQHsJaes1CwvtN4nn9ewtGGt56QKFpYtC7EehlEFZ2FOpPKmzfk+nP8w7QPds7E0uNE9QlpD4+k6RIFicqZDJBbeloj9pTQQGlogh7SAvXLtbu+/AEnHrFZ82Z9Cq+fAQrtZskMpqb3u8fshQIY6YDNq6wMNsxhlRdrWYqycRHfr6QUdXtUWsiomH9ZG264+gQ70VDM1MuwEa3IoUp9mgejwC/VCSPBoJwR7VpwvuoaJv8iB1SmS6ayv9DFzrqkDKnhE=
   project_name: j4n.io
 after_deploy: npm run health-check
+after_script:
+- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
