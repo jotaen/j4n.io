@@ -5,7 +5,7 @@ const app = require('../../app/http/app')
 const config = require('../../app/bootstrap/config')
 const hacker = {username: 'h4ck3r', password: '3vil'}
 
-describe('authentication', () => {
+describe('API authentication', () => {
   const route = '/test123'
 
   it('PUT /... with authorization passes', (done) => {

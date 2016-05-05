@@ -1,16 +1,18 @@
 'use strict'
 
-exports.input = (doc) => {
-  const result = {}
-  if (doc.token) result.token = String(doc.token)
-  if (doc.url) result.url = String(doc.url)
-  if (doc.status_code) result.status_code = parseInt(doc.status_code)
-  if (doc.created) result.created = doc.created.toISOString()
-  if (doc.updated) result.updated = doc.updated.toISOString()
-  return result
+exports.apiResponse = (doc) => {
+  return {
+    token: doc.token,
+    url: doc.url,
+    status_code: doc.status_code,
+    created: doc.created.toISOString(),
+    updated: doc.updated.toISOString()
+  }
 }
 
-exports.output = (doc) => {
-  delete doc._id
-  return doc
+exports.token = (token) => {
+  token = String(token)
+  token = token.replace(/^\/+/, '')
+  token = token.replace(/\/+$/, '')
+  return token
 }
