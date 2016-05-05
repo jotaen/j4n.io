@@ -1,6 +1,7 @@
 'use strict'
 
 exports.apiResponse = (data) => {
+  if (Object.keys(data).length !== 5) return false
   if (typeof data.token !== 'string') return false
   if (typeof data.status_code !== 'number') return false
   if (typeof data.url !== 'string') return false
@@ -24,6 +25,7 @@ exports.errorResponse = (data) => {
 }
 
 exports.odmInput = (data) => {
+  if (Object.keys(data).length !== 2) return false
   if (typeof data.status_code !== 'number') return false
   if (typeof data.url !== 'string') return false
 

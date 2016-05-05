@@ -39,6 +39,13 @@ describe('ODM integration test', () => {
     })
   })
 
+  it('should not recreate the same document', (done) => {
+    shortlinks.create('foo', 'http://google.com', 302).catch((error) => {
+      assert(error.message === 'ALREADY_EXISTS')
+      done()
+    })
+  })
+
   it('should return the new document with correct data/format', (done) => {
     shortlinks.find('foo').then((result) => {
       assert(isValid.odmOutput(result))
@@ -84,7 +91,15 @@ describe('ODM integration test', () => {
   })
 
   it('should delete an existing document', (done) => {
-    shortlinks.delete('foo').then(() => {
+    shortlinks.delete('foo').then((doc) => {
+      assert(doc.token === 'foo')
+      done()
+    })
+  })
+
+  it('should not delete the same document twice', (done) => {
+    shortlinks.delete('foo').then((doc) => {
+      assert(doc === undefined)
       done()
     })
   })
