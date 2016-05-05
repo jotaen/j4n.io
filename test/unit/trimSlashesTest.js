@@ -18,6 +18,13 @@ describe('#trimSlashes()', () => {
     assert.strictEqual(result, expect)
   })
 
+  it('should trim all leading slashes', () => {
+    const input = '//////foo'
+    const expect = 'foo'
+    const result = trimSlashes(input)
+    assert.strictEqual(result, expect)
+  })
+
   it('should trim the trailing slash', () => {
     const input = 'foo/'
     const expect = 'foo'
