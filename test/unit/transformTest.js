@@ -5,49 +5,6 @@ const transform = require('../../app/transform')
 const isValid = require('../_isValid')
 
 describe('#transform', () => {
-  describe('#odmInput()', () => {
-    it('should leave correct data untouched', () => {
-      const result = transform.odmInput({
-        url: 'http://googe.de',
-        status_code: 302
-      })
-
-      assert(isValid.odmInput(result))
-    })
-
-    it('should cast the types into the desired format', () => {
-      const result = transform.odmInput({
-        url: 'http://googe.de',
-        status_code: '302'
-      })
-
-      assert(isValid.odmInput(result))
-    })
-
-    it('should liberate the data from unknown or unwanted properties', () => {
-      const result = transform.odmInput({
-        foo: 'bar',
-        url: 'http://googe.de',
-        status_code: 302,
-        created: new Date(),
-        updated: new Date(),
-        lalala: 'hooray!!!'
-      })
-
-      assert(isValid.odmInput(result))
-      assert(Object.keys(result).length === 2)
-    })
-
-    it('should default the status_code property to 301', () => {
-      const result = transform.odmInput({
-        url: 'http://example.org'
-      })
-
-      assert(isValid.odmInput(result))
-      assert(result.status_code === 301)
-    })
-  })
-
   describe('#apiResponse()', () => {
     it('should remove the mongo-id on output', () => {
       const result = transform.apiResponse({

@@ -20,6 +20,16 @@ describe('API errors', () => {
         .end(body(isValid.errorResponse, done))
     })
 
+    it('PUT should fail if parameter `status_code` is not given (since it is required)', (done) => {
+      request(app)
+        .put(route)
+        .auth(config.username, config.password)
+        .send({'url': 'http://google.de'})
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(body(isValid.errorResponse, done))
+    })
+
     it('PUT should reject the request, if parameter `url` is invalid', (done) => {
       request(app)
         .put(route)
@@ -37,6 +47,20 @@ describe('API errors', () => {
         .send({
           'url': 'http://google.de',
           'status_code': 'not_a_valid_status_code'
+        })
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(body(isValid.errorResponse, done))
+    })
+
+    it('PUT should reject the request, if unknown parameters are present', (done) => {
+      request(app)
+        .put(route)
+        .auth(config.username, config.password)
+        .send({
+          'url': 'http://google.de',
+          'status_code': 301,
+          'unknown_parameter': 123
         })
         .expect(400)
         .expect('Content-Type', /json/)
@@ -66,6 +90,20 @@ describe('API errors', () => {
         .end(body(isValid.errorResponse, done))
     })
 
+    it('POST should reject the request, if unknown parameters are present', (done) => {
+      request(app)
+        .post(route)
+        .auth(config.username, config.password)
+        .send({
+          'url': 'http://google.de',
+          'status_code': 301,
+          'unknown_parameter': 123
+        })
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(body(isValid.errorResponse, done))
+    })
+
     it('POST should reject the request for base URI, if parameter `url` is invalid', (done) => {
       request(app)
         .post('/')
@@ -81,6 +119,16 @@ describe('API errors', () => {
         .post('/')
         .auth(config.username, config.password)
         .send({})
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(body(isValid.errorResponse, done))
+    })
+
+    it('POST should fail if parameter `status_code` is not given (since it is required)', (done) => {
+      request(app)
+        .post(route)
+        .auth(config.username, config.password)
+        .send({'url': 'http://google.de'})
         .expect(400)
         .expect('Content-Type', /json/)
         .end(body(isValid.errorResponse, done))

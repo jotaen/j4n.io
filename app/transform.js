@@ -1,12 +1,5 @@
 'use strict'
 
-exports.odmInput = (data) => {
-  return {
-    url: String(data.url),
-    status_code: parseInt(data.status_code) || 301
-  }
-}
-
 exports.apiResponse = (doc) => {
   return {
     token: doc.token,
