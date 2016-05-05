@@ -1,5 +1,15 @@
 'use strict'
 
+exports.badRequest = (res, details) => {
+  res
+    .status(400)
+    .send({
+      message: 'Error – the request body is malformed.',
+      code: 400,
+      errors: details
+    })
+}
+
 exports.unauthorized = (res) => {
   res
     .status(401)
@@ -25,16 +35,6 @@ exports.methodNotAllowed = (res, allow) => {
     .send({
       message: 'Error: method not allowed',
       code: 405
-    })
-}
-
-exports.unprocessableEntity = (res, details) => {
-  res
-    .status(422)
-    .send({
-      message: 'Error – the request parameters could not be validated.',
-      code: 422,
-      errors: details
     })
 }
 

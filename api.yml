@@ -48,8 +48,8 @@ paths:
           description: Shortlink was created successfully
           schema:
             $ref: "#/definitions/shortlink"
-        422:
-          description: Invalid parameters
+        400:
+          description: Bad request (request body malformed)
           schema:
             $ref: "#/definitions/error"
   /:token:
@@ -85,8 +85,8 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
-        422:
-          description: Invalid parameters
+        400:
+          description: Bad request (request body malformed)
           schema:
             $ref: "#/definitions/error"
     delete:
@@ -123,8 +123,8 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/shortlink"
-        422:
-          description: Invalid parameters
+        400:
+          description: Bad request (request body malformed)
           schema:
             $ref: "#/definitions/error"
 definitions:

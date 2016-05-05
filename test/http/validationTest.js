@@ -13,7 +13,7 @@ describe('validation', () => {
       .put(route)
       .auth(config.username, config.password)
       .send({})
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -26,7 +26,7 @@ describe('validation', () => {
       .put(route)
       .auth(config.username, config.password)
       .send({'url': 'not_a_valid_url'})
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -42,7 +42,7 @@ describe('validation', () => {
         'url': 'http://google.de',
         'status_code': 'not_a_valid_status_code'
       })
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -55,7 +55,7 @@ describe('validation', () => {
       .post(route)
       .auth(config.username, config.password)
       .send({'url': 'not_a_valid_url'})
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -71,7 +71,7 @@ describe('validation', () => {
         'url': 'http://google.de',
         'status_code': 'not_a_valid_status_code'
       })
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -84,7 +84,7 @@ describe('validation', () => {
       .post('/')
       .auth(config.username, config.password)
       .send({'url': 'not_a_valid_url'})
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
@@ -97,7 +97,7 @@ describe('validation', () => {
       .post('/')
       .auth(config.username, config.password)
       .send({})
-      .expect(422)
+      .expect(400)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
