@@ -1,16 +1,25 @@
 'use strict'
 
-exports.input = (doc) => {
-  const result = {}
-  if (doc.token) result.token = String(doc.token)
-  if (doc.url) result.url = String(doc.url)
-  if (doc.status_code) result.status_code = parseInt(doc.status_code)
-  if (doc.created) result.created = doc.created.toISOString()
-  if (doc.updated) result.updated = doc.updated.toISOString()
-  return result
+exports.odmInput = (data) => {
+  return {
+    url: String(data.url),
+    status_code: parseInt(data.status_code) || 301
+  }
 }
 
-exports.output = (doc) => {
-  delete doc._id
-  return doc
+exports.apiResponse = (doc) => {
+  return {
+    token: doc.token,
+    url: doc.url,
+    status_code: doc.status_code,
+    created: doc.created.toISOString(),
+    updated: doc.updated.toISOString()
+  }
+}
+
+exports.token = (token) => {
+  token = String(token)
+  token = token.replace(/^\/+/, '')
+  token = token.replace(/\/+$/, '')
+  return token
 }

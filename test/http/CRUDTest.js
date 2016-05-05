@@ -3,9 +3,10 @@
 const request = require('supertest')
 const app = require('../../app/http/app')
 const config = require('../../app/bootstrap/config')
-const validate = require('./_validate')
+const isValid = require('../_isValid')
+const body = require('./_body')
 
-describe('CRUD operations', () => {
+describe('API CRUD operations', () => {
   const route = '/foobaz'
   const code = 302
   const url = 'https://foo.baz/myroute?param=1#hash'
@@ -22,10 +23,7 @@ describe('CRUD operations', () => {
       })
       .expect(201)
       .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 
   it('GET should deliver the previously created resource', (done) => {
@@ -33,10 +31,7 @@ describe('CRUD operations', () => {
       .get(route)
       .expect(code)
       .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 
   it('GET should send response in correct format, when a specific URI is requested', (done) => {
@@ -44,10 +39,7 @@ describe('CRUD operations', () => {
       .get(route)
       .expect(302)
       .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 
   it('POST should update the existing resource', (done) => {
@@ -60,10 +52,7 @@ describe('CRUD operations', () => {
       })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 
   it('GET should return the updated resource', (done) => {
@@ -82,10 +71,7 @@ describe('CRUD operations', () => {
       .auth(config.username, config.password)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 
   it('GET should return a 404 now', (done) => {
@@ -93,7 +79,7 @@ describe('CRUD operations', () => {
       .get(route)
       .expect(404)
       .expect('Content-Type', /json/)
-      .end(done)
+      .end(body(isValid.errorResponse, done))
   })
 
   it('DELETE should return a 404 now', (done) => {
@@ -102,7 +88,7 @@ describe('CRUD operations', () => {
       .auth(config.username, config.password)
       .expect(404)
       .expect('Content-Type', /json/)
-      .end(done)
+      .end(body(isValid.errorResponse, done))
   })
 
   it('POST should return a 404 now', (done) => {
@@ -115,7 +101,7 @@ describe('CRUD operations', () => {
       })
       .expect(404)
       .expect('Content-Type', /json/)
-      .end(done)
+      .end(body(isValid.errorResponse, done))
   })
 
   it('POST should create new resources under the base URI with random token', (done) => {
@@ -130,7 +116,7 @@ describe('CRUD operations', () => {
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
-        else validate.shortlink(res.body).then(done)
+        else if (isValid.apiResponse(res.body)) done()
         firstToken = res.body.token
         firstStatusCode = res.body.status_code
       })
@@ -156,9 +142,6 @@ describe('CRUD operations', () => {
     request(app)
       .get('/' + firstToken)
       .expect(firstStatusCode)
-      .end((err, res) => {
-        if (err) done(err)
-        else validate.shortlink(res.body).then(done)
-      })
+      .end(body(isValid.apiResponse, done))
   })
 })

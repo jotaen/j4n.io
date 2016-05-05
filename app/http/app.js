@@ -4,10 +4,11 @@ const bodyParser = require('body-parser')
 const randomToken = require('randomstring')
 const express = require('express')
 const router = express()
-const trimSlashes = require('../trimSlashes')
+const apiResponse = require('../transform').apiResponse
 const validator = require('./validator')
 const protector = require('./protector')
 const redirector = require('./redirector')
+const sanitizer = require('./sanitizer')
 const handle = require('./errors')
 const shortlinks = require('../odm')
 const config = require('../bootstrap/config')
@@ -21,24 +22,24 @@ router.get(
   redirector('/', 'http://jotaen.net'),
   protector(config.username, config.password),
   (req, res) => {
-    shortlinks.list().then((result) => {
+    shortlinks.list().then((shortlinkList) => {
       res
         .status(200)
-        .send(result)
+        .send(shortlinkList.map(apiResponse))
     })
   }
 )
 
 router.get(
   '/:token',
+  sanitizer(),
   (req, res) => {
-    const token = trimSlashes(req.params.token)
-    shortlinks.find(token).then((data) => {
-      if (data) {
+    shortlinks.find(req.params.token).then((shortlink) => {
+      if (shortlink) {
         res
-          .status(data.status_code)
-          .header('Location', data.url)
-          .send(data)
+          .status(shortlink.status_code)
+          .header('Location', shortlink.url)
+          .send(apiResponse(shortlink))
       } else {
         handle.notFound(res)
       }
@@ -52,14 +53,13 @@ router.put(
   '/:token',
   protector(config.username, config.password),
   validator(),
+  sanitizer(),
   (req, res) => {
-    const token = trimSlashes(req.params.token)
-
-    shortlinks.create(token, req.body.url, req.body.status_code)
+    shortlinks.create(req.params.token, req.body.url, req.body.status_code)
     .then((shortlink) => {
       res
         .status(201)
-        .send(shortlink)
+        .send(apiResponse(shortlink))
     }).catch((error) => {
       if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res, 'GET, POST, DELETE')
       else handle.internalError(res)
@@ -71,6 +71,7 @@ router.post(
   '/',
   protector(config.username, config.password),
   validator(),
+  sanitizer(),
   (req, res) => {
     let token = randomToken.generate({
       charset: 'alphanumeric',
@@ -81,7 +82,7 @@ router.post(
     .then((shortlink) => {
       res
         .status(201)
-        .send(shortlink)
+        .send(apiResponse(shortlink))
     }).catch(() => {
       handle.internalError(res)
     })
@@ -92,17 +93,14 @@ router.post(
   '/:token',
   protector(config.username, config.password),
   validator(),
+  sanitizer(),
   (req, res) => {
-    const token = trimSlashes(req.params.token)
-    const data = {
-      url: req.body.url,
-      status_code: req.body.status_code
-    }
-    shortlinks.update(token, data).then((shortlink) => {
+    shortlinks.update(req.params.token, req.body.url, req.body.status_code)
+    .then((shortlink) => {
       if (shortlink) {
         res
           .status(200)
-          .send(shortlink)
+          .send(apiResponse(shortlink))
       } else {
         handle.notFound(res)
       }
@@ -115,13 +113,14 @@ router.post(
 router.delete(
   '/:token',
   protector(config.username, config.password),
+  sanitizer(),
   (req, res) => {
-    const token = trimSlashes(req.params.token)
-    shortlinks.delete(token).then((shortlink) => {
+    shortlinks.delete(req.params.token)
+    .then((shortlink) => {
       if (shortlink) {
         res
           .status(200)
-          .send(shortlink)
+          .send(apiResponse(shortlink))
       } else {
         handle.notFound(res)
       }

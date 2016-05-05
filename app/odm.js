@@ -1,21 +1,20 @@
 'use strict'
 
-const transform = require('./transform')
 const collection = require('./bootstrap/db').collection
 
 exports.create = (token, url, statusCode) => {
   const now = new Date()
-  const doc = transform.input({
-    token: String(token),
+  const newDoc = {
+    token: token,
     url: url,
-    status_code: (typeof statusCode !== 'undefined' ? parseInt(statusCode) : 301),
+    status_code: statusCode,
     created: now,
     updated: now
-  })
+  }
 
   return collection()
-    .insertOne(doc)
-    .then((doc) => transform.output(doc.ops[0]))
+    .insertOne(newDoc)
+    .then((doc) => doc.ops[0])
     .catch((error) => {
       if (error.code === 11000) throw new Error('ALREADY_EXISTS')
       else throw error
@@ -25,31 +24,34 @@ exports.create = (token, url, statusCode) => {
 exports.find = (token) => collection()
   .findOne({token: token})
   .then((doc) => {
-    if (doc) return transform.output(doc)
+    if (doc) return doc
   })
 
 exports.list = () => {
   return collection()
     .find()
     .toArray()
-    .then((docs) => docs.map(transform.output))
 }
 
-exports.update = (token, changeset) => {
-  changeset.updated = new Date()
+exports.update = (token, url, statusCode) => {
+  const changeset = {
+    url: url,
+    status_code: statusCode,
+    updated: new Date()
+  }
   return collection()
     .findOneAndUpdate({token: token}, {
-      $set: transform.input(changeset)
+      $set: changeset
     }, {
       returnOriginal: false
     })
     .then((doc) => {
-      if (doc.value) return transform.output(doc.value)
+      if (doc.value) return doc.value
     })
 }
 
 exports.delete = (token) => collection()
   .findOneAndDelete({token: token})
   .then((doc) => {
-    if (doc.value) return transform.output(doc.value)
+    if (doc.value) return doc.value
   })

@@ -3,7 +3,7 @@
 const request = require('supertest')
 const app = require('../../app/http/app')
 const config = require('../../app/bootstrap/config')
-const validate = require('./_validate')
+const isValid = require('../_isValid')
 
 describe('GET /', () => {
   it('should list all shortlinks on base URI', (done) => {
@@ -14,7 +14,7 @@ describe('GET /', () => {
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) done(err)
-        else if (res.body instanceof Array) validate.shortlink(res.body[0]).then(done)
+        else if (res.body instanceof Array && isValid.apiResponse(res.body[0])) done()
       })
   })
 })
