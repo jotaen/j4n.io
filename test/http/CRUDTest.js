@@ -6,6 +6,8 @@ const config = require('../../app/bootstrap/config')
 const isValid = require('../_isValid')
 const body = require('./_body')
 
+// The tests in this suite are dependent on one another and
+// need to be executed in this order
 describe('API CRUD operations', () => {
   const route = '/foobaz'
   const code = 302
@@ -143,5 +145,17 @@ describe('API CRUD operations', () => {
       .get('/' + firstToken)
       .expect(firstStatusCode)
       .end(body(isValid.apiResponse, done))
+  })
+
+  it('should list all shortlinks on base URI', (done) => {
+    request(app)
+      .get('/')
+      .auth(config.username, config.password)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if (err) done(err)
+        else if (res.body instanceof Array && isValid.apiResponse(res.body[0])) done()
+      })
   })
 })

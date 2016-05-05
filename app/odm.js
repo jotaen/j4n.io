@@ -11,7 +11,6 @@ exports.create = (token, url, statusCode) => {
     created: now,
     updated: now
   }
-
   return collection()
     .insertOne(newDoc)
     .then((doc) => doc.ops[0])
@@ -21,17 +20,9 @@ exports.create = (token, url, statusCode) => {
     })
 }
 
-exports.find = (token) => collection()
-  .findOne({token: token})
-  .then((doc) => {
-    if (doc) return doc
-  })
+exports.find = (token) => collection().findOne({token: token})
 
-exports.list = () => {
-  return collection()
-    .find()
-    .toArray()
-}
+exports.list = () => collection().find().toArray()
 
 exports.update = (token, url, statusCode) => {
   const changeset = {
@@ -40,12 +31,11 @@ exports.update = (token, url, statusCode) => {
     updated: new Date()
   }
   return collection()
-    .findOneAndUpdate({token: token}, {
-      $set: changeset
-    }, {
-      returnOriginal: false
-    })
-    .then((doc) => {
+    .findOneAndUpdate(
+      {token: token},
+      {$set: changeset},
+      {returnOriginal: false}
+    ).then((doc) => {
       if (doc.value) return doc.value
     })
 }
