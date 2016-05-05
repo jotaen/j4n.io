@@ -5,7 +5,7 @@ module.exports = (path, redirectUrl) => {
     if (req.path === path && req.headers.authorization) {
       next()
     } else {
-      res.header('Location', redirectUrl).sendStatus(301)
+      res.header('Location', redirectUrl).status(301).send({})
     }
   }
 }
