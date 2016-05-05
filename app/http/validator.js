@@ -1,13 +1,14 @@
 'use strict'
 
-const Joi = require('joi')
+const validate = require('../validate')
 const handle = require('./errors')
 
-module.exports = (schema) => {
+module.exports = () => {
   return (req, res, next) => {
-    Joi.validate(req.body, schema, (error) => {
-      if (error) handle.badRequest(res, error.details)
-      else next()
-    })
+    validate(req.body)
+      .then(next)
+      .catch((error) => {
+        handle.badRequest(res, error.details)
+      })
   }
 }

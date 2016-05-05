@@ -3,7 +3,7 @@
 const assert = require('assert')
 const trimSlashes = require('../../app/trimSlashes')
 
-describe('trimSlashes', () => {
+describe('#trimSlashes()', () => {
   it('should trim nothing, when there is no leading or trailing slash', () => {
     const input = 'foo'
     const expect = 'foo'

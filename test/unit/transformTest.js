@@ -4,7 +4,7 @@ const assert = require('assert')
 const tansform = require('../../app/transform')
 const validate = require('../_validate_output')
 
-describe('tansform', () => {
+describe('#tansform()', () => {
   it('should leave correct data untouched', () => {
     const result = tansform.input({
       token: 'asdf',

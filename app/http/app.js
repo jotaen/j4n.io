@@ -5,7 +5,6 @@ const randomToken = require('randomstring')
 const express = require('express')
 const router = express()
 const trimSlashes = require('../trimSlashes')
-const request = require('./requestSchema')
 const validator = require('./validator')
 const protector = require('./protector')
 const redirector = require('./redirector')
@@ -52,7 +51,7 @@ router.get(
 router.put(
   '/:token',
   protector(config.username, config.password),
-  validator(request.shortlink),
+  validator(),
   (req, res) => {
     const token = trimSlashes(req.params.token)
 
@@ -71,7 +70,7 @@ router.put(
 router.post(
   '/',
   protector(config.username, config.password),
-  validator(request.shortlink),
+  validator(),
   (req, res) => {
     let token = randomToken.generate({
       charset: 'alphanumeric',
@@ -92,7 +91,7 @@ router.post(
 router.post(
   '/:token',
   protector(config.username, config.password),
-  validator(request.shortlink),
+  validator(),
   (req, res) => {
     const token = trimSlashes(req.params.token)
     const data = {
