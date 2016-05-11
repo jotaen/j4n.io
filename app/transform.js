@@ -10,6 +10,13 @@ exports.apiResponse = (doc) => {
   }
 }
 
+exports.apiInput = (data) => {
+  return {
+    url: data.url,
+    status_code: parseInt(data.status_code)
+  }
+}
+
 exports.token = (token) => {
   token = String(token)
   token = token.replace(/^\/+/, '')

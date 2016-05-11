@@ -50,7 +50,20 @@ describe('API CRUD operations', () => {
       .auth(config.username, config.password)
       .send({
         url: url,
-        status_code: 302
+        status_code: 308
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(body(isValid.apiResponse, done))
+  })
+
+  it('POST should not be too strict in regards of the types', (done) => {
+    request(app)
+      .post(route)
+      .auth(config.username, config.password)
+      .send({
+        url: url,
+        status_code: '302'
       })
       .expect(200)
       .expect('Content-Type', /json/)
@@ -62,7 +75,7 @@ describe('API CRUD operations', () => {
       .get(route)
       .expect(302)
       .end((err, res) => {
-        if (err) done()
+        if (err) done(err)
         else if (res.body.url === url) done()
       })
   })

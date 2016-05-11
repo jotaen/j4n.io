@@ -16,7 +16,34 @@ describe('#transform', () => {
         updated: new Date()
       })
       assert(isValid.apiResponse(result))
-      assert(Object.keys(result).length === 5)
+    })
+  })
+
+  describe('#apiInput()', () => {
+    it('should leave correct data untouched', () => {
+      const result = transform.apiInput({
+        url: 'http://googe.de',
+        status_code: 302
+      })
+      assert(isValid.apiInput(result))
+    })
+
+    it('should remove any additional (unknown) properties', () => {
+      const result = transform.apiInput({
+        url: 'http://googe.de',
+        additional_property: ['bad', 'values'],
+        status_code: 302,
+        unknown_field: 'bad_value'
+      })
+      assert(isValid.apiInput(result))
+    })
+
+    it('should cast the status code to number', () => {
+      const result = transform.apiInput({
+        url: 'http://googe.de',
+        status_code: '302'
+      })
+      assert(isValid.apiInput(result))
     })
   })
 

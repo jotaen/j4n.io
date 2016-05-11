@@ -24,7 +24,7 @@ exports.errorResponse = (data) => {
   return true
 }
 
-exports.odmInput = (data) => {
+exports.apiInput = (data) => {
   if (Object.keys(data).length !== 2) return false
   if (typeof data.status_code !== 'number') return false
   if (typeof data.url !== 'string') return false
