@@ -5,7 +5,7 @@ const config = require('../app/bootstrap/config')
 const isValid = require('../test/_isValid')
 const body = require('../test/http/_body')
 
-const url = process.env.URL || 'http://j4n.io'
+const url = process.env.URL || 'http://www.j4n.io'
 const route = '/healthCheckTest_' + (new Date()).getTime()
 
 /* global describe */
