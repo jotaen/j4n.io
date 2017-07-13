@@ -56,14 +56,14 @@ router.put(
   sanitizer(),
   (req, res) => {
     shortlinks.create(req.params.token, req.body.url, req.body.status_code)
-    .then((shortlink) => {
-      res
-        .status(201)
-        .send(apiResponse(shortlink))
-    }).catch((error) => {
-      if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res, 'GET, POST, DELETE')
-      else handle.internalError(res)
-    })
+      .then((shortlink) => {
+        res
+          .status(201)
+          .send(apiResponse(shortlink))
+      }).catch((error) => {
+        if (error.message === 'ALREADY_EXISTS') handle.methodNotAllowed(res, 'GET, POST, DELETE')
+        else handle.internalError(res)
+      })
   }
 )
 
@@ -79,13 +79,13 @@ router.post(
     })
 
     shortlinks.create(token, req.body.url, req.body.status_code)
-    .then((shortlink) => {
-      res
-        .status(201)
-        .send(apiResponse(shortlink))
-    }).catch(() => {
-      handle.internalError(res)
-    })
+      .then((shortlink) => {
+        res
+          .status(201)
+          .send(apiResponse(shortlink))
+      }).catch(() => {
+        handle.internalError(res)
+      })
   }
 )
 
@@ -96,17 +96,17 @@ router.post(
   sanitizer(),
   (req, res) => {
     shortlinks.update(req.params.token, req.body.url, req.body.status_code)
-    .then((shortlink) => {
-      if (shortlink) {
-        res
-          .status(200)
-          .send(apiResponse(shortlink))
-      } else {
-        handle.notFound(res)
-      }
-    }).catch(() => {
-      handle.internalError(res)
-    })
+      .then((shortlink) => {
+        if (shortlink) {
+          res
+            .status(200)
+            .send(apiResponse(shortlink))
+        } else {
+          handle.notFound(res)
+        }
+      }).catch(() => {
+        handle.internalError(res)
+      })
   }
 )
 
@@ -116,17 +116,17 @@ router.delete(
   sanitizer(),
   (req, res) => {
     shortlinks.delete(req.params.token)
-    .then((shortlink) => {
-      if (shortlink) {
-        res
-          .status(200)
-          .send(apiResponse(shortlink))
-      } else {
-        handle.notFound(res)
-      }
-    }).catch(() => {
-      handle.internalError(res)
-    })
+      .then((shortlink) => {
+        if (shortlink) {
+          res
+            .status(200)
+            .send(apiResponse(shortlink))
+        } else {
+          handle.notFound(res)
+        }
+      }).catch(() => {
+        handle.internalError(res)
+      })
   }
 )
 
